@@ -33,6 +33,10 @@ const menuGroups = [
       ["/stats", "호출통계"],
     ],
   },
+  {
+    label: "환경설정",
+    items: [["/common-code", "공통코드 관리"]],
+  },
 ] as const;
 
 export default function Header() {

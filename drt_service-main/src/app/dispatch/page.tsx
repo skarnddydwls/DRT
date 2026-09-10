@@ -87,10 +87,10 @@ function StopTimelineCell({
             }}
             style={groupColor ? { backgroundColor: groupColor } : undefined}
             className={`flex w-24 flex-col rounded-lg border px-3 py-2 text-left shadow-sm transition-colors ${selected
-                ? "border-blue-500 ring-2 ring-blue-300"
-                : groupColor
-                  ? "border-black/10 hover:border-blue-400"
-                  : "border-gray-200 bg-white hover:border-blue-300 hover:bg-blue-50"
+              ? "border-blue-500 ring-2 ring-blue-300"
+              : groupColor
+                ? "border-black/10 hover:border-blue-400"
+                : "border-gray-200 bg-white hover:border-blue-300 hover:bg-blue-50"
               }`}>
             <p className="text-xs font-medium text-gray-500">{stop.stn_nm}</p>
             <p className="text-sm font-semibold text-gray-800">
@@ -146,10 +146,10 @@ export default function DispatchPage() {
     isVisible: false,
   });
 
-  const fetchDispatchList = useCallback(async () => {
+  const fetchDispatchList = async (searchFilters: DispatchFilters = filters) => {
     setLoading(true);
     try {
-      const response = await getDispatchList(filters);
+      const response = await getDispatchList(searchFilters);
       setAllRows(response.dispatches);
     } catch (error) {
       console.error("Failed to fetch dispatch list:", error);
@@ -161,11 +161,12 @@ export default function DispatchPage() {
     } finally {
       setLoading(false);
     }
-  }, [filters]);
+  };
 
-  useEffect(() => {
-    void fetchDispatchList();
-  }, [fetchDispatchList]);
+  const handleSearch = (newFilters: DispatchFilters) => {
+    setFilters(newFilters);
+    fetchDispatchList(newFilters);
+  };
 
   useEffect(() => {
     let active = true;
@@ -446,207 +447,208 @@ export default function DispatchPage() {
   };
 
   return (
-    <section className="rounded-xl border bg-white p-4">
-      <div className="mb-4">
-        <h1 className="text-xl font-semibold">일배차관리</h1>
-      </div>
-
-      <FilterForm<DispatchFilters>
-        fields={dispatchFields}
-        defaultValues={defaultFilters}
-        values={filters}
-        onChange={setFilters}
-        onSearch={(values) => setFilters(values)}
-        className="mb-4"
-      />
-
-      {/* 예약구간 및 배차시간 편집 버튼 */}
-      <div className="mb-4 flex justify-end gap-3">
-        <Button onClick={openImportDialog} className="bg-blue-600 text-white hover:bg-blue-700">
-          배차마스터 불러오기
-        </Button>
-        <Button
-          onClick={() => void openReserveDialog()}
-          disabled={!selectedStop || updatingReserve}
-          className="bg-green-500 text-white hover:bg-green-600">
-          {updatingReserve ? "처리 중..." : "예약구간"}
-        </Button>
-        {/* <Button onClick={() => setIsModalOpen(true)} disabled={!selectedRow}>
-          배차시간 편집
-        </Button> */}
-      </div>
-
-      {loading ? (
-        <div
-          className="flex items-center justify-center"
-          style={{ height: 560 }}>
-          <p>데이터를 불러오는 중...</p>
+    <section>
+      {/* 페이지 제목 & 상단 액션 바 */}
+      <div className="mb-6 flex items-end justify-between">
+        <div>
+          <h1 className="text-[28px] font-bold tracking-tight">일배차관리</h1>
+          <p className="mt-1 text-sm text-gray-500">일일 배차 현황을 조회하고 관리합니다.</p>
         </div>
-      ) : (
-        <Grid
-          rowData={groupedRows}
-          columnDefs={columnDefs}
-          gridRef={gridRef}
-          gridOptions={{
-            rowSelection: "single",
-            suppressRowClickSelection: false,
-            onRowClicked: (params) => {
-              const target = params.event?.target;
-              if (
-                target instanceof Element &&
-                target.closest('[data-dispatch-stop="true"]')
-              ) {
-                return;
-              }
-              if (params.data) {
-                setSelectedRow(params.data);
-                setSelectedStop(null);
-              }
-            },
-            getRowStyle: (params) => {
-              if (
-                selectedRow &&
-                params.data?.route_id === selectedRow.route_id &&
-                params.data?.dispatch_dt === selectedRow.dispatch_dt
-              ) {
-                return { backgroundColor: "#dbeafe" }; // blue-100
-              }
-              return undefined;
-            },
-          }}
-          height={"calc(100vh - 400px)"}
-          enableNumberColoring={true}
-          rowHeight={60}
+        <div className="flex gap-2">
+          <Button onClick={openImportDialog} className="bg-blue-600 text-white hover:bg-blue-700">
+            배차마스터 불러오기
+          </Button>
+          <Button
+            onClick={() => void openReserveDialog()}
+            disabled={!selectedStop || updatingReserve}
+            className="bg-green-500 text-white hover:bg-green-600">
+            {updatingReserve ? "처리 중..." : "예약구간"}
+          </Button>
+        </div>
+      </div>
+
+      <div className="rounded-xl border bg-white p-6 shadow-sm">
+        <FilterForm<DispatchFilters>
+          fields={dispatchFields}
+          defaultValues={defaultFilters}
+          values={filters}
+          onChange={setFilters}
+          onSearch={handleSearch}
+          className="mb-4"
         />
-      )}
 
-      {/* 배차시간 편집 모달 */}
-      <DispatchTimeEditModal
-        open={isModalOpen}
-        onClose={() => {
-          setIsModalOpen(false);
-        }}
-        selectedRow={selectedRow}
-        onSave={handleSaveDispatchTime}
-      />
+        <div className="relative" style={{ height: "calc(100vh - 400px)" }}>
+          {loading && (
+            <div className="absolute inset-0 z-10 flex flex-col items-center justify-center rounded-xl bg-white/75 backdrop-blur-[1px]">
+              <div className="mb-3 h-8 w-8 animate-spin rounded-full border-4 border-blue-600 border-t-transparent" />
+              <p className="text-sm font-semibold text-gray-700">데이터를 불러오는 중...</p>
+            </div>
+          )}
+          <Grid
+            rowData={groupedRows}
+            columnDefs={columnDefs}
+            gridRef={gridRef}
+            gridOptions={{
+              rowSelection: "single",
+              suppressRowClickSelection: false,
+              onRowClicked: (params) => {
+                const target = params.event?.target;
+                if (
+                  target instanceof Element &&
+                  target.closest('[data-dispatch-stop="true"]')
+                ) {
+                  return;
+                }
+                if (params.data) {
+                  setSelectedRow(params.data);
+                  setSelectedStop(null);
+                }
+              },
+              getRowStyle: (params) => {
+                if (
+                  selectedRow &&
+                  params.data?.route_id === selectedRow.route_id &&
+                  params.data?.dispatch_dt === selectedRow.dispatch_dt
+                ) {
+                  return { backgroundColor: "#dbeafe" }; // blue-100
+                }
+                return undefined;
+              },
+            }}
+            height="100%"
+            enableNumberColoring={true}
+            rowHeight={60}
+          />
+        </div>
 
-      <Dialog open={reserveDialogOpen} onOpenChange={setReserveDialogOpen}>
-        <DialogContent className="sm:max-w-[430px]">
-          <DialogHeader>
-            <DialogTitle>예약구간 설정</DialogTitle>
-          </DialogHeader>
-          <div className="space-y-5 py-2">
-            <div
-              className="rounded-xl border border-black/10 bg-gray-50 p-4 transition-colors"
-              style={
-                reservationGroupColors[selectedReserveDiv]
-                  ? { backgroundColor: reservationGroupColors[selectedReserveDiv] }
-                  : undefined
-              }>
-              <p className="text-xs font-semibold text-gray-700">선택한 배차시간</p>
-              <div className="mt-2 flex items-end justify-between gap-4">
-                <div>
-                  <p className="text-sm text-gray-500">정류장</p>
-                  <p className="mt-1 text-lg font-bold text-gray-900">
-                    {selectedStop?.stop.stn_nm || "-"}
-                  </p>
-                </div>
-                <div className="text-right">
-                  <p className="text-sm text-gray-500">도착시각</p>
-                  <p className="mt-1 text-2xl font-bold text-gray-900">
-                    {selectedStop?.stop.algh_dtm
-                      ? formatTimestamp(selectedStop.stop.algh_dtm, "HH:mm")
-                      : "-"}
-                  </p>
+        {/* 배차시간 편집 모달 */}
+        <DispatchTimeEditModal
+          open={isModalOpen}
+          onClose={() => {
+            setIsModalOpen(false);
+          }}
+          selectedRow={selectedRow}
+          onSave={handleSaveDispatchTime}
+        />
+
+        <Dialog open={reserveDialogOpen} onOpenChange={setReserveDialogOpen}>
+          <DialogContent className="sm:max-w-[430px]">
+            <DialogHeader>
+              <DialogTitle>예약구간 설정</DialogTitle>
+            </DialogHeader>
+            <div className="space-y-5 py-2">
+              <div
+                className="rounded-xl border border-black/10 bg-gray-50 p-4 transition-colors"
+                style={
+                  reservationGroupColors[selectedReserveDiv]
+                    ? { backgroundColor: reservationGroupColors[selectedReserveDiv] }
+                    : undefined
+                }>
+                <p className="text-xs font-semibold text-gray-700">선택한 배차시간</p>
+                <div className="mt-2 flex items-end justify-between gap-4">
+                  <div>
+                    <p className="text-sm text-gray-500">정류장</p>
+                    <p className="mt-1 text-lg font-bold text-gray-900">
+                      {selectedStop?.stop.stn_nm || "-"}
+                    </p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-sm text-gray-500">도착시각</p>
+                    <p className="mt-1 text-2xl font-bold text-gray-900">
+                      {selectedStop?.stop.algh_dtm
+                        ? formatTimestamp(selectedStop.stop.algh_dtm, "HH:mm")
+                        : "-"}
+                    </p>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <div>
-              <label className="mb-2 block text-sm font-semibold text-gray-700">
-                예약구간
-              </label>
-              <Select
-                value={selectedReserveDiv}
-                onValueChange={setSelectedReserveDiv}
-                disabled={reservationGroupsLoading}>
-                <SelectTrigger className="w-full">
-                  <SelectValue
-                    placeholder={
-                      reservationGroupsLoading
-                        ? "예약구간을 불러오는 중..."
-                        : "예약구간을 선택하세요"
-                    }
-                  />
-                </SelectTrigger>
-                <SelectContent>
-                  {reservationGroups.map((code) => (
-                    <SelectItem key={code.detail_code} value={code.detail_code}>
-                      {code.label || code.value || code.detail_code}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              {!reservationGroupsLoading && !reservationGroups.length && (
-                <p className="mt-2 text-xs font-medium text-red-500">
-                  등록된 예약구간 코드가 없습니다.
+              <div>
+                <label className="mb-2 block text-sm font-semibold text-gray-700">
+                  예약구간
+                </label>
+                <Select
+                  value={selectedReserveDiv}
+                  onValueChange={setSelectedReserveDiv}
+                  disabled={reservationGroupsLoading}>
+                  <SelectTrigger className="w-full">
+                    <SelectValue
+                      placeholder={
+                        reservationGroupsLoading
+                          ? "예약구간을 불러오는 중..."
+                          : "예약구간을 선택하세요"
+                      }
+                    />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {reservationGroups.map((code) => (
+                      <SelectItem key={code.detail_code} value={code.detail_code}>
+                        {code.label || code.value || code.detail_code}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                {!reservationGroupsLoading && !reservationGroups.length && (
+                  <p className="mt-2 text-xs font-medium text-red-500">
+                    등록된 예약구간 코드가 없습니다.
+                  </p>
+                )}
+                <p className="mt-2 text-xs text-gray-500">
+                  선택한 운행편에서 활성화할 예약구간을 지정합니다.
                 </p>
-              )}
-              <p className="mt-2 text-xs text-gray-500">
-                선택한 운행편에서 활성화할 예약구간을 지정합니다.
-              </p>
+              </div>
             </div>
-          </div>
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setReserveDialogOpen(false)} disabled={updatingReserve}>
-              취소
-            </Button>
-            <Button onClick={handleReserveRoute} disabled={updatingReserve || reservationGroupsLoading || !selectedReserveDiv} className="bg-green-500 text-white hover:bg-green-600">
-              {updatingReserve ? "처리 중..." : "확인"}
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+            <DialogFooter>
+              <Button variant="outline" onClick={() => setReserveDialogOpen(false)} disabled={updatingReserve}>
+                취소
+              </Button>
+              <Button onClick={handleReserveRoute} disabled={updatingReserve || reservationGroupsLoading || !selectedReserveDiv} className="bg-green-500 text-white hover:bg-green-600">
+                {updatingReserve ? "처리 중..." : "확인"}
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
 
-      <Dialog open={importDialogOpen} onOpenChange={setImportDialogOpen}>
-        <DialogContent className="w-[480px] max-w-[calc(100vw-32px)]">
-          <DialogHeader><DialogTitle>배차마스터 불러오기</DialogTitle></DialogHeader>
-          <div className="space-y-5">
-            <div className="rounded-xl border bg-blue-50 p-4">
-              <p className="text-xs text-blue-700">생성할 일배차 날짜</p>
-              <p className="mt-1 text-xl font-bold text-blue-950">{filters.dispatchDate}</p>
-            </div>
-            <div className="grid grid-cols-2 gap-3">
-              <label className="space-y-2 text-sm font-semibold">계절 구분
-                <select className="h-10 w-full rounded-md border bg-white px-3 font-normal" value={importSeason} onChange={(event) => setImportSeason(event.target.value as SeasonDiv)}>
-                  <option value="CD001">하계</option><option value="CD002">동계</option>
+        <Dialog open={importDialogOpen} onOpenChange={setImportDialogOpen}>
+          <DialogContent className="w-[480px] max-w-[calc(100vw-32px)]">
+            <DialogHeader><DialogTitle>배차마스터 불러오기</DialogTitle></DialogHeader>
+            <div className="space-y-5">
+              <div className="rounded-xl border bg-blue-50 p-4">
+                <p className="text-xs text-blue-700">생성할 일배차 날짜</p>
+                <p className="mt-1 text-xl font-bold text-blue-950">{filters.dispatchDate}</p>
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <label className="space-y-2 text-sm font-semibold">계절 구분
+                  <select className="h-10 w-full rounded-md border bg-white px-3 font-normal" value={importSeason} onChange={(event) => setImportSeason(event.target.value as SeasonDiv)}>
+                    <option value="CD001">하계</option><option value="CD002">동계</option>
+                  </select>
+                </label>
+                <label className="space-y-2 text-sm font-semibold">요일 구분
+                  <select className="h-10 w-full rounded-md border bg-white px-3 font-normal" value={importDay} onChange={(event) => setImportDay(event.target.value as DayDiv)}>
+                    <option value="CD001">평일</option><option value="CD002">주말</option>
+                  </select>
+                </label>
+              </div>
+              <label className="block space-y-2 text-sm font-semibold">배차마스터
+                <select className="h-10 w-full rounded-md border bg-white px-3 font-normal" value={importMasterId} disabled={importLoading} onChange={(event) => setImportMasterId(event.target.value)}>
+                  {importMasters.map((master) => <option key={master.dispatch_id} value={master.dispatch_id}>{master.dispatch_nm}</option>)}
                 </select>
               </label>
-              <label className="space-y-2 text-sm font-semibold">요일 구분
-                <select className="h-10 w-full rounded-md border bg-white px-3 font-normal" value={importDay} onChange={(event) => setImportDay(event.target.value as DayDiv)}>
-                  <option value="CD001">평일</option><option value="CD002">주말</option>
-                </select>
-              </label>
+              {!importLoading && !importMasters.length && <p className="text-sm text-red-500">선택한 구분에 등록된 배차마스터가 없습니다.</p>}
+              <p className="text-xs leading-5 text-gray-500">같은 날짜에 동일한 노선·지점·순번이 있으면 마스터의 시간과 예약구간으로 갱신됩니다. 기존 차량·단말기 정보는 유지됩니다.</p>
             </div>
-            <label className="block space-y-2 text-sm font-semibold">배차마스터
-              <select className="h-10 w-full rounded-md border bg-white px-3 font-normal" value={importMasterId} disabled={importLoading} onChange={(event) => setImportMasterId(event.target.value)}>
-                {importMasters.map((master) => <option key={master.dispatch_id} value={master.dispatch_id}>{master.dispatch_nm}</option>)}
-              </select>
-            </label>
-            {!importLoading && !importMasters.length && <p className="text-sm text-red-500">선택한 구분에 등록된 배차마스터가 없습니다.</p>}
-            <p className="text-xs leading-5 text-gray-500">같은 날짜에 동일한 노선·지점·순번이 있으면 마스터의 시간과 예약구간으로 갱신됩니다. 기존 차량·단말기 정보는 유지됩니다.</p>
-          </div>
-          <DialogFooter className="mt-6"><Button variant="outline" onClick={() => setImportDialogOpen(false)} disabled={importing}>취소</Button><Button onClick={() => void handleImportMaster()} disabled={importing || importLoading || !importMasterId} className="bg-blue-600 text-white hover:bg-blue-700">{importing ? "불러오는 중..." : "불러오기"}</Button></DialogFooter>
-        </DialogContent>
-      </Dialog>
+            <DialogFooter className="mt-6"><Button variant="outline" onClick={() => setImportDialogOpen(false)} disabled={importing}>취소</Button><Button onClick={() => void handleImportMaster()} disabled={importing || importLoading || !importMasterId} className="bg-blue-600 text-white hover:bg-blue-700">{importing ? "불러오는 중..." : "불러오기"}</Button></DialogFooter>
+          </DialogContent>
+        </Dialog>
 
-      {/* 토스트 알림 */}
-      <Toast
-        message={toast.message}
-        type={toast.type}
-        isVisible={toast.isVisible}
-        onClose={() => setToast((prev) => ({ ...prev, isVisible: false }))}
-      />
+        {/* 토스트 알림 */}
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          isVisible={toast.isVisible}
+          onClose={() => setToast((prev) => ({ ...prev, isVisible: false }))}
+        />
+      </div>
     </section>
   );
 }

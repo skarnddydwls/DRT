@@ -14,14 +14,17 @@ export default function ActiveVehicleTable({
   onSelect,
 }: ActiveVehicleTableProps) {
   return (
-    <section className="flex h-[420px] flex-col rounded-xl border border-[#CCCCCC] bg-white p-5 shadow-sm">
+    <section className="flex h-full min-h-0 flex-col rounded-xl border border-[#CCCCCC] bg-white p-5 shadow-sm">
       <div className="mb-3 flex items-center justify-between border-b border-gray-100 pb-3">
         <div className="flex items-center gap-2">
+          <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[#222222] text-[11px] font-bold text-white">
+            1
+          </span>
           <h2 className="text-base font-bold text-[#222222]">
-            운행 중 차량 선택
+            운행 중 차량 선택 (원차량)
           </h2>
         </div>
-        <span className="text-xs text-gray-400">교체할 차량 클릭</span>
+        <span className="text-xs text-gray-400">교체 대상 차량을 선택하세요</span>
       </div>
 
       {/* 내부 스크롤 영역 */}

@@ -24,6 +24,7 @@ const sampleNodes: EditorNode[] = [
 export default function RouteEditPage() {
   const [routes, setRoutes] = useState<RouteRow[]>([]);
   const [nodes, setNodes] = useState<EditorNode[]>([]);
+  const [loading, setLoading] = useState(false);
   const [query, setQuery] = useState("");
   const [selectedRouteId, setSelectedRouteId] = useState("");
   const [selectedNodeId, setSelectedNodeId] = useState("");
@@ -51,6 +52,17 @@ export default function RouteEditPage() {
     );
   }, [stopQuery, stops]);
   const isDirty = Boolean(selectedRouteId) && JSON.stringify(nodes) !== savedNodesSnapshot;
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && addMode) {
+        setAddMode(null);
+        setMessage("지점 추가 모드를 종료했습니다.");
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [addMode]);
 
   const handleMapClick = useCallback((longitude: number, latitude: number) => {
     if (!addMode) return;
@@ -81,7 +93,7 @@ export default function RouteEditPage() {
     const routeId = String(route.route_id);
     setSelectedRouteId(routeId);
     setSelectedNodeId("");
-    setNodes([]);
+    setLoading(true);
     try {
       const response = await getRouteNodesForEdit({ ROUTE_ID: routeId });
       const routeNodes = response.nodes
@@ -104,31 +116,40 @@ export default function RouteEditPage() {
       setSavedNodesSnapshot(JSON.stringify(loadedNodes));
       setMessage(
         validRouteNodes.length
-          ? `노선 노드 ${validRouteNodes.length}개를 불러왔습니다.${missingCoordinateCount ? ` 좌표 없는 ${missingCoordinateCount}개는 제외했습니다.` : ""}`
-          : "좌표가 등록된 노드가 없어 예시 경로를 표시합니다."
+          ? `노선 [${route.route_nm ?? routeId}] 노드 ${validRouteNodes.length}개를 불러왔습니다.${missingCoordinateCount ? ` 좌표 없는 ${missingCoordinateCount}개는 제외했습니다.` : ""}`
+          : `[${route.route_nm ?? routeId}] 좌표가 등록된 노드가 없어 예시 경로를 표시합니다.`
       );
     } catch {
       setNodes(sampleNodes);
       setSavedNodesSnapshot(JSON.stringify(sampleNodes));
-      setMessage("백엔드가 연결되지 않아 예시 경로를 표시합니다.");
+      setMessage(`[${route.route_nm ?? routeId}] 백엔드가 연결되지 않아 예시 경로를 표시합니다.`);
+    } finally {
+      setLoading(false);
     }
   }, []);
 
-  useEffect(() => {
-    getRouteList({})
-      .then((response) => {
-        const loadedRoutes = response.routes?.length ? response.routes : sampleRoutes;
-        setRoutes(loadedRoutes);
-        if (loadedRoutes.length > 0) {
-          void loadRoute(loadedRoutes[0]);
-        }
-      })
-      .catch(() => {
-        setRoutes(sampleRoutes);
-        setMessage("백엔드가 연결되지 않아 예시 노선을 표시합니다.");
-        void loadRoute(sampleRoutes[0]);
-      });
-  }, [loadRoute]);
+  const handleSearch = async () => {
+    setLoading(true);
+    try {
+      const response = await getRouteList({ routeName: query.trim() });
+      const loadedRoutes = response.routes?.length ? response.routes : sampleRoutes;
+      setRoutes(loadedRoutes);
+      setSelectedRouteId("");
+      setNodes([]);
+      setMessage(
+        loadedRoutes.length
+          ? `노선 ${loadedRoutes.length}건이 조회되었습니다. 편집할 노선을 선택하세요.`
+          : "조회된 노선이 없습니다."
+      );
+    } catch {
+      setRoutes(sampleRoutes);
+      setSelectedRouteId("");
+      setNodes([]);
+      setMessage("백엔드가 연결되지 않아 예시 노선을 표시합니다. 편집할 노선을 선택하세요.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const requestRouteSelection = (route: RouteRow) => {
     if (String(route.route_id) === selectedRouteId) return;
@@ -219,53 +240,144 @@ export default function RouteEditPage() {
 
   return (
     <section>
-      <div className="mb-7 flex items-end justify-between">
+      <div className="mb-6 flex items-end justify-between">
         <div>
           <h1 className="text-[28px] font-bold tracking-tight">노선편집</h1>
-          <p className="mt-2 text-sm text-gray-500">노선을 선택하고 지도 위에 정류장과 경유 지점을 배치합니다.</p>
+          <p className="mt-1 text-sm text-gray-500">노선을 선택하고 지도 위에 정류장과 경유 지점을 배치합니다.</p>
         </div>
         <div className="flex items-center gap-3">
           <span className="text-sm text-gray-500">{message}</span>
         </div>
       </div>
 
-      <div className="rounded-xl border bg-white p-6">
-        <div className="mb-6 flex items-center gap-3 rounded-xl border border-gray-300 bg-white px-8 py-4">
-          <label htmlFor="route-query" className="shrink-0 font-semibold">노선명</label>
-          <input id="route-query" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="노선명" className="h-12 flex-1 rounded-xl border border-gray-300 px-4 outline-none focus:border-gray-600" />
-          <button className="h-12 rounded-xl bg-[#242424] px-8 font-semibold text-white">조회</button>
-          <button onClick={() => selectedRouteId ? setSaveDialogOpen(true) : setMessage("먼저 노선을 선택해 주세요.")} disabled={!selectedRouteId || saving} className="h-12 rounded-xl bg-blue-600 px-8 font-semibold text-white hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-blue-300">저장</button>
+      <div className="rounded-xl border bg-white p-6 shadow-sm">
+        <div className="mb-4 flex items-center gap-4 rounded-xl border border-[#D9D9D9] bg-[#E9E9E9] p-4 px-6">
+          <label htmlFor="route-query" className="shrink-0 text-sm font-medium text-gray-700">노선명</label>
+          <input
+            id="route-query"
+            value={query}
+            onChange={(event) => setQuery(event.target.value)}
+            onKeyDown={(event) => {
+              if (event.key === "Enter") void handleSearch();
+            }}
+            placeholder="노선명을 입력하세요"
+            className="h-9 flex-1 rounded-lg border border-gray-300 bg-white px-3 text-sm outline-none focus:border-gray-600"
+          />
+          <button
+            type="button"
+            onClick={handleSearch}
+            className="h-9 rounded-lg bg-[#242424] px-6 text-sm font-semibold text-white hover:bg-black transition-colors"
+          >
+            조회
+          </button>
+          <button
+            type="button"
+            onClick={() => selectedRouteId ? setSaveDialogOpen(true) : setMessage("먼저 노선을 선택해 주세요.")}
+            disabled={!selectedRouteId || saving}
+            className="h-9 rounded-lg bg-blue-600 px-6 text-sm font-semibold text-white hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-blue-300 transition-colors"
+          >
+            저장
+          </button>
         </div>
 
-        <div className="grid min-h-[520px] grid-cols-[38%_1fr] gap-6">
-          <div className="flex min-w-0 flex-col gap-6">
-            <div>
-              <h2 className="mb-4 text-lg font-semibold">노선관리</h2>
-              <div className="max-h-[180px] overflow-auto rounded-xl border border-gray-300 bg-white">
+        <div className="relative grid grid-cols-[38%_1fr] gap-6 min-h-0 max-h-[calc(100vh-400px)]" style={{ height: "calc(100vh - 400px)" }}>
+          {loading && (
+            <div className="absolute inset-0 z-20 flex flex-col items-center justify-center rounded-xl bg-white/75 backdrop-blur-[1px]">
+              <div className="mb-3 h-8 w-8 animate-spin rounded-full border-4 border-blue-600 border-t-transparent" />
+              <p className="text-sm font-semibold text-gray-700">데이터를 불러오는 중...</p>
+            </div>
+          )}
+
+          <div className="flex min-w-0 min-h-0 flex-col gap-4 h-full overflow-hidden">
+            <div className="flex flex-col h-[40%] min-h-0 shrink-0">
+              <h2 className="mb-2 shrink-0 font-semibold">노선관리</h2>
+              <div className="flex-1 min-h-0 overflow-y-auto rounded-xl border border-gray-300 bg-white">
                 <table className="w-full table-fixed text-center text-sm">
-                  <thead className="sticky top-0 z-[1] bg-gray-100"><tr><th className="p-4">노선명</th><th>기점</th><th>종점</th></tr></thead>
+                  <thead className="sticky top-0 z-[2] bg-gray-100 shadow-sm">
+                    <tr>
+                      <th className="p-3 bg-gray-100">노선명</th>
+                      <th className="bg-gray-100">기점</th>
+                      <th className="bg-gray-100">종점</th>
+                    </tr>
+                  </thead>
                   <tbody>
-                    {visibleRoutes.map((route, index) => {
-                      const id = String(route.route_id ?? route.line_id ?? route.route_nm ?? index);
-                      return <tr key={id} onClick={() => requestRouteSelection(route)} className={`cursor-pointer border-t hover:bg-green-50 ${selectedRouteId === id ? "bg-green-50 font-semibold text-green-700" : ""}`}><td className="p-3">{String(route.route_nm ?? "-")}</td><td>{String(route.o_stn_nm ?? "-")}</td><td>{String(route.d_stn_nm ?? "-")}</td></tr>;
-                    })}
+                    {visibleRoutes.length === 0 ? (
+                      <tr><td colSpan={3} className="py-8 text-center text-xs text-gray-400">조회된 노선이 없습니다.</td></tr>
+                    ) : (
+                      visibleRoutes.map((route, index) => {
+                        const id = String(route.route_id ?? route.line_id ?? route.route_nm ?? index);
+                        return (
+                          <tr
+                            key={id}
+                            onClick={() => requestRouteSelection(route)}
+                            className={`cursor-pointer border-t hover:bg-green-50 ${selectedRouteId === id ? "bg-green-50 font-semibold text-green-700" : ""}`}
+                          >
+                            <td className="p-3 truncate">{String(route.route_nm ?? "-")}</td>
+                            <td className="truncate">{String(route.o_stn_nm ?? "-")}</td>
+                            <td className="truncate">{String(route.d_stn_nm ?? "-")}</td>
+                          </tr>
+                        );
+                      })
+                    )}
                   </tbody>
                 </table>
               </div>
             </div>
 
-            <div className="min-h-0 flex-1">
-              <div className="mb-4 flex items-center justify-between"><h2 className="text-lg font-semibold">노드구성</h2><div className="flex gap-2"><button onClick={() => moveNode(-1)} className="rounded border px-3 py-1 text-sm">위로</button><button onClick={() => moveNode(1)} className="rounded border px-3 py-1 text-sm">아래로</button><button onClick={() => setNodes((current) => current.filter((node) => node.id !== selectedNodeId))} className="rounded border border-red-300 px-3 py-1 text-sm text-red-600">삭제</button></div></div>
-              <div className="max-h-[310px] overflow-auto rounded-xl border border-gray-300 bg-white">
+            <div className="flex flex-1 min-h-0 flex-col overflow-hidden">
+              <div className="mb-2 flex shrink-0 items-center justify-between">
+                <h2 className="font-semibold">노드구성</h2>
+                <div className="flex gap-2">
+                  <button type="button" onClick={() => moveNode(-1)} className="rounded border px-2.5 py-0.5 text-xs hover:bg-gray-50">위로</button>
+                  <button type="button" onClick={() => moveNode(1)} className="rounded border px-2.5 py-0.5 text-xs hover:bg-gray-50">아래로</button>
+                  <button type="button" onClick={() => setNodes((current) => current.filter((node) => node.id !== selectedNodeId))} className="rounded border border-red-300 px-2.5 py-0.5 text-xs text-red-600 hover:bg-red-50">삭제</button>
+                </div>
+              </div>
+              <div className="flex-1 min-h-0 overflow-y-auto rounded-xl border border-gray-300 bg-white">
                 <table className="w-full table-fixed text-center text-sm">
-                  <thead className="sticky top-0 bg-gray-100"><tr><th className="p-4 w-16">순번</th><th className="w-24">타입</th><th>노드명</th></tr></thead>
-                  <tbody>{nodes.map((node, index) => <tr key={node.id} ref={(element) => { if (element && selectedNodeId === node.id) element.scrollIntoView({ block: "nearest" }); }} onClick={() => setSelectedNodeId(node.id)} className={`cursor-pointer border-t hover:bg-blue-50 ${selectedNodeId === node.id ? "bg-blue-50" : ""}`}><td className="p-3">{index + 1}</td><td>{node.type === "STN" ? "정류장" : "지점"}</td><td><input aria-label="노드명" className="w-full bg-transparent text-center outline-none" value={node.name} onChange={(event) => setNodes((current) => current.map((item) => item.id === node.id ? { ...item, name: event.target.value } : item))} /></td></tr>)}</tbody>
+                  <thead className="sticky top-0 z-[2] bg-gray-100 shadow-sm">
+                    <tr>
+                      <th className="p-3 w-16 bg-gray-100">순번</th>
+                      <th className="w-24 bg-gray-100">타입</th>
+                      <th className="bg-gray-100">노드명</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {nodes.length === 0 ? (
+                      <tr><td colSpan={3} className="py-8 text-center text-xs text-gray-400">등록된 노드가 없습니다.</td></tr>
+                    ) : (
+                      nodes.map((node, index) => (
+                        <tr
+                          key={node.id}
+                          ref={(element) => { if (element && selectedNodeId === node.id) element.scrollIntoView({ block: "nearest" }); }}
+                          onClick={() => setSelectedNodeId(node.id)}
+                          className={`cursor-pointer border-t hover:bg-blue-50 ${selectedNodeId === node.id ? "bg-blue-50" : ""}`}
+                        >
+                          <td className="p-3">{index + 1}</td>
+                          <td>{node.type === "STN" ? "정류장" : "지점"}</td>
+                          <td>
+                            <input
+                              aria-label="노드명"
+                              className="w-full bg-transparent text-center outline-none"
+                              value={node.name}
+                              onChange={(event) => setNodes((current) => current.map((item) => item.id === node.id ? { ...item, name: event.target.value } : item))}
+                            />
+                          </td>
+                        </tr>
+                      ))
+                    )}
+                  </tbody>
                 </table>
               </div>
             </div>
           </div>
 
-          <div className="relative min-h-[520px] overflow-hidden rounded-xl border border-gray-300 bg-gray-100">
+          <div
+            className={`relative h-full min-h-0 overflow-hidden rounded-xl transition-all duration-300 ${addMode === "NODE"
+              ? "border-2 border-indigo-500 ring-4 ring-indigo-500/20 shadow-[0_0_25px_rgba(99,102,241,0.25)]"
+              : "border border-gray-300 bg-gray-100"
+              }`}
+          >
             <KakaoRouteEditorMap
               nodes={nodes}
               selectedNodeId={selectedNodeId}
@@ -273,11 +385,61 @@ export default function RouteEditPage() {
               onMapClick={handleMapClick}
               cursorMode={addMode}
             />
-            <div className="absolute right-4 top-4 z-10 flex gap-3 rounded-xl bg-white/90 p-2 shadow-sm backdrop-blur">
-              <button onClick={openStopDialog} className="rounded-xl border border-green-500 bg-white px-4 py-3 font-semibold text-green-600">정류장 추가</button>
-              <button onClick={() => setAddMode(addMode === "NODE" ? null : "NODE")} className={`rounded-xl border px-4 py-3 font-semibold ${addMode === "NODE" ? "bg-indigo-500 text-white" : "border-indigo-400 bg-white text-indigo-500"}`}>지점 추가</button>
+            <div className="absolute right-4 top-4 z-10 flex flex-col gap-2 rounded-xl bg-white/95 p-1.5 shadow-md backdrop-blur">
+              <button
+                type="button"
+                onClick={openStopDialog}
+                className="flex h-10 w-[136px] items-center justify-center rounded-lg border border-green-500 bg-white text-sm font-semibold text-green-600 shadow-sm transition-colors hover:bg-green-50"
+              >
+                정류장 추가
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  const next = addMode === "NODE" ? null : "NODE";
+                  setAddMode(next);
+                  setMessage(next ? "지점 추가 모드: 지도에서 추가할 위치를 클릭하세요." : "지점 추가 모드를 종료했습니다.");
+                }}
+                className={`flex h-10 w-[136px] items-center justify-center rounded-lg text-sm font-semibold shadow-sm transition-all ${addMode === "NODE"
+                  ? "bg-red-500 text-white hover:bg-red-600 ring-2 ring-red-300 animate-pulse"
+                  : "border border-indigo-500 bg-white text-indigo-600 hover:bg-indigo-50"
+                  }`}
+              >
+                {addMode === "NODE" ? (
+                  <span className="flex items-center justify-center gap-1.5">
+                    <span className="relative flex h-2 w-2 shrink-0">
+                      <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-white opacity-75" />
+                      <span className="relative inline-flex h-2 w-2 rounded-full bg-white" />
+                    </span>
+                    <span>지점 추가 종료</span>
+                  </span>
+                ) : (
+                  <span>지점 추가</span>
+                )}
+              </button>
             </div>
-            {addMode && <div className="absolute bottom-4 left-1/2 z-10 -translate-x-1/2 rounded-full bg-[#242424]/90 px-5 py-2 text-sm text-white shadow">지도에서 추가할 위치를 클릭하세요 · 다시 누르면 종료</div>}
+
+            {/* 지점 추가 모드 활성화 시 상단 중앙 플로팅 뱃지 배너 */}
+            {addMode === "NODE" && (
+              <div className="absolute top-4 left-1/2 z-20 -translate-x-1/2 flex items-center gap-3 rounded-full bg-[#1e1b4b]/95 px-5 py-2.5 text-sm font-medium text-white shadow-2xl backdrop-blur-md border border-indigo-400/40 animate-in fade-in slide-in-from-top-2 duration-200">
+                <span className="relative flex h-2.5 w-2.5">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
+                  <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-emerald-400" />
+                </span>
+                <span>📍 지점 추가 모드 · 지도에서 원하는 위치를 클릭하세요</span>
+                <span className="h-3 w-px bg-white/30" />
+                <button
+                  type="button"
+                  onClick={() => {
+                    setAddMode(null);
+                    setMessage("지점 추가 모드를 종료했습니다.");
+                  }}
+                  className="rounded-full bg-white/20 px-2.5 py-0.5 text-xs font-semibold text-white hover:bg-white/35 transition-colors"
+                >
+                  종료 (ESC)
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </div>

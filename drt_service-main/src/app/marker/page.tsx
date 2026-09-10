@@ -403,21 +403,21 @@ export default function MarkerPage() {
         {/* 그리드 영역 (1/4) - 상 2 하 1 비율로 분할 */}
         <div className="flex-1 flex flex-col gap-4">
           {/* 상단: 마커 그리드 (2/3) */}
-          <div className="flex-[2] flex flex-col">
-            {loading ? (
-              <div className="flex items-center justify-center h-full">
-                <p>데이터를 불러오는 중...</p>
+          <div className="relative flex-[2] flex flex-col">
+            {loading && (
+              <div className="absolute inset-0 z-10 flex flex-col items-center justify-center rounded-xl bg-white/75 backdrop-blur-[1px]">
+                <div className="mb-3 h-8 w-8 animate-spin rounded-full border-4 border-blue-600 border-t-transparent" />
+                <p className="text-sm font-semibold text-gray-700">데이터를 불러오는 중...</p>
               </div>
-            ) : (
-              <Grid
-                rowData={rowData}
-                columnDefs={columnDefs}
-                gridRef={gridRef}
-                gridOptions={gridOptions}
-                height={"100%"}
-                enableNumberColoring={true}
-              />
             )}
+            <Grid
+              rowData={rowData}
+              columnDefs={columnDefs}
+              gridRef={gridRef}
+              gridOptions={gridOptions}
+              height={"100%"}
+              enableNumberColoring={true}
+            />
           </div>
           {/* 하단: 정류장 그리드 (1/3) */}
           <div className="flex-1 flex flex-col">

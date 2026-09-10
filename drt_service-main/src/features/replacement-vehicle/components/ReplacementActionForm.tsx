@@ -55,7 +55,7 @@ export default function ReplacementActionForm({
   };
 
   return (
-    <section className="rounded-xl border border-[#CCCCCC] bg-white p-6 shadow-sm">
+    <section className="flex h-full flex-col rounded-xl border border-[#CCCCCC] bg-white p-6 shadow-sm">
       <div className="mb-5 flex items-center justify-between border-b border-gray-100 pb-3">
         <div className="flex items-center gap-2">
           <h2 className="text-base font-bold text-[#222222]">
@@ -63,38 +63,39 @@ export default function ReplacementActionForm({
           </h2>
         </div>
         <span className="text-xs text-gray-400">
-          원차량과 대차차량을 확인하고 사유를 작성하세요
+          원차량과 대차차량 확인 후 실행
         </span>
       </div>
 
-      <form onSubmit={handleSubmit} className="flex flex-col gap-6">
-        {/* 상단 2분할: 좌측은 매칭 요약 배너, 우측은 사유 선택 */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
+      <form onSubmit={handleSubmit} className="flex flex-1 flex-col justify-between gap-5">
+        <div className="flex flex-1 flex-col gap-5">
           {/* 매칭 요약 배너 */}
-          <div className="flex h-[82px] items-center justify-between rounded-[12px] border border-[#CCCCCC] bg-[#FAFAFA] px-6">
-            <div className="text-center flex-1">
+          <div className="flex h-[80px] items-center justify-between rounded-[12px] border border-[#CCCCCC] bg-[#FAFAFA] px-4">
+            <div className="text-center flex-1 min-w-0">
               <span className="block text-[11px] font-semibold text-gray-400">
                 원차량 (교체대상)
               </span>
               <span
-                className={`text-sm font-bold ${
+                className={`block truncate text-sm font-bold ${
                   originVehicle ? "text-rose-600" : "text-gray-400"
                 }`}
+                title={originVehicle ? `${originVehicle.plate} (${originVehicle.driver})` : undefined}
               >
                 {originVehicle
                   ? `${originVehicle.plate} (${originVehicle.driver})`
                   : "미선택"}
               </span>
             </div>
-            <div className="px-3 text-lg font-black text-gray-300">➔</div>
-            <div className="text-center flex-1">
+            <div className="px-2 text-base font-black text-gray-300">➔</div>
+            <div className="text-center flex-1 min-w-0">
               <span className="block text-[11px] font-semibold text-gray-400">
                 대차차량 (투입예정)
               </span>
               <span
-                className={`text-sm font-bold ${
+                className={`block truncate text-sm font-bold ${
                   targetVehicle ? "text-blue-600" : "text-gray-400"
                 }`}
+                title={targetVehicle ? `${targetVehicle.plate} (${targetVehicle.driver})` : undefined}
               >
                 {targetVehicle
                   ? `${targetVehicle.plate} (${targetVehicle.driver})`
@@ -111,7 +112,7 @@ export default function ReplacementActionForm({
             <select
               value={reason}
               onChange={(e) => setReason(e.target.value)}
-              className="h-[50px] w-full rounded-[12px] border border-[#CCCCCC] bg-white px-4 text-sm text-[#222222] outline-none focus:border-black cursor-pointer shadow-sm"
+              className="h-[48px] w-full rounded-[12px] border border-[#CCCCCC] bg-white px-4 text-sm text-[#222222] outline-none focus:border-black cursor-pointer shadow-sm"
             >
               <option value="">사유를 선택하세요</option>
               <option value="BREAKDOWN">차량 고장 (엔진/조향/제동계통)</option>
@@ -121,35 +122,34 @@ export default function ReplacementActionForm({
               <option value="ETC">기타 사유</option>
             </select>
           </div>
-        </div>
 
-        {/* 상세 메모 (가로 꽉 채움) */}
-        <div className="flex flex-col gap-1.5">
-          <label className="text-xs font-bold text-[#222222]">
-            상세 경위 및 인계 메모
-          </label>
-          <textarea
-            value={memo}
-            onChange={(e) => setMemo(e.target.value)}
-            rows={3}
-            placeholder="상세 경위나 인계 특이사항을 입력하세요 (예: 직포항 부근 타이어 펑크로 인하여 즉시 대차 요청함)"
-            className="w-full resize-none rounded-[12px] border border-[#CCCCCC] p-4 text-sm text-[#222222] outline-none placeholder:text-gray-400 focus:border-black leading-relaxed shadow-sm"
-          />
+          {/* 상세 메모 (남은 높이 채움) */}
+          <div className="flex flex-1 flex-col gap-1.5">
+            <label className="text-xs font-bold text-[#222222]">
+              상세 경위 및 인계 메모
+            </label>
+            <textarea
+              value={memo}
+              onChange={(e) => setMemo(e.target.value)}
+              placeholder="상세 경위나 인계 특이사항을 입력하세요 (예: 직포항 부근 타이어 펑크로 인하여 즉시 대차 요청함)"
+              className="w-full flex-1 min-h-[160px] resize-none rounded-[12px] border border-[#CCCCCC] p-4 text-sm text-[#222222] outline-none placeholder:text-gray-400 focus:border-black leading-relaxed shadow-sm"
+            />
+          </div>
         </div>
 
         {/* 하단 버튼 바 */}
-        <div className="flex items-center justify-end gap-3 pt-2">
+        <div className="flex items-center justify-end gap-3 border-t border-gray-100 pt-4">
           <button
             type="button"
             onClick={handleFormReset}
-            className="h-[50px] min-w-[110px] rounded-[12px] border border-[#CCCCCC] bg-white px-5 text-sm font-bold text-[#222222] hover:bg-gray-50 transition-colors"
+            className="h-[48px] min-w-[100px] rounded-[12px] border border-[#CCCCCC] bg-white px-5 text-sm font-bold text-[#222222] hover:bg-gray-50 transition-colors"
           >
             선택 초기화
           </button>
           <button
             type="submit"
             disabled={submitting}
-            className="h-[50px] min-w-[160px] rounded-[12px] bg-[#222222] px-6 text-sm font-bold text-white hover:bg-black transition-colors shadow-sm disabled:bg-gray-400"
+            className="h-[48px] flex-1 rounded-[12px] bg-[#222222] px-6 text-sm font-bold text-white hover:bg-black transition-colors shadow-sm disabled:bg-gray-400"
           >
             {submitting ? "처리 중..." : "대차 명령 실행"}
           </button>

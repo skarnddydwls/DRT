@@ -19,7 +19,7 @@ export default function NotificationMessageForm({
   onNotificationTypeChange,
 }: NotificationMessageFormProps) {
   return (
-    <div className="flex h-full flex-col rounded-xl border border-gray-200 bg-white p-5 shadow-sm">
+    <div className="flex h-full flex-col rounded-xl border border-gray-200 bg-white p-5 shadow-sm min-h-0">
       <div className="mb-4 flex items-center gap-2 border-b border-gray-100 pb-3">
         <MessageSquare className="h-5 w-5 text-[#222222]" />
         <h2 className="text-sm font-bold text-[#222222]">메시지 작성</h2>
@@ -60,7 +60,7 @@ export default function NotificationMessageForm({
         </div>
 
         {/* 내용 */}
-        <div className="flex flex-1 flex-col gap-2">
+        <div className="flex flex-1 flex-col min-h-0 gap-2">
           <div className="flex items-center justify-between">
             <label className="text-sm font-semibold text-[#222222]">
               내용 <span className="text-red-500">*</span>
@@ -75,7 +75,7 @@ export default function NotificationMessageForm({
             placeholder="발송할 알림 상세 내용을 입력하세요."
             rows={8}
             maxLength={500}
-            className="w-full flex-1 min-h-[180px] resize-none rounded-[12px] border border-[#CCCCCC] p-4 text-sm text-[#222222] outline-none placeholder:text-gray-400 hover:border-gray-400 focus:border-black leading-relaxed transition-all"
+            className="w-full flex-1 min-h-0 resize-none rounded-[12px] border border-[#CCCCCC] p-4 text-sm text-[#222222] outline-none placeholder:text-gray-400 hover:border-gray-400 focus:border-black leading-relaxed transition-all"
           />
         </div>
       </div>

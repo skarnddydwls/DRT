@@ -70,11 +70,10 @@ export default function NotificationTargetForm({
             placeholder={
               isUserDisabled ? "특정 사용자 선택 시 입력 가능" : "수신자 ID 입력 (예: user012)"
             }
-            className={`h-[50px] w-full rounded-[12px] border border-[#CCCCCC] px-4 text-sm font-medium text-[#222222] outline-none transition-all ${
-              isUserDisabled
-                ? "bg-[#F4F4F4] text-gray-400 placeholder:text-gray-400 cursor-not-allowed"
-                : "bg-white placeholder:text-gray-400 hover:border-gray-400 focus:border-black shadow-sm"
-            }`}
+            className={`h-[50px] w-full rounded-[12px] border border-[#CCCCCC] px-4 text-sm font-medium text-[#222222] outline-none transition-all ${isUserDisabled
+              ? "bg-[#F4F4F4] text-gray-400 placeholder:text-gray-400 cursor-not-allowed"
+              : "bg-white placeholder:text-gray-400 hover:border-gray-400 focus:border-black shadow-sm"
+              }`}
           />
         </div>
       </div>

@@ -57,10 +57,10 @@ export default function VehiclePage() {
   );
 
   // API 호출로 데이터 가져오기
-  const fetchVehicleList = useCallback(async () => {
+  const fetchVehicleList = async (searchFilters: VehicleFilters = filters) => {
     setLoading(true);
     try {
-      const response = await getVehicleList(filters);
+      const response = await getVehicleList(searchFilters); // <-- 여기서 받은 인자로 호출!
       setAllRows(response.vehicles);
     } catch (error) {
       console.error("Failed to fetch vehicle list:", error);
@@ -68,11 +68,13 @@ export default function VehiclePage() {
     } finally {
       setLoading(false);
     }
-  }, [filters, showToast]);
+  };
 
-  useEffect(() => {
-    fetchVehicleList();
-  }, [fetchVehicleList]);
+  // 조회 핸들러
+  const handleSearch = (newFilters: VehicleFilters) => {
+    setFilters(newFilters);
+    fetchVehicleList(newFilters);
+  };
 
   // 필터링된 데이터 (필요시 클라이언트 사이드 추가 필터링)
   const rowData = useMemo(() => {
@@ -157,74 +159,77 @@ export default function VehiclePage() {
   };
 
   return (
-    <section className="rounded-xl border bg-white p-4">
-      {/* 페이지 제목 */}
-      <div className="mb-4">
-        <h1 className="text-xl font-semibold">차량관리</h1>
-      </div>
-
-      <FilterForm<VehicleFilters>
-        fields={vehicleFields}
-        defaultValues={defaultFilters}
-        values={filters}
-        onChange={setFilters}
-        onSearch={(v) => setFilters(v)}
-        className="mb-4"
-      />
-
-      {/* 액션 바: 추가/수정/삭제 (필터와 그리드 사이, 우측 정렬) */}
-      <div className="flex justify-end gap-2 mb-3">
-        <button
-          type="button"
-          className="px-3 py-2 rounded-md bg-blue-600 text-white text-sm hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed"
-          onClick={handleAdd}>
-          추가
-        </button>
-        <button
-          type="button"
-          className="px-3 py-2 rounded-md bg-green-600 text-white text-sm hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed"
-          onClick={handleEdit}
-          disabled={!selectedRow}>
-          수정
-        </button>
-        <button
-          type="button"
-          className="px-3 py-2 rounded-md bg-red-500 text-white text-sm hover:bg-red-600 disabled:bg-gray-400 disabled:cursor-not-allowed"
-          onClick={handleDelete}
-          disabled={!selectedRow}>
-          삭제
-        </button>
-      </div>
-
-      {loading ? (
-        <div
-          className="flex items-center justify-center"
-          style={{ height: 560 }}>
-          <p>데이터를 불러오는 중...</p>
+    <section>
+      {/* 페이지 제목 & 상단 액션 바 */}
+      <div className="mb-6 flex items-end justify-between">
+        <div>
+          <h1 className="text-[28px] font-bold tracking-tight">차량관리</h1>
+          <p className="mt-1 text-sm text-gray-500">차량 정보를 조회하고 관리합니다.</p>
         </div>
-      ) : (
-        <Grid
-          rowData={rowData}
-          columnDefs={columnDefs}
-          gridRef={gridRef}
-          gridOptions={{
-            rowSelection: "single",
-            suppressRowClickSelection: false,
-            onRowClicked: handleRowClicked,
-            getRowStyle: (params) => {
-              if (
-                selectedRow &&
-                params.data?.vehicle_id === selectedRow.vehicle_id
-              ) {
-                return { backgroundColor: "#e3f2fd" };
-              }
-              return undefined;
-            },
-          }}
-          height={"calc(100vh - 400px)"}
-          enableNumberColoring={true}
+        <div className="flex gap-2">
+          <button
+            type="button"
+            className="px-3 py-2 rounded-md bg-blue-600 text-white text-sm hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed shadow-sm"
+            onClick={handleAdd}>
+            추가
+          </button>
+          <button
+            type="button"
+            className="px-3 py-2 rounded-md bg-green-600 text-white text-sm hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed shadow-sm"
+            onClick={handleEdit}
+            disabled={!selectedRow}>
+            수정
+          </button>
+          <button
+            type="button"
+            className="px-3 py-2 rounded-md bg-red-500 text-white text-sm hover:bg-red-600 disabled:bg-gray-400 disabled:cursor-not-allowed shadow-sm"
+            onClick={handleDelete}
+            disabled={!selectedRow}>
+            삭제
+          </button>
+        </div>
+      </div>
+
+      <div className="rounded-xl border bg-white p-6 shadow-sm">
+        <FilterForm<VehicleFilters>
+          fields={vehicleFields}
+          defaultValues={defaultFilters}
+          values={filters}
+          onChange={setFilters}
+          onSearch={handleSearch}
+          className="mb-4"
         />
-      )}
+
+        <div className="relative" style={{ height: "calc(100vh - 400px)" }}>
+          {loading && (
+            <div className="absolute inset-0 z-10 flex flex-col items-center justify-center rounded-xl bg-white/75 backdrop-blur-[1px]">
+              <div className="mb-3 h-8 w-8 animate-spin rounded-full border-4 border-blue-600 border-t-transparent" />
+              <p className="text-sm font-semibold text-gray-700">데이터를 불러오는 중...</p>
+            </div>
+          )}
+          <Grid
+            rowData={rowData}
+            columnDefs={columnDefs}
+            gridRef={gridRef}
+            gridOptions={{
+              rowSelection: "single",
+              suppressRowClickSelection: false,
+              onRowClicked: handleRowClicked,
+              getRowStyle: (params) => {
+                if (
+                  selectedRow &&
+                  params.data?.vehicle_id === selectedRow.vehicle_id
+                ) {
+                  return { backgroundColor: "#e3f2fd" };
+                }
+                return undefined;
+              },
+            }}
+            height="100%"
+            enableNumberColoring={true}
+          />
+        </div>
+      </div>
 
       {/* 추가 모달 */}
       <VehicleFormModal

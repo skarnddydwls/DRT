@@ -24,6 +24,8 @@ interface VWorldMapProps {
   className?: string;
 }
 
+const DEFAULT_CENTER: [number, number] = [127.748, 34.525];
+
 /**
  * VWorld API를 사용하는 OpenLayers 지도 컴포넌트
  */
@@ -31,12 +33,14 @@ interface VWorldMapProps {
 export default function VWorldMap({
   mapId,
   mapRef,
-  center = [126.94917737, 37.3745533],
+  center = DEFAULT_CENTER,
   zoom = 17,
   apiKey = VWORLD_API_KEY,
   className = "",
 }: VWorldMapProps) {
   const internalMapRef = useRef<Map | null>(null);
+  const initialCenterRef = useRef(center);
+  const initialZoomRef = useRef(zoom);
 
   useEffect(() => {
     const map = new Map({
@@ -51,8 +55,8 @@ export default function VWorldMap({
       ],
       target: mapId,
       view: new View({
-        center: fromLonLat(center),
-        zoom,
+        center: fromLonLat(initialCenterRef.current),
+        zoom: initialZoomRef.current,
       }),
     });
 
@@ -63,8 +67,11 @@ export default function VWorldMap({
 
     return () => {
       map.setTarget(undefined);
+      if (mapRef) {
+        mapRef.current = null;
+      }
     };
-  }, [mapId, mapRef, center, zoom, apiKey]);
+  }, [mapId, apiKey, mapRef]);
 
   return (
     <div

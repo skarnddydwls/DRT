@@ -68,7 +68,7 @@ export default function NotificationSelectUser({
   };
 
   return (
-    <div className="flex flex-col rounded-xl border border-gray-200 bg-white p-5 shadow-sm">
+    <div className="flex flex-col rounded-xl border border-gray-200 bg-white p-5 shadow-sm h-full min-h-0">
       {/* 헤더 타이틀 및 선택 현황 */}
       <div className="mb-4 flex items-center justify-between border-b border-gray-100 pb-3">
         <div className="flex items-center gap-2">
@@ -150,7 +150,7 @@ export default function NotificationSelectUser({
       </div>
 
       {/* 사용자 목록 스크롤 영역 (항목 증가 시 내부 스크롤 적용) */}
-      <div className="h-[360px] overflow-y-auto rounded-[12px] border border-gray-200 bg-[#FAFAFA]">
+      <div className="flex-1 min-h-0 overflow-y-auto rounded-[12px] border border-gray-200 bg-[#FAFAFA]">
         {filteredUsers.length === 0 ? (
           <div className="flex h-48 flex-col items-center justify-center text-center text-gray-400">
             <Users className="mb-2 h-8 w-8 text-gray-300" />
@@ -168,8 +168,8 @@ export default function NotificationSelectUser({
                   key={user.userId}
                   onClick={() => handleToggleUser(user.userId)}
                   className={`flex cursor-pointer items-center justify-between px-4 py-3 transition-colors ${isSelected
-                      ? "bg-blue-50/60 hover:bg-blue-50"
-                      : "bg-white hover:bg-gray-50"
+                    ? "bg-blue-50/60 hover:bg-blue-50"
+                    : "bg-white hover:bg-gray-50"
                     }`}
                 >
                   {/* 왼쪽: 체크박스 + 유저 정보 */}

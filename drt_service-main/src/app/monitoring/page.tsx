@@ -550,81 +550,86 @@ export default function MonitoringPage() {
   };
 
   return (
-    <section className="rounded-lg border p-6 bg-white">
-      <h2 className="text-xl font-semibold mb-2">모니터링</h2>
-      <p className="text-sm text-muted-foreground mb-4">
-        지도에서 버스 이동경로 실시간 표출
-      </p>
-      {/* 지도(2) : 그리드(1) 2:1 레이아웃 */}
-      <div
-        className="grid grid-cols-[minmax(0,2fr)_minmax(360px,1fr)] gap-4"
-        style={{ height: "calc(100vh - 300px)" }}
-      >
-        {/* 좌측: 지도 영역 (비율 2) */}
-        <div className="relative min-h-0">
-          <div
-            id="monitoring-map"
-            className="relative overflow-hidden rounded-[24px] border border-gray-200 h-full w-full"
-          >
-            <div className="absolute right-4 top-4 z-10 flex gap-3">
-              <Button
-                variant="outline"
-                className="h-12 border-green-500 bg-white px-7 text-green-600 hover:bg-green-50"
-                onClick={() => moveMapCenter(USIL_INTERSECTION_CENTER)}>
-                금오도
-              </Button>
-              <Button
-                variant="outline"
-                className="h-12 border-blue-500 bg-white px-7 text-blue-600 hover:bg-blue-50"
-                onClick={() => moveMapCenter(SINGI_PORT_CENTER)}>
-                신기항
-              </Button>
-            </div>
-            {/* 범례 */}
-            <div className="absolute bottom-4 right-4 bg-white rounded-lg shadow-lg p-4 z-10">
-              <div className="space-y-2">
-                <div className="flex items-center gap-2"><span className="h-1 w-8 rounded" style={{ backgroundColor: FIXED_ROUTE_COLOR }} /><span className="text-sm">고정구간</span></div>
-                <div className="flex items-center gap-2"><span className="h-1.5 w-8 rounded" style={{ backgroundColor: RESERVED_ROUTE_COLOR }} /><span className="text-sm">예약구간</span></div>
-                <div className="flex items-center gap-2">
-                  <img
-                    src="/bus.png"
-                    alt="1호차"
-                    className="w-8 h-8 object-contain"
-                  />
-                  <span className="text-sm">1호차</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <img
-                    src="/bus2.png"
-                    alt="2호차"
-                    className="w-8 h-8 object-contain"
-                  />
-                  <span className="text-sm">2호차</span>
+    <section>
+      <div className="mb-6">
+        <h1 className="text-[28px] font-bold tracking-tight">모니터링</h1>
+        <p className="mt-1 text-sm text-gray-500">
+          지도에서 버스 이동경로를 실시간으로 표출합니다.
+        </p>
+      </div>
+
+      <div className="rounded-xl border bg-white p-6 shadow-sm">
+        {/* 지도(2) : 그리드(1) 2:1 레이아웃 */}
+        <div
+          className="grid grid-cols-[minmax(0,2fr)_minmax(360px,1fr)] gap-4"
+          style={{ height: "calc(100vh - 310px)" }}
+        >
+          {/* 좌측: 지도 영역 (비율 2) */}
+          <div className="relative min-h-0">
+            <div
+              id="monitoring-map"
+              className="relative overflow-hidden rounded-[24px] border border-gray-200 h-full w-full"
+            >
+              <div className="absolute right-4 top-4 z-10 flex gap-3">
+                <Button
+                  variant="outline"
+                  className="h-12 border-green-500 bg-white px-7 text-green-600 hover:bg-green-50"
+                  onClick={() => moveMapCenter(USIL_INTERSECTION_CENTER)}>
+                  금오도
+                </Button>
+                <Button
+                  variant="outline"
+                  className="h-12 border-blue-500 bg-white px-7 text-blue-600 hover:bg-blue-50"
+                  onClick={() => moveMapCenter(SINGI_PORT_CENTER)}>
+                  신기항
+                </Button>
+              </div>
+              {/* 범례 */}
+              <div className="absolute bottom-4 right-4 bg-white rounded-lg shadow-lg p-4 z-10">
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2"><span className="h-1 w-8 rounded" style={{ backgroundColor: FIXED_ROUTE_COLOR }} /><span className="text-sm">고정구간</span></div>
+                  <div className="flex items-center gap-2"><span className="h-1.5 w-8 rounded" style={{ backgroundColor: RESERVED_ROUTE_COLOR }} /><span className="text-sm">예약구간</span></div>
+                  <div className="flex items-center gap-2">
+                    <img
+                      src="/bus.png"
+                      alt="1호차"
+                      className="w-8 h-8 object-contain"
+                    />
+                    <span className="text-sm">1호차</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <img
+                      src="/bus2.png"
+                      alt="2호차"
+                      className="w-8 h-8 object-contain"
+                    />
+                    <span className="text-sm">2호차</span>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
 
-        {/* 우측: 그리드 영역 (비율 1) - 지도와 완벽한 대칭을 이루는 라운드 카드 구조 */}
-        <div className="relative min-h-0 overflow-hidden rounded-[24px] border border-gray-200 bg-white">
-          <Grid
-            rowData={gridRows}
-            columnDefs={monitoringColumnDefs}
-            gridRef={gridRef}
-            gridOptions={{
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              onGridReady: (params: any) => {
-                params.api?.sizeColumnsToFit();
-              },
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              onGridSizeChanged: (params: any) => {
-                params.api?.sizeColumnsToFit();
-              },
-            }}
-            height="100%"
-            enableNumberColoring={true}
-          />
+          {/* 우측: 그리드 영역 (비율 1) - 지도와 완벽한 대칭을 이루는 라운드 카드 구조 */}
+          <div className="relative min-h-0 overflow-hidden rounded-[24px] border border-gray-200 bg-white">
+            <Grid
+              rowData={gridRows}
+              columnDefs={monitoringColumnDefs}
+              gridRef={gridRef}
+              gridOptions={{
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                onGridReady: (params: any) => {
+                  params.api?.sizeColumnsToFit();
+                },
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                onGridSizeChanged: (params: any) => {
+                  params.api?.sizeColumnsToFit();
+                },
+              }}
+              height="100%"
+              enableNumberColoring={true}
+            />
+          </div>
         </div>
       </div>
     </section>

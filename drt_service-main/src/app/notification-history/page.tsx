@@ -68,45 +68,47 @@ export default function NotificationHistoryPage() {
 
 
   return (
-    <section className="rounded-xl border bg-white p-4">
+    <section>
       {/* 페이지 제목 */}
-      <div className="mb-4">
-        <h1 className="text-xl font-semibold">알림전송 이력</h1>
+      <div className="mb-6">
+        <h1 className="text-[28px] font-bold tracking-tight">알림전송 이력</h1>
+        <p className="mt-1 text-sm text-gray-500">알림전송 이력을 조회합니다.</p>
       </div>
 
-      <FilterForm<NotificationFilters>
-        fields={notificationFields}
-        defaultValues={defaultNotificationFields}
-        values={filters}
-        onChange={setFilters}
-        onSearch={handleSearch}
-        className="mb-4"
-      />
-
-      {loading ? (
-        <div
-          className="flex items-center justify-center"
-          style={{ height: 560 }}
-        >
-          <p>데이터를 불러오는 중...</p>
-        </div>
-      ) : (
-        <Grid
-          rowData={allRows}
-          columnDefs={columnDefs}
-          gridRef={gridRef}
-          gridOptions={{
-            onGridReady: (params: any) => {
-              params.api?.sizeColumnsToFit();
-            },
-            onGridSizeChanged: (params: any) => {
-              params.api?.sizeColumnsToFit();
-            },
-          }}
-          height={"calc(100vh - 400px)"}
-          enableNumberColoring={true}
+      <div className="rounded-xl border bg-white p-6 shadow-sm">
+        <FilterForm<NotificationFilters>
+          fields={notificationFields}
+          defaultValues={defaultNotificationFields}
+          values={filters}
+          onChange={setFilters}
+          onSearch={handleSearch}
+          className="mb-4"
         />
-      )}
+
+        <div className="relative" style={{ height: "calc(100vh - 400px)" }}>
+          {loading && (
+            <div className="absolute inset-0 z-10 flex flex-col items-center justify-center rounded-xl bg-white/75 backdrop-blur-[1px]">
+              <div className="mb-3 h-8 w-8 animate-spin rounded-full border-4 border-blue-600 border-t-transparent" />
+              <p className="text-sm font-semibold text-gray-700">데이터를 불러오는 중...</p>
+            </div>
+          )}
+          <Grid
+            rowData={allRows}
+            columnDefs={columnDefs}
+            gridRef={gridRef}
+            gridOptions={{
+              onGridReady: (params: any) => {
+                params.api?.sizeColumnsToFit();
+              },
+              onGridSizeChanged: (params: any) => {
+                params.api?.sizeColumnsToFit();
+              },
+            }}
+            height="100%"
+            enableNumberColoring={true}
+          />
+        </div>
+      </div>
     </section>
   );
 }

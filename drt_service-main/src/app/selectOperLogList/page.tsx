@@ -21,7 +21,7 @@ import { defaults } from "ol/control";
 import Overlay from "ol/Overlay";
 import { VWORLD_API_KEY } from "@/config/vworld";
 
-const DEFAULT_MAP_CENTER: [number, number] = [127.766968, 34.512524];
+const DEFAULT_MAP_CENTER: [number, number] = [127.748, 34.525];
 const FIXED_ROUTE_COLOR = "#667eea";
 const RESERVED_ROUTE_COLOR = "#ffd400";
 
@@ -250,91 +250,80 @@ export default function OperLogPage() {
     }
   };
 
-  useEffect(() => {
-    const fetchLogs = async () => {
-      setLoading(true);
-      try {
-        const response = await getOperLogList(filters);
-        setRows(response.logs);
-      } catch (error) {
-        console.error("Failed to fetch oper logs:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchLogs();
-  }, [filters]);
-
-  const rowData = useMemo(() => {
-    return rows.filter((row) => {
-      const matchOperDate = filters.operDate
-        ? formatTimestamp(row["oper_dtm"], "YYYY-MM-DD").includes(
-            filters.operDate
-          )
-        : true;
-      const matchRouteNm = filters.routeNm
-        ? String(row["route_nm"] || "").includes(filters.routeNm)
-        : true;
-      const matchVehicleNo = filters.vehicleNo
-        ? String(row["vehicle_no"] || "").includes(filters.vehicleNo)
-        : true;
-      return matchOperDate && matchRouteNm && matchVehicleNo;
-    });
-  }, [rows, filters]);
+  const fetchLogs = async (searchFilters: OperLogFilters) => {
+    setLoading(true);
+    try {
+      const response = await getOperLogList(searchFilters);
+      setRows(response.logs || []);
+    } catch (error) {
+      console.error("Failed to fetch oper logs:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+  // 2. 조회 버튼 눌렀을 때만 실행되는 핸들러
+  const handleSearch = (newFilters: OperLogFilters) => {
+    setFilters(newFilters);
+    fetchLogs(newFilters);
+  };
 
   const columnDefs = useMemo(() => operLogColumnDefs, []);
 
   return (
-    <section className="rounded-xl border bg-white p-4">
-      <div className="mb-4">
-        <h1 className="text-xl font-semibold">운행기록 조회</h1>
+    <section>
+      <div className="mb-6">
+        <h1 className="text-[28px] font-bold tracking-tight">운행기록 조회</h1>
+        <p className="mt-1 text-sm text-gray-500">운행기록을 조회합니다.</p>
       </div>
 
-      <FilterForm<OperLogFilters>
-        fields={operLogFields}
-        defaultValues={defaultFilters}
-        values={filters}
-        onChange={setFilters}
-        onSearch={(values) => setFilters(values)}
-        className="mb-4"
-      />
+      <div className="rounded-xl border bg-white p-6 shadow-sm">
+        <FilterForm<OperLogFilters>
+          fields={operLogFields}
+          defaultValues={defaultFilters}
+          values={filters}
+          onChange={setFilters}
+          onSearch={handleSearch}
+          className="mb-4"
+        />
 
-      <div className="grid grid-cols-[minmax(0,1.15fr)_minmax(420px,0.85fr)] gap-4">
-        {loading ? (
-          <div className="flex items-center justify-center rounded-2xl border" style={{ height: "calc(100vh - 310px)" }}>
-            <p>데이터를 불러오는 중...</p>
+        <div className="grid grid-cols-[minmax(0,1.15fr)_minmax(420px,0.85fr)] gap-4">
+          <div className="relative" style={{ height: "calc(100vh - 400px)" }}>
+            {loading && (
+              <div className="absolute inset-0 z-10 flex flex-col items-center justify-center rounded-xl bg-white/75 backdrop-blur-[1px]">
+                <div className="mb-3 h-8 w-8 animate-spin rounded-full border-4 border-blue-600 border-t-transparent" />
+                <p className="text-sm font-semibold text-gray-700">데이터를 불러오는 중...</p>
+              </div>
+            )}
+            <Grid
+              rowData={rows}
+              columnDefs={columnDefs}
+              gridRef={gridRef}
+              gridOptions={{
+                rowSelection: "single",
+                suppressRowClickSelection: false,
+                onRowClicked: (event) => {
+                  if (event.data) void showLogOnMap(event.data as OperLogRow);
+                },
+              }}
+              height="100%"
+              enableNumberColoring={true}
+            />
           </div>
-        ) : (
-          <Grid
-            rowData={rowData}
-            columnDefs={columnDefs}
-            gridRef={gridRef}
-            gridOptions={{
-              rowSelection: "single",
-              suppressRowClickSelection: false,
-              onRowClicked: (event) => {
-                if (event.data) void showLogOnMap(event.data as OperLogRow);
-              },
-            }}
-            height={"calc(100vh - 310px)"}
-            enableNumberColoring={true}
-          />
-        )}
-        <div className="overflow-hidden rounded-2xl border bg-slate-50">
-          <div className="flex h-12 items-center justify-between border-b bg-white px-4">
-            <span className="text-sm font-semibold">운행 위치</span>
-            <div className="flex items-center gap-4 text-xs">
-              <span className="flex items-center gap-1.5 text-slate-500"><i className="h-1.5 w-5 rounded-full" style={{ backgroundColor: FIXED_ROUTE_COLOR }} />일반구간</span>
-              <span className="flex items-center gap-1.5 text-slate-500"><i className="h-1.5 w-5 rounded-full" style={{ backgroundColor: RESERVED_ROUTE_COLOR }} />예약구간</span>
-              <span className="text-muted-foreground">
-                {selectedLog
-                  ? `${selectedLog.route_nm || selectedLog.route_id} · ${selectedLog.vehicle_no || selectedLog.vehicle_id} · ${formatTimestamp(selectedLog.oper_dtm, "YYYY-MM-DD HH:mm:ss")}`
-                  : "운행로그 행을 선택해 주세요"}
-              </span>
+          <div className="overflow-hidden rounded-2xl border bg-slate-50">
+            <div className="flex h-12 items-center justify-between border-b bg-white px-4">
+              <span className="text-sm font-semibold">운행 위치</span>
+              <div className="flex items-center gap-4 text-xs">
+                <span className="flex items-center gap-1.5 text-slate-500"><i className="h-1.5 w-5 rounded-full" style={{ backgroundColor: FIXED_ROUTE_COLOR }} />일반구간</span>
+                <span className="flex items-center gap-1.5 text-slate-500"><i className="h-1.5 w-5 rounded-full" style={{ backgroundColor: RESERVED_ROUTE_COLOR }} />예약구간</span>
+                <span className="text-muted-foreground">
+                  {selectedLog
+                    ? `${selectedLog.route_nm || selectedLog.route_id} · ${selectedLog.vehicle_no || selectedLog.vehicle_id} · ${formatTimestamp(selectedLog.oper_dtm, "YYYY-MM-DD HH:mm:ss")}`
+                    : "운행로그 행을 선택해 주세요"}
+                </span>
+              </div>
             </div>
+            <div ref={mapContainerRef} className="w-full" style={{ height: "calc(100vh - 448px)" }} />
           </div>
-          <div ref={mapContainerRef} className="w-full" style={{ height: "calc(100vh - 358px)" }} />
         </div>
       </div>
     </section>

@@ -33,21 +33,23 @@ export default function StopPage() {
   const [loading, setLoading] = useState(false);
   const [selectedStopId, setSelectedStopId] = useState<string | null>(null);
 
-  useEffect(() => {
-    const fetchStopList = async () => {
-      setLoading(true);
-      try {
-        const response = await getStopList(filters);
-        setAllRows(response.stops);
-      } catch (error) {
-        console.error("Failed to fetch stop list:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
 
-    fetchStopList();
-  }, [filters]);
+  const fetchStopList = async (searchFilters: StopFilters = filters) => {
+    setLoading(true);
+    try {
+      const response = await getStopList(searchFilters);
+      setAllRows(response.stops);
+    } catch (error) {
+      console.error("Failed to fetch stop list:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSearch = (newFilters: StopFilters) => {
+    setFilters(newFilters);
+    fetchStopList(newFilters);
+  };
 
   const rowData = useMemo(() => {
     return allRows.filter((r) => {
@@ -92,7 +94,7 @@ export default function StopPage() {
       target: "stop-map",
       overlays: [overlay],
       view: new View({
-        center: fromLonLat([127.730628, 34.527742]),
+        center: fromLonLat([127.748, 34.525]),
         zoom: 17,
       }),
     });
@@ -245,29 +247,32 @@ export default function StopPage() {
   );
 
   return (
-    <section className="rounded-xl border bg-white p-4">
-      <div className="mb-4">
-        <h1 className="text-xl font-semibold">정류장관리</h1>
+    <section>
+      <div className="mb-6">
+        <h1 className="text-[28px] font-bold tracking-tight">정류장관리</h1>
+        <p className="mt-1 text-sm text-gray-500">정류장 정보를 조회하고 관리합니다.</p>
       </div>
 
-      <FilterForm<StopFilters>
-        fields={stopFields}
-        defaultValues={defaultFilters}
-        values={filters}
-        onChange={setFilters}
-        onSearch={(v) => setFilters(v)}
-        className="mb-4"
-      />
+      <div className="rounded-xl border bg-white p-6 shadow-sm">
+        <FilterForm<StopFilters>
+          fields={stopFields}
+          defaultValues={defaultFilters}
+          values={filters}
+          onChange={setFilters}
+          onSearch={handleSearch}
+          className="mb-4"
+        />
 
-      {/* 그리드와 지도를 2:1 비율로 배치 */}
-      <div className="flex gap-4" style={{ height: "calc(100vh - 350px)" }}>
-        {/* 그리드 영역 (2/3) */}
-        <div className="flex-[2] flex flex-col">
-          {loading ? (
-            <div className="flex items-center justify-center h-full">
-              <p>데이터를 불러오는 중...</p>
-            </div>
-          ) : (
+        {/* 그리드와 지도를 2:1 비율로 배치 */}
+        <div className="flex gap-4" style={{ height: "calc(100vh - 400px)" }}>
+          {/* 그리드 영역 (2/3) */}
+          <div className="relative flex-[2] flex flex-col">
+            {loading && (
+              <div className="absolute inset-0 z-10 flex flex-col items-center justify-center rounded-xl bg-white/75 backdrop-blur-[1px]">
+                <div className="mb-3 h-8 w-8 animate-spin rounded-full border-4 border-blue-600 border-t-transparent" />
+                <p className="text-sm font-semibold text-gray-700">데이터를 불러오는 중...</p>
+              </div>
+            )}
             <Grid
               rowData={rowData}
               columnDefs={columnDefs}
@@ -276,15 +281,15 @@ export default function StopPage() {
               height={"100%"}
               enableNumberColoring={true}
             />
-          )}
-        </div>
+          </div>
 
-        {/* 지도 영역 (1/3) */}
-        <div className="flex-1">
-          <div
-            id="stop-map"
-            className="relative overflow-hidden rounded-[24px] border border-gray-200 h-full w-full"
-          />
+          {/* 지도 영역 (1/3) */}
+          <div className="flex-1">
+            <div
+              id="stop-map"
+              className="relative overflow-hidden rounded-[24px] border border-gray-200 h-full w-full"
+            />
+          </div>
         </div>
       </div>
     </section>

@@ -56,12 +56,18 @@ export default function ReplacementControlPage() {
   };
 
   return (
-    <div className="flex flex-col gap-6">
-      <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 rounded-xl border border-[#CCCCCC] bg-white p-5 shadow-sm">
+    <section>
+      {/* 상단 페이지 헤더: 좌측 제목/설명 + 우측 끝 가로 배지 */}
+      <div className="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-xl font-bold text-[#222222]">대차 관리</h1>
+          <h1 className="text-[28px] font-bold tracking-tight">대차 관리</h1>
+          <p className="mt-1 text-sm text-gray-500">
+            운행 중인 차량을 대체 투입 차량으로 대차 처리합니다.
+          </p>
         </div>
-        <div className="flex items-center gap-3">
+
+        {/* 우측 끝 가로 배치 */}
+        <div className="flex items-center gap-2.5">
           <div className="flex items-center gap-2 rounded-lg bg-emerald-50 px-3 py-1.5 border border-emerald-200">
             <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
             <span className="text-xs font-semibold text-emerald-800">
@@ -75,33 +81,44 @@ export default function ReplacementControlPage() {
             </span>
           </div>
         </div>
-      </header>
-
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* 1단계: 운행 중 차량 */}
-        <ActiveVehicleTable
-          vehicles={activeVehicles}
-          selectedId={selectedOrigin?.id || null}
-          onSelect={setSelectedOrigin}
-        />
-
-        {/* 2단계: 대차 가능 차량 */}
-        <StandbyVehicleList
-          vehicles={standbyVehicles}
-          selectedId={selectedTarget?.id || null}
-          onSelect={setSelectedTarget}
-        />
       </div>
 
-      <div className="w-full">
-        <ReplacementActionForm
-          originVehicle={selectedOrigin}
-          targetVehicle={selectedTarget}
-          onSubmit={handleExecute}
-          onReset={handleReset}
-          submitting={submitting}
-        />
+      {/* 다른 페이지들과 동일한 규격의 메인 네모박스 */}
+      <div className="rounded-xl border bg-white p-6 shadow-sm">
+        <div
+          className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch"
+          style={{ height: "calc(100vh - 310px)" }}
+        >
+          {/* 좌측: 사유 및 입력 승인 (5열) */}
+          <div className="lg:col-span-5 flex flex-col h-full min-h-0">
+            <ReplacementActionForm
+              originVehicle={selectedOrigin}
+              targetVehicle={selectedTarget}
+              onSubmit={handleExecute}
+              onReset={handleReset}
+              submitting={submitting}
+            />
+          </div>
+
+          {/* 우측: 상단 운행 중 차량 + 하단 대차 가능 차량 (7열) */}
+          <div className="lg:col-span-7 flex flex-col gap-4 h-full min-h-0">
+            <div className="flex-[1.1] min-h-0">
+              <ActiveVehicleTable
+                vehicles={activeVehicles}
+                selectedId={selectedOrigin?.id || null}
+                onSelect={setSelectedOrigin}
+              />
+            </div>
+            <div className="flex-1 min-h-0">
+              <StandbyVehicleList
+                vehicles={standbyVehicles}
+                selectedId={selectedTarget?.id || null}
+                onSelect={setSelectedTarget}
+              />
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
+    </section>
   );
 }

@@ -309,10 +309,11 @@ export default function DispatchMasterPage() {
   };
 
   return (
-    <section className="rounded-xl border bg-white p-5">
-      <div className="mb-5 flex items-center justify-between">
+    <section>
+      {/* 페이지 제목 */}
+      <div className="mb-6 flex items-end justify-between">
         <div>
-          <h1 className="text-xl font-semibold">배차마스터 관리</h1>
+          <h1 className="text-[28px] font-bold tracking-tight">배차마스터 관리</h1>
           <p className="mt-1 text-sm text-gray-500">계절과 요일 유형별 기준 배차표를 관리합니다.</p>
         </div>
         <div className="flex gap-2">
@@ -321,91 +322,95 @@ export default function DispatchMasterPage() {
         </div>
       </div>
 
-      {/* 2단계 세그먼트 컨트롤 탭바 (Option 1) */}
-      <div className="mb-6 flex flex-wrap items-center gap-6 rounded-xl border border-gray-200 bg-gray-50/80 p-2.5">
-        {/* 1. 계절 선택 */}
-        <div className="flex items-center gap-2.5">
-          <span className="text-xs font-bold text-gray-500">계절</span>
-          <div className="flex rounded-lg border border-gray-200 bg-white p-1 shadow-sm">
-            {seasonOptions.map((item) => {
-              const active = season === item.code;
-              return (
-                <button
-                  key={item.code}
-                  type="button"
-                  onClick={() => setSeason(item.code)}
-                  className={`flex items-center gap-1.5 rounded-md px-4 py-1.5 text-sm font-semibold transition ${active
-                    ? "bg-blue-600 text-white shadow-sm"
-                    : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
-                    }`}>
-                  <span>{item.label}</span>
-                </button>
-              );
-            })}
+      <div className="rounded-xl border bg-white p-6 shadow-sm">
+        {/* 2단계 세그먼트 컨트롤 탭바 (Option 1) */}
+        <div className="mb-6 flex flex-wrap items-center gap-6 rounded-xl border border-gray-200 bg-gray-50/80 p-2.5">
+          {/* 1. 계절 선택 */}
+          <div className="flex items-center gap-2.5">
+            <span className="text-xs font-bold text-gray-500">계절</span>
+            <div className="flex rounded-lg border border-gray-200 bg-white p-1 shadow-sm">
+              {seasonOptions.map((item) => {
+                const active = season === item.code;
+                return (
+                  <button
+                    key={item.code}
+                    type="button"
+                    onClick={() => setSeason(item.code)}
+                    className={`flex items-center gap-1.5 rounded-md px-4 py-1.5 text-sm font-semibold transition ${active
+                      ? "bg-blue-600 text-white shadow-sm"
+                      : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                      }`}>
+                    <span>{item.label}</span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* 구분선 */}
+          <div className="hidden h-7 w-px bg-gray-300 sm:block" />
+
+          {/* 2. 운행 구분 선택 */}
+          <div className="flex items-center gap-2.5">
+            <span className="text-xs font-bold text-gray-500">운행 구분</span>
+            <div className="flex rounded-lg border border-gray-200 bg-white p-1 shadow-sm">
+              {dayOptions.map((item) => {
+                const active = day === item.code;
+                return (
+                  <button
+                    key={item.code}
+                    type="button"
+                    onClick={() => setDay(item.code)}
+                    className={`rounded-md px-4 py-1.5 text-sm font-semibold transition ${active
+                      ? "bg-blue-600 text-white shadow-sm"
+                      : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                      }`}>
+                    {item.label}
+                  </button>
+                );
+              })}
+            </div>
           </div>
         </div>
 
-        {/* 구분선 */}
-        <div className="hidden h-7 w-px bg-gray-300 sm:block" />
-
-        {/* 2. 운행 구분 선택 */}
-        <div className="flex items-center gap-2.5">
-          <span className="text-xs font-bold text-gray-500">운행 구분</span>
-          <div className="flex rounded-lg border border-gray-200 bg-white p-1 shadow-sm">
-            {dayOptions.map((item) => {
-              const active = day === item.code;
-              return (
-                <button
-                  key={item.code}
-                  type="button"
-                  onClick={() => setDay(item.code)}
-                  className={`rounded-md px-4 py-1.5 text-sm font-semibold transition ${active
-                    ? "bg-blue-600 text-white shadow-sm"
-                    : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
-                    }`}>
-                  {item.label}
-                </button>
-              );
-            })}
-          </div>
-        </div>
-      </div>
-
-      <div className="min-w-0">
-        <div className="mb-3 flex items-center justify-between gap-4">
-          <div>
-            <h2 className="font-semibold">{selected ? `${selected.dispatch_nm} 배차표` : "배차표"}</h2>
-            {selected?.remark && (
-              <p className="mt-1 text-xs text-gray-500">{selected.remark}</p>
+        <div className="min-w-0">
+          <div className="mb-3 flex items-center justify-between gap-4">
+            {/* <div>
+              <h2 className="font-semibold">{selected ? `${selected.dispatch_nm} 배차표` : "배차표"}</h2>
+              {selected?.remark && (
+                <p className="mt-1 text-xs text-gray-500">{selected.remark}</p>
+              )}
+            </div> */}
+            {masters.length > 1 && (
+              <label className="flex shrink-0 items-center gap-2 text-sm font-medium text-gray-600">
+                배차마스터
+                <select
+                  className="h-9 min-w-52 rounded-md border bg-white px-3 text-sm font-normal"
+                  value={selected?.dispatch_id ?? ""}
+                  disabled={loading}
+                  onChange={(event) => {
+                    const next = masters.find((master) => master.dispatch_id === event.target.value);
+                    setSelected(next ?? null);
+                  }}>
+                  {masters.map((master) => (
+                    <option key={master.dispatch_id} value={master.dispatch_id}>
+                      {master.dispatch_nm}
+                    </option>
+                  ))}
+                </select>
+              </label>
             )}
           </div>
-          {masters.length > 1 && (
-            <label className="flex shrink-0 items-center gap-2 text-sm font-medium text-gray-600">
-              배차마스터
-              <select
-                className="h-9 min-w-52 rounded-md border bg-white px-3 text-sm font-normal"
-                value={selected?.dispatch_id ?? ""}
-                disabled={loading}
-                onChange={(event) => {
-                  const next = masters.find((master) => master.dispatch_id === event.target.value);
-                  setSelected(next ?? null);
-                }}>
-                {masters.map((master) => (
-                  <option key={master.dispatch_id} value={master.dispatch_id}>
-                    {master.dispatch_nm}
-                  </option>
-                ))}
-              </select>
-            </label>
-          )}
-        </div>
-        {loading || detailLoading ? (
-          <div className="flex h-[600px] items-center justify-center rounded-xl border">
-            <span className="text-sm text-gray-500">배차표 조회 중...</span>
+          <div className="relative" style={{ height: "calc(100vh - 420px)" }}>
+            {(loading || detailLoading) && (
+              <div className="absolute inset-0 z-10 flex flex-col items-center justify-center rounded-xl bg-white/75 backdrop-blur-[1px]">
+                <div className="mb-3 h-8 w-8 animate-spin rounded-full border-4 border-blue-600 border-t-transparent" />
+                <p className="text-sm font-semibold text-gray-700">배차표 조회 중...</p>
+              </div>
+            )}
+            <Grid rowData={detailRows} columnDefs={columnDefs} gridRef={gridRef} height="100%" rowHeight={64} gridOptions={{ getRowId: (params) => params.data.route_id }} />
           </div>
-        ) : (
-          <Grid rowData={detailRows} columnDefs={columnDefs} gridRef={gridRef} height={600} rowHeight={64} gridOptions={{ getRowId: (params) => params.data.route_id }} />
-        )}
+        </div>
       </div>
 
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>

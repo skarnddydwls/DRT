@@ -15,21 +15,14 @@ export type KakaoEditorNode = {
 
 const TARGET_CURSOR_SVG = encodeURIComponent(`
 <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
-  <circle cx="16" cy="16" r="7.5" fill="rgba(239, 68, 68, 0.25)" stroke="#ffffff" stroke-width="3.5"/>
-  <circle cx="16" cy="16" r="7.5" fill="none" stroke="#dc2626" stroke-width="2"/>
-  <circle cx="16" cy="16" r="2.5" fill="#dc2626" stroke="#ffffff" stroke-width="1"/>
-  <line x1="16" y1="2" x2="16" y2="9" stroke="#ffffff" stroke-width="3.5" stroke-linecap="round"/>
-  <line x1="16" y1="23" x2="16" y2="30" stroke="#ffffff" stroke-width="3.5" stroke-linecap="round"/>
-  <line x1="2" y1="16" x2="9" y2="16" stroke="#ffffff" stroke-width="3.5" stroke-linecap="round"/>
-  <line x1="23" y1="16" x2="30" y2="16" stroke="#ffffff" stroke-width="3.5" stroke-linecap="round"/>
-  <line x1="16" y1="2" x2="16" y2="9" stroke="#dc2626" stroke-width="2" stroke-linecap="round"/>
-  <line x1="16" y1="23" x2="16" y2="30" stroke="#dc2626" stroke-width="2" stroke-linecap="round"/>
-  <line x1="2" y1="16" x2="9" y2="16" stroke="#dc2626" stroke-width="2" stroke-linecap="round"/>
-  <line x1="23" y1="16" x2="30" y2="16" stroke="#dc2626" stroke-width="2" stroke-linecap="round"/>
+  <path d="M16 2 C10.5 2 6 6.5 6 12 C6 18.5 14.2 26.5 15.3 27.6 C15.7 28 16.3 28 16.7 27.6 C17.8 26.5 26 18.5 26 12 C26 6.5 21.5 2 16 2 Z" fill="#4f46e5" stroke="#ffffff" stroke-width="2"/>
+  <circle cx="16" cy="12" r="4.5" fill="#ffffff"/>
+  <circle cx="16" cy="12" r="2.2" fill="#4f46e5"/>
+  <circle cx="16" cy="29" r="1.5" fill="#ef4444" stroke="#ffffff" stroke-width="0.5"/>
 </svg>
 `.trim());
 
-const CUSTOM_CURSOR = `url("data:image/svg+xml,${TARGET_CURSOR_SVG}") 16 16, crosshair`;
+const CUSTOM_CURSOR = `url("data:image/svg+xml,${TARGET_CURSOR_SVG}") 16 29, crosshair`;
 
 interface KakaoRouteEditorMapProps {
   nodes: KakaoEditorNode[];
