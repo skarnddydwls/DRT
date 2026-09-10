@@ -1,0 +1,11138 @@
+[
+  {
+    "source": "150",
+    "target": "151",
+    "line": "1호선",
+    "time": 150
+  },
+  {
+    "source": "151",
+    "target": "150",
+    "line": "1호선",
+    "time": 150
+  },
+  {
+    "source": "151",
+    "target": "152",
+    "line": "1호선",
+    "time": 150
+  },
+  {
+    "source": "152",
+    "target": "151",
+    "line": "1호선",
+    "time": 150
+  },
+  {
+    "source": "152",
+    "target": "153",
+    "line": "1호선",
+    "time": 120
+  },
+  {
+    "source": "153",
+    "target": "152",
+    "line": "1호선",
+    "time": 120
+  },
+  {
+    "source": "153",
+    "target": "154",
+    "line": "1호선",
+    "time": 120
+  },
+  {
+    "source": "154",
+    "target": "153",
+    "line": "1호선",
+    "time": 120
+  },
+  {
+    "source": "154",
+    "target": "155",
+    "line": "1호선",
+    "time": 120
+  },
+  {
+    "source": "155",
+    "target": "154",
+    "line": "1호선",
+    "time": 120
+  },
+  {
+    "source": "156",
+    "target": "157",
+    "line": "1호선",
+    "time": 120
+  },
+  {
+    "source": "157",
+    "target": "156",
+    "line": "1호선",
+    "time": 120
+  },
+  {
+    "source": "157",
+    "target": "158",
+    "line": "1호선",
+    "time": 120
+  },
+  {
+    "source": "158",
+    "target": "157",
+    "line": "1호선",
+    "time": 120
+  },
+  {
+    "source": "155",
+    "target": "159",
+    "line": "1호선",
+    "time": 90
+  },
+  {
+    "source": "159",
+    "target": "155",
+    "line": "1호선",
+    "time": 90
+  },
+  {
+    "source": "159",
+    "target": "156",
+    "line": "1호선",
+    "time": 120
+  },
+  {
+    "source": "156",
+    "target": "159",
+    "line": "1호선",
+    "time": 120
+  },
+  {
+    "source": "202",
+    "target": "201",
+    "line": "2호선",
+    "time": 120
+  },
+  {
+    "source": "201",
+    "target": "202",
+    "line": "2호선",
+    "time": 120
+  },
+  {
+    "source": "203",
+    "target": "202",
+    "line": "2호선",
+    "time": 90
+  },
+  {
+    "source": "202",
+    "target": "203",
+    "line": "2호선",
+    "time": 90
+  },
+  {
+    "source": "204",
+    "target": "203",
+    "line": "2호선",
+    "time": 90
+  },
+  {
+    "source": "203",
+    "target": "204",
+    "line": "2호선",
+    "time": 90
+  },
+  {
+    "source": "205",
+    "target": "204",
+    "line": "2호선",
+    "time": 150
+  },
+  {
+    "source": "204",
+    "target": "205",
+    "line": "2호선",
+    "time": 150
+  },
+  {
+    "source": "206",
+    "target": "205",
+    "line": "2호선",
+    "time": 120
+  },
+  {
+    "source": "205",
+    "target": "206",
+    "line": "2호선",
+    "time": 120
+  },
+  {
+    "source": "207",
+    "target": "206",
+    "line": "2호선",
+    "time": 90
+  },
+  {
+    "source": "206",
+    "target": "207",
+    "line": "2호선",
+    "time": 90
+  },
+  {
+    "source": "208",
+    "target": "207",
+    "line": "2호선",
+    "time": 90
+  },
+  {
+    "source": "207",
+    "target": "208",
+    "line": "2호선",
+    "time": 90
+  },
+  {
+    "source": "209",
+    "target": "208",
+    "line": "2호선",
+    "time": 120
+  },
+  {
+    "source": "208",
+    "target": "209",
+    "line": "2호선",
+    "time": 120
+  },
+  {
+    "source": "210",
+    "target": "209",
+    "line": "2호선",
+    "time": 120
+  },
+  {
+    "source": "209",
+    "target": "210",
+    "line": "2호선",
+    "time": 120
+  },
+  {
+    "source": "211",
+    "target": "210",
+    "line": "2호선",
+    "time": 120
+  },
+  {
+    "source": "210",
+    "target": "211",
+    "line": "2호선",
+    "time": 120
+  },
+  {
+    "source": "212",
+    "target": "211",
+    "line": "2호선",
+    "time": 120
+  },
+  {
+    "source": "211",
+    "target": "212",
+    "line": "2호선",
+    "time": 120
+  },
+  {
+    "source": "213",
+    "target": "212",
+    "line": "2호선",
+    "time": 150
+  },
+  {
+    "source": "212",
+    "target": "213",
+    "line": "2호선",
+    "time": 150
+  },
+  {
+    "source": "214",
+    "target": "213",
+    "line": "2호선",
+    "time": 90
+  },
+  {
+    "source": "213",
+    "target": "214",
+    "line": "2호선",
+    "time": 90
+  },
+  {
+    "source": "215",
+    "target": "214",
+    "line": "2호선",
+    "time": 150
+  },
+  {
+    "source": "214",
+    "target": "215",
+    "line": "2호선",
+    "time": 150
+  },
+  {
+    "source": "216",
+    "target": "215",
+    "line": "2호선",
+    "time": 120
+  },
+  {
+    "source": "215",
+    "target": "216",
+    "line": "2호선",
+    "time": 120
+  },
+  {
+    "source": "217",
+    "target": "216",
+    "line": "2호선",
+    "time": 120
+  },
+  {
+    "source": "216",
+    "target": "217",
+    "line": "2호선",
+    "time": 120
+  },
+  {
+    "source": "218",
+    "target": "217",
+    "line": "2호선",
+    "time": 120
+  },
+  {
+    "source": "217",
+    "target": "218",
+    "line": "2호선",
+    "time": 120
+  },
+  {
+    "source": "219",
+    "target": "218",
+    "line": "2호선",
+    "time": 120
+  },
+  {
+    "source": "218",
+    "target": "219",
+    "line": "2호선",
+    "time": 120
+  },
+  {
+    "source": "220",
+    "target": "219",
+    "line": "2호선",
+    "time": 150
+  },
+  {
+    "source": "219",
+    "target": "220",
+    "line": "2호선",
+    "time": 150
+  },
+  {
+    "source": "221",
+    "target": "220",
+    "line": "2호선",
+    "time": 120
+  },
+  {
+    "source": "220",
+    "target": "221",
+    "line": "2호선",
+    "time": 120
+  },
+  {
+    "source": "222",
+    "target": "221",
+    "line": "2호선",
+    "time": 90
+  },
+  {
+    "source": "221",
+    "target": "222",
+    "line": "2호선",
+    "time": 90
+  },
+  {
+    "source": "223",
+    "target": "222",
+    "line": "2호선",
+    "time": 150
+  },
+  {
+    "source": "222",
+    "target": "223",
+    "line": "2호선",
+    "time": 150
+  },
+  {
+    "source": "224",
+    "target": "223",
+    "line": "2호선",
+    "time": 90
+  },
+  {
+    "source": "223",
+    "target": "224",
+    "line": "2호선",
+    "time": 90
+  },
+  {
+    "source": "225",
+    "target": "224",
+    "line": "2호선",
+    "time": 150
+  },
+  {
+    "source": "224",
+    "target": "225",
+    "line": "2호선",
+    "time": 150
+  },
+  {
+    "source": "226",
+    "target": "225",
+    "line": "2호선",
+    "time": 210
+  },
+  {
+    "source": "225",
+    "target": "226",
+    "line": "2호선",
+    "time": 210
+  },
+  {
+    "source": "227",
+    "target": "226",
+    "line": "2호선",
+    "time": 150
+  },
+  {
+    "source": "226",
+    "target": "227",
+    "line": "2호선",
+    "time": 150
+  },
+  {
+    "source": "228",
+    "target": "227",
+    "line": "2호선",
+    "time": 120
+  },
+  {
+    "source": "227",
+    "target": "228",
+    "line": "2호선",
+    "time": 120
+  },
+  {
+    "source": "229",
+    "target": "228",
+    "line": "2호선",
+    "time": 90
+  },
+  {
+    "source": "228",
+    "target": "229",
+    "line": "2호선",
+    "time": 90
+  },
+  {
+    "source": "230",
+    "target": "229",
+    "line": "2호선",
+    "time": 120
+  },
+  {
+    "source": "229",
+    "target": "230",
+    "line": "2호선",
+    "time": 120
+  },
+  {
+    "source": "231",
+    "target": "230",
+    "line": "2호선",
+    "time": 150
+  },
+  {
+    "source": "230",
+    "target": "231",
+    "line": "2호선",
+    "time": 150
+  },
+  {
+    "source": "232",
+    "target": "231",
+    "line": "2호선",
+    "time": 120
+  },
+  {
+    "source": "231",
+    "target": "232",
+    "line": "2호선",
+    "time": 120
+  },
+  {
+    "source": "233",
+    "target": "232",
+    "line": "2호선",
+    "time": 120
+  },
+  {
+    "source": "232",
+    "target": "233",
+    "line": "2호선",
+    "time": 120
+  },
+  {
+    "source": "234",
+    "target": "233",
+    "line": "2호선",
+    "time": 210
+  },
+  {
+    "source": "233",
+    "target": "234",
+    "line": "2호선",
+    "time": 210
+  },
+  {
+    "source": "235",
+    "target": "234",
+    "line": "2호선",
+    "time": 150
+  },
+  {
+    "source": "234",
+    "target": "235",
+    "line": "2호선",
+    "time": 150
+  },
+  {
+    "source": "236",
+    "target": "235",
+    "line": "2호선",
+    "time": 90
+  },
+  {
+    "source": "235",
+    "target": "236",
+    "line": "2호선",
+    "time": 90
+  },
+  {
+    "source": "237",
+    "target": "236",
+    "line": "2호선",
+    "time": 120
+  },
+  {
+    "source": "236",
+    "target": "237",
+    "line": "2호선",
+    "time": 120
+  },
+  {
+    "source": "238",
+    "target": "237",
+    "line": "2호선",
+    "time": 180
+  },
+  {
+    "source": "237",
+    "target": "238",
+    "line": "2호선",
+    "time": 180
+  },
+  {
+    "source": "239",
+    "target": "238",
+    "line": "2호선",
+    "time": 150
+  },
+  {
+    "source": "238",
+    "target": "239",
+    "line": "2호선",
+    "time": 150
+  },
+  {
+    "source": "240",
+    "target": "239",
+    "line": "2호선",
+    "time": 150
+  },
+  {
+    "source": "239",
+    "target": "240",
+    "line": "2호선",
+    "time": 150
+  },
+  {
+    "source": "241",
+    "target": "240",
+    "line": "2호선",
+    "time": 90
+  },
+  {
+    "source": "240",
+    "target": "241",
+    "line": "2호선",
+    "time": 90
+  },
+  {
+    "source": "242",
+    "target": "241",
+    "line": "2호선",
+    "time": 90
+  },
+  {
+    "source": "241",
+    "target": "242",
+    "line": "2호선",
+    "time": 90
+  },
+  {
+    "source": "201",
+    "target": "243",
+    "line": "2호선",
+    "time": 120
+  },
+  {
+    "source": "243",
+    "target": "201",
+    "line": "2호선",
+    "time": 120
+  },
+  {
+    "source": "243",
+    "target": "242",
+    "line": "2호선",
+    "time": 120
+  },
+  {
+    "source": "242",
+    "target": "243",
+    "line": "2호선",
+    "time": 120
+  },
+  {
+    "source": "245",
+    "target": "244",
+    "line": "2호선성수지선",
+    "time": 120
+  },
+  {
+    "source": "244",
+    "target": "245",
+    "line": "2호선성수지선",
+    "time": 120
+  },
+  {
+    "source": "248",
+    "target": "247",
+    "line": "2호선신도림지선",
+    "time": 180
+  },
+  {
+    "source": "247",
+    "target": "248",
+    "line": "2호선신도림지선",
+    "time": 180
+  },
+  {
+    "source": "249",
+    "target": "248",
+    "line": "2호선신도림지선",
+    "time": 210
+  },
+  {
+    "source": "248",
+    "target": "249",
+    "line": "2호선신도림지선",
+    "time": 210
+  },
+  {
+    "source": "250",
+    "target": "245",
+    "line": "2호선성수지선",
+    "time": 120
+  },
+  {
+    "source": "245",
+    "target": "250",
+    "line": "2호선성수지선",
+    "time": 120
+  },
+  {
+    "source": "246",
+    "target": "250",
+    "line": "2호선성수지선",
+    "time": 120
+  },
+  {
+    "source": "250",
+    "target": "246",
+    "line": "2호선성수지선",
+    "time": 120
+  },
+  {
+    "source": "260",
+    "target": "249",
+    "line": "2호선신도림지선",
+    "time": 150
+  },
+  {
+    "source": "249",
+    "target": "260",
+    "line": "2호선신도림지선",
+    "time": 150
+  },
+  {
+    "source": "310",
+    "target": "309",
+    "line": "3호선",
+    "time": 210
+  },
+  {
+    "source": "309",
+    "target": "310",
+    "line": "3호선",
+    "time": 210
+  },
+  {
+    "source": "311",
+    "target": "310",
+    "line": "3호선",
+    "time": 150
+  },
+  {
+    "source": "310",
+    "target": "311",
+    "line": "3호선",
+    "time": 150
+  },
+  {
+    "source": "312",
+    "target": "311",
+    "line": "3호선",
+    "time": 120
+  },
+  {
+    "source": "311",
+    "target": "312",
+    "line": "3호선",
+    "time": 120
+  },
+  {
+    "source": "313",
+    "target": "312",
+    "line": "3호선",
+    "time": 120
+  },
+  {
+    "source": "312",
+    "target": "313",
+    "line": "3호선",
+    "time": 120
+  },
+  {
+    "source": "314",
+    "target": "313",
+    "line": "3호선",
+    "time": 150
+  },
+  {
+    "source": "313",
+    "target": "314",
+    "line": "3호선",
+    "time": 150
+  },
+  {
+    "source": "315",
+    "target": "314",
+    "line": "3호선",
+    "time": 120
+  },
+  {
+    "source": "314",
+    "target": "315",
+    "line": "3호선",
+    "time": 120
+  },
+  {
+    "source": "316",
+    "target": "315",
+    "line": "3호선",
+    "time": 120
+  },
+  {
+    "source": "315",
+    "target": "316",
+    "line": "3호선",
+    "time": 120
+  },
+  {
+    "source": "317",
+    "target": "316",
+    "line": "3호선",
+    "time": 150
+  },
+  {
+    "source": "316",
+    "target": "317",
+    "line": "3호선",
+    "time": 150
+  },
+  {
+    "source": "318",
+    "target": "317",
+    "line": "3호선",
+    "time": 120
+  },
+  {
+    "source": "317",
+    "target": "318",
+    "line": "3호선",
+    "time": 120
+  },
+  {
+    "source": "319",
+    "target": "318",
+    "line": "3호선",
+    "time": 120
+  },
+  {
+    "source": "318",
+    "target": "319",
+    "line": "3호선",
+    "time": 120
+  },
+  {
+    "source": "320",
+    "target": "319",
+    "line": "3호선",
+    "time": 90
+  },
+  {
+    "source": "319",
+    "target": "320",
+    "line": "3호선",
+    "time": 90
+  },
+  {
+    "source": "321",
+    "target": "320",
+    "line": "3호선",
+    "time": 90
+  },
+  {
+    "source": "320",
+    "target": "321",
+    "line": "3호선",
+    "time": 90
+  },
+  {
+    "source": "322",
+    "target": "321",
+    "line": "3호선",
+    "time": 120
+  },
+  {
+    "source": "321",
+    "target": "322",
+    "line": "3호선",
+    "time": 120
+  },
+  {
+    "source": "323",
+    "target": "322",
+    "line": "3호선",
+    "time": 90
+  },
+  {
+    "source": "322",
+    "target": "323",
+    "line": "3호선",
+    "time": 90
+  },
+  {
+    "source": "324",
+    "target": "323",
+    "line": "3호선",
+    "time": 90
+  },
+  {
+    "source": "323",
+    "target": "324",
+    "line": "3호선",
+    "time": 90
+  },
+  {
+    "source": "325",
+    "target": "324",
+    "line": "3호선",
+    "time": 90
+  },
+  {
+    "source": "324",
+    "target": "325",
+    "line": "3호선",
+    "time": 90
+  },
+  {
+    "source": "326",
+    "target": "325",
+    "line": "3호선",
+    "time": 150
+  },
+  {
+    "source": "325",
+    "target": "326",
+    "line": "3호선",
+    "time": 150
+  },
+  {
+    "source": "327",
+    "target": "326",
+    "line": "3호선",
+    "time": 150
+  },
+  {
+    "source": "326",
+    "target": "327",
+    "line": "3호선",
+    "time": 150
+  },
+  {
+    "source": "328",
+    "target": "327",
+    "line": "3호선",
+    "time": 120
+  },
+  {
+    "source": "327",
+    "target": "328",
+    "line": "3호선",
+    "time": 120
+  },
+  {
+    "source": "329",
+    "target": "328",
+    "line": "3호선",
+    "time": 120
+  },
+  {
+    "source": "328",
+    "target": "329",
+    "line": "3호선",
+    "time": 120
+  },
+  {
+    "source": "330",
+    "target": "329",
+    "line": "3호선",
+    "time": 150
+  },
+  {
+    "source": "329",
+    "target": "330",
+    "line": "3호선",
+    "time": 150
+  },
+  {
+    "source": "331",
+    "target": "330",
+    "line": "3호선",
+    "time": 120
+  },
+  {
+    "source": "330",
+    "target": "331",
+    "line": "3호선",
+    "time": 120
+  },
+  {
+    "source": "332",
+    "target": "331",
+    "line": "3호선",
+    "time": 150
+  },
+  {
+    "source": "331",
+    "target": "332",
+    "line": "3호선",
+    "time": 150
+  },
+  {
+    "source": "333",
+    "target": "332",
+    "line": "3호선",
+    "time": 150
+  },
+  {
+    "source": "332",
+    "target": "333",
+    "line": "3호선",
+    "time": 150
+  },
+  {
+    "source": "334",
+    "target": "333",
+    "line": "3호선",
+    "time": 120
+  },
+  {
+    "source": "333",
+    "target": "334",
+    "line": "3호선",
+    "time": 120
+  },
+  {
+    "source": "335",
+    "target": "334",
+    "line": "3호선",
+    "time": 90
+  },
+  {
+    "source": "334",
+    "target": "335",
+    "line": "3호선",
+    "time": 90
+  },
+  {
+    "source": "336",
+    "target": "335",
+    "line": "3호선",
+    "time": 90
+  },
+  {
+    "source": "335",
+    "target": "336",
+    "line": "3호선",
+    "time": 90
+  },
+  {
+    "source": "337",
+    "target": "336",
+    "line": "3호선",
+    "time": 120
+  },
+  {
+    "source": "336",
+    "target": "337",
+    "line": "3호선",
+    "time": 120
+  },
+  {
+    "source": "338",
+    "target": "337",
+    "line": "3호선",
+    "time": 120
+  },
+  {
+    "source": "337",
+    "target": "338",
+    "line": "3호선",
+    "time": 120
+  },
+  {
+    "source": "339",
+    "target": "338",
+    "line": "3호선",
+    "time": 150
+  },
+  {
+    "source": "338",
+    "target": "339",
+    "line": "3호선",
+    "time": 150
+  },
+  {
+    "source": "340",
+    "target": "339",
+    "line": "3호선",
+    "time": 150
+  },
+  {
+    "source": "339",
+    "target": "340",
+    "line": "3호선",
+    "time": 150
+  },
+  {
+    "source": "341",
+    "target": "340",
+    "line": "3호선",
+    "time": 90
+  },
+  {
+    "source": "340",
+    "target": "341",
+    "line": "3호선",
+    "time": 90
+  },
+  {
+    "source": "342",
+    "target": "341",
+    "line": "3호선",
+    "time": 60
+  },
+  {
+    "source": "341",
+    "target": "342",
+    "line": "3호선",
+    "time": 60
+  },
+  {
+    "source": "406",
+    "target": "405",
+    "line": "4호선진접선",
+    "time": 180
+  },
+  {
+    "source": "405",
+    "target": "406",
+    "line": "4호선진접선",
+    "time": 180
+  },
+  {
+    "source": "408",
+    "target": "406",
+    "line": "4호선진접선",
+    "time": 420
+  },
+  {
+    "source": "406",
+    "target": "408",
+    "line": "4호선진접선",
+    "time": 420
+  },
+  {
+    "source": "409",
+    "target": "408",
+    "line": "4호선진접선",
+    "time": 330
+  },
+  {
+    "source": "408",
+    "target": "409",
+    "line": "4호선진접선",
+    "time": 330
+  },
+  {
+    "source": "410",
+    "target": "409",
+    "line": "4호선",
+    "time": 120
+  },
+  {
+    "source": "409",
+    "target": "410",
+    "line": "4호선",
+    "time": 120
+  },
+  {
+    "source": "411",
+    "target": "410",
+    "line": "4호선",
+    "time": 120
+  },
+  {
+    "source": "410",
+    "target": "411",
+    "line": "4호선",
+    "time": 120
+  },
+  {
+    "source": "412",
+    "target": "411",
+    "line": "4호선",
+    "time": 150
+  },
+  {
+    "source": "411",
+    "target": "412",
+    "line": "4호선",
+    "time": 150
+  },
+  {
+    "source": "413",
+    "target": "412",
+    "line": "4호선",
+    "time": 120
+  },
+  {
+    "source": "412",
+    "target": "413",
+    "line": "4호선",
+    "time": 120
+  },
+  {
+    "source": "414",
+    "target": "413",
+    "line": "4호선",
+    "time": 150
+  },
+  {
+    "source": "413",
+    "target": "414",
+    "line": "4호선",
+    "time": 150
+  },
+  {
+    "source": "415",
+    "target": "414",
+    "line": "4호선",
+    "time": 120
+  },
+  {
+    "source": "414",
+    "target": "415",
+    "line": "4호선",
+    "time": 120
+  },
+  {
+    "source": "416",
+    "target": "415",
+    "line": "4호선",
+    "time": 150
+  },
+  {
+    "source": "415",
+    "target": "416",
+    "line": "4호선",
+    "time": 150
+  },
+  {
+    "source": "417",
+    "target": "416",
+    "line": "4호선",
+    "time": 120
+  },
+  {
+    "source": "416",
+    "target": "417",
+    "line": "4호선",
+    "time": 120
+  },
+  {
+    "source": "418",
+    "target": "417",
+    "line": "4호선",
+    "time": 150
+  },
+  {
+    "source": "417",
+    "target": "418",
+    "line": "4호선",
+    "time": 150
+  },
+  {
+    "source": "419",
+    "target": "418",
+    "line": "4호선",
+    "time": 120
+  },
+  {
+    "source": "418",
+    "target": "419",
+    "line": "4호선",
+    "time": 120
+  },
+  {
+    "source": "420",
+    "target": "419",
+    "line": "4호선",
+    "time": 120
+  },
+  {
+    "source": "419",
+    "target": "420",
+    "line": "4호선",
+    "time": 120
+  },
+  {
+    "source": "421",
+    "target": "420",
+    "line": "4호선",
+    "time": 150
+  },
+  {
+    "source": "420",
+    "target": "421",
+    "line": "4호선",
+    "time": 150
+  },
+  {
+    "source": "422",
+    "target": "421",
+    "line": "4호선",
+    "time": 90
+  },
+  {
+    "source": "421",
+    "target": "422",
+    "line": "4호선",
+    "time": 90
+  },
+  {
+    "source": "423",
+    "target": "422",
+    "line": "4호선",
+    "time": 150
+  },
+  {
+    "source": "422",
+    "target": "423",
+    "line": "4호선",
+    "time": 150
+  },
+  {
+    "source": "424",
+    "target": "423",
+    "line": "4호선",
+    "time": 90
+  },
+  {
+    "source": "423",
+    "target": "424",
+    "line": "4호선",
+    "time": 90
+  },
+  {
+    "source": "425",
+    "target": "424",
+    "line": "4호선",
+    "time": 90
+  },
+  {
+    "source": "424",
+    "target": "425",
+    "line": "4호선",
+    "time": 90
+  },
+  {
+    "source": "426",
+    "target": "425",
+    "line": "4호선",
+    "time": 120
+  },
+  {
+    "source": "425",
+    "target": "426",
+    "line": "4호선",
+    "time": 120
+  },
+  {
+    "source": "427",
+    "target": "426",
+    "line": "4호선",
+    "time": 120
+  },
+  {
+    "source": "426",
+    "target": "427",
+    "line": "4호선",
+    "time": 120
+  },
+  {
+    "source": "428",
+    "target": "427",
+    "line": "4호선",
+    "time": 120
+  },
+  {
+    "source": "427",
+    "target": "428",
+    "line": "4호선",
+    "time": 120
+  },
+  {
+    "source": "429",
+    "target": "428",
+    "line": "4호선",
+    "time": 90
+  },
+  {
+    "source": "428",
+    "target": "429",
+    "line": "4호선",
+    "time": 90
+  },
+  {
+    "source": "430",
+    "target": "429",
+    "line": "4호선",
+    "time": 120
+  },
+  {
+    "source": "429",
+    "target": "430",
+    "line": "4호선",
+    "time": 120
+  },
+  {
+    "source": "431",
+    "target": "430",
+    "line": "4호선",
+    "time": 210
+  },
+  {
+    "source": "430",
+    "target": "431",
+    "line": "4호선",
+    "time": 210
+  },
+  {
+    "source": "432",
+    "target": "431",
+    "line": "4호선",
+    "time": 180
+  },
+  {
+    "source": "431",
+    "target": "432",
+    "line": "4호선",
+    "time": 180
+  },
+  {
+    "source": "433",
+    "target": "432",
+    "line": "4호선",
+    "time": 120
+  },
+  {
+    "source": "432",
+    "target": "433",
+    "line": "4호선",
+    "time": 120
+  },
+  {
+    "source": "434",
+    "target": "433",
+    "line": "4호선",
+    "time": 120
+  },
+  {
+    "source": "433",
+    "target": "434",
+    "line": "4호선",
+    "time": 120
+  },
+  {
+    "source": "1002",
+    "target": "150",
+    "line": "경부선",
+    "time": 180
+  },
+  {
+    "source": "150",
+    "target": "1002",
+    "line": "경부선",
+    "time": 180
+  },
+  {
+    "source": "158",
+    "target": "1200",
+    "line": "경원선",
+    "time": 180
+  },
+  {
+    "source": "1200",
+    "target": "158",
+    "line": "경원선",
+    "time": 180
+  },
+  {
+    "source": "1450",
+    "target": "434",
+    "line": "과천선",
+    "time": 180
+  },
+  {
+    "source": "434",
+    "target": "1450",
+    "line": "과천선",
+    "time": 180
+  },
+  {
+    "source": "309",
+    "target": "1950",
+    "line": "일산선",
+    "time": 180
+  },
+  {
+    "source": "1950",
+    "target": "309",
+    "line": "일산선",
+    "time": 180
+  },
+  {
+    "source": "244",
+    "target": "5551",
+    "line": "2호선성수지선",
+    "time": 180
+  },
+  {
+    "source": "5551",
+    "target": "244",
+    "line": "2호선성수지선",
+    "time": 180
+  },
+  {
+    "source": "247",
+    "target": "5555",
+    "line": "2호선신도림지선",
+    "time": 120
+  },
+  {
+    "source": "5555",
+    "target": "247",
+    "line": "2호선신도림지선",
+    "time": 120
+  },
+  {
+    "source": "1003",
+    "target": "1002",
+    "line": "경부선",
+    "time": 150
+  },
+  {
+    "source": "1002",
+    "target": "1003",
+    "line": "경부선",
+    "time": 150
+  },
+  {
+    "source": "1004",
+    "target": "1003",
+    "line": "경부선",
+    "time": 210
+  },
+  {
+    "source": "1003",
+    "target": "1004",
+    "line": "경부선",
+    "time": 210
+  },
+  {
+    "source": "1005",
+    "target": "1004",
+    "line": "경부선",
+    "time": 150
+  },
+  {
+    "source": "1004",
+    "target": "1005",
+    "line": "경부선",
+    "time": 150
+  },
+  {
+    "source": "1007",
+    "target": "1006",
+    "line": "경부선",
+    "time": 150
+  },
+  {
+    "source": "1006",
+    "target": "1007",
+    "line": "경부선",
+    "time": 150
+  },
+  {
+    "source": "1009",
+    "target": "1008",
+    "line": "경원선",
+    "time": 150
+  },
+  {
+    "source": "1008",
+    "target": "1009",
+    "line": "경원선",
+    "time": 150
+  },
+  {
+    "source": "1010",
+    "target": "1009",
+    "line": "경원선",
+    "time": 180
+  },
+  {
+    "source": "1009",
+    "target": "1010",
+    "line": "경원선",
+    "time": 180
+  },
+  {
+    "source": "1011",
+    "target": "1010",
+    "line": "경원선",
+    "time": 150
+  },
+  {
+    "source": "1010",
+    "target": "1011",
+    "line": "경원선",
+    "time": 150
+  },
+  {
+    "source": "1012",
+    "target": "1011",
+    "line": "경원선",
+    "time": 150
+  },
+  {
+    "source": "1011",
+    "target": "1012",
+    "line": "경원선",
+    "time": 150
+  },
+  {
+    "source": "1013",
+    "target": "1012",
+    "line": "경원선",
+    "time": 150
+  },
+  {
+    "source": "1012",
+    "target": "1013",
+    "line": "경원선",
+    "time": 150
+  },
+  {
+    "source": "1014",
+    "target": "1013",
+    "line": "경원선",
+    "time": 210
+  },
+  {
+    "source": "1013",
+    "target": "1014",
+    "line": "경원선",
+    "time": 210
+  },
+  {
+    "source": "1015",
+    "target": "1014",
+    "line": "경원선",
+    "time": 210
+  },
+  {
+    "source": "1014",
+    "target": "1015",
+    "line": "경원선",
+    "time": 210
+  },
+  {
+    "source": "1016",
+    "target": "1017",
+    "line": "경원선",
+    "time": 90
+  },
+  {
+    "source": "1017",
+    "target": "1016",
+    "line": "경원선",
+    "time": 90
+  },
+  {
+    "source": "1017",
+    "target": "1018",
+    "line": "경원선",
+    "time": 150
+  },
+  {
+    "source": "1018",
+    "target": "1017",
+    "line": "경원선",
+    "time": 150
+  },
+  {
+    "source": "1018",
+    "target": "1019",
+    "line": "경원선",
+    "time": 150
+  },
+  {
+    "source": "1019",
+    "target": "1018",
+    "line": "경원선",
+    "time": 150
+  },
+  {
+    "source": "1019",
+    "target": "1020",
+    "line": "경원선",
+    "time": 180
+  },
+  {
+    "source": "1020",
+    "target": "1019",
+    "line": "경원선",
+    "time": 180
+  },
+  {
+    "source": "1020",
+    "target": "1021",
+    "line": "경원선",
+    "time": 150
+  },
+  {
+    "source": "1021",
+    "target": "1020",
+    "line": "경원선",
+    "time": 150
+  },
+  {
+    "source": "1021",
+    "target": "1022",
+    "line": "경원선",
+    "time": 120
+  },
+  {
+    "source": "1022",
+    "target": "1021",
+    "line": "경원선",
+    "time": 120
+  },
+  {
+    "source": "1024",
+    "target": "1023",
+    "line": "분당선",
+    "time": 110
+  },
+  {
+    "source": "1023",
+    "target": "1024",
+    "line": "분당선",
+    "time": 110
+  },
+  {
+    "source": "1025",
+    "target": "1024",
+    "line": "분당선",
+    "time": 90
+  },
+  {
+    "source": "1024",
+    "target": "1025",
+    "line": "분당선",
+    "time": 90
+  },
+  {
+    "source": "1026",
+    "target": "1025",
+    "line": "분당선",
+    "time": 80
+  },
+  {
+    "source": "1025",
+    "target": "1026",
+    "line": "분당선",
+    "time": 80
+  },
+  {
+    "source": "1027",
+    "target": "1026",
+    "line": "분당선",
+    "time": 110
+  },
+  {
+    "source": "1026",
+    "target": "1027",
+    "line": "분당선",
+    "time": 110
+  },
+  {
+    "source": "1028",
+    "target": "1027",
+    "line": "분당선",
+    "time": 80
+  },
+  {
+    "source": "1027",
+    "target": "1028",
+    "line": "분당선",
+    "time": 80
+  },
+  {
+    "source": "1030",
+    "target": "1028",
+    "line": "분당선",
+    "time": 240
+  },
+  {
+    "source": "1028",
+    "target": "1030",
+    "line": "분당선",
+    "time": 240
+  },
+  {
+    "source": "1031",
+    "target": "1030",
+    "line": "분당선",
+    "time": 240
+  },
+  {
+    "source": "1030",
+    "target": "1031",
+    "line": "분당선",
+    "time": 240
+  },
+  {
+    "source": "1032",
+    "target": "1005",
+    "line": "경부선",
+    "time": 90
+  },
+  {
+    "source": "1005",
+    "target": "1032",
+    "line": "경부선",
+    "time": 90
+  },
+  {
+    "source": "1006",
+    "target": "1032",
+    "line": "경부선",
+    "time": 150
+  },
+  {
+    "source": "1032",
+    "target": "1006",
+    "line": "경부선",
+    "time": 150
+  },
+  {
+    "source": "1200",
+    "target": "1016",
+    "line": "경원선",
+    "time": 120
+  },
+  {
+    "source": "1016",
+    "target": "1200",
+    "line": "경원선",
+    "time": 120
+  },
+  {
+    "source": "1201",
+    "target": "1015",
+    "line": "중앙선",
+    "time": 180
+  },
+  {
+    "source": "1015",
+    "target": "1201",
+    "line": "중앙선",
+    "time": 180
+  },
+  {
+    "source": "1202",
+    "target": "1201",
+    "line": "중앙선",
+    "time": 120
+  },
+  {
+    "source": "1201",
+    "target": "1202",
+    "line": "중앙선",
+    "time": 120
+  },
+  {
+    "source": "1203",
+    "target": "1202",
+    "line": "중앙선",
+    "time": 120
+  },
+  {
+    "source": "1202",
+    "target": "1203",
+    "line": "중앙선",
+    "time": 120
+  },
+  {
+    "source": "1204",
+    "target": "1203",
+    "line": "중앙선",
+    "time": 180
+  },
+  {
+    "source": "1203",
+    "target": "1204",
+    "line": "중앙선",
+    "time": 180
+  },
+  {
+    "source": "1205",
+    "target": "1204",
+    "line": "중앙선",
+    "time": 240
+  },
+  {
+    "source": "1204",
+    "target": "1205",
+    "line": "중앙선",
+    "time": 240
+  },
+  {
+    "source": "1206",
+    "target": "1205",
+    "line": "중앙선",
+    "time": 180
+  },
+  {
+    "source": "1205",
+    "target": "1206",
+    "line": "중앙선",
+    "time": 180
+  },
+  {
+    "source": "1207",
+    "target": "1206",
+    "line": "중앙선",
+    "time": 240
+  },
+  {
+    "source": "1206",
+    "target": "1207",
+    "line": "중앙선",
+    "time": 240
+  },
+  {
+    "source": "1208",
+    "target": "1207",
+    "line": "중앙선",
+    "time": 210
+  },
+  {
+    "source": "1207",
+    "target": "1208",
+    "line": "중앙선",
+    "time": 210
+  },
+  {
+    "source": "1209",
+    "target": "1208",
+    "line": "중앙선",
+    "time": 150
+  },
+  {
+    "source": "1208",
+    "target": "1209",
+    "line": "중앙선",
+    "time": 150
+  },
+  {
+    "source": "1210",
+    "target": "1209",
+    "line": "중앙선",
+    "time": 270
+  },
+  {
+    "source": "1209",
+    "target": "1210",
+    "line": "중앙선",
+    "time": 270
+  },
+  {
+    "source": "1211",
+    "target": "1210",
+    "line": "중앙선",
+    "time": 330
+  },
+  {
+    "source": "1210",
+    "target": "1211",
+    "line": "중앙선",
+    "time": 330
+  },
+  {
+    "source": "1212",
+    "target": "1211",
+    "line": "중앙선",
+    "time": 150
+  },
+  {
+    "source": "1211",
+    "target": "1212",
+    "line": "중앙선",
+    "time": 150
+  },
+  {
+    "source": "1213",
+    "target": "1212",
+    "line": "중앙선",
+    "time": 270
+  },
+  {
+    "source": "1212",
+    "target": "1213",
+    "line": "중앙선",
+    "time": 270
+  },
+  {
+    "source": "1214",
+    "target": "1213",
+    "line": "중앙선",
+    "time": 210
+  },
+  {
+    "source": "1213",
+    "target": "1214",
+    "line": "중앙선",
+    "time": 210
+  },
+  {
+    "source": "1215",
+    "target": "1214",
+    "line": "중앙선",
+    "time": 240
+  },
+  {
+    "source": "1214",
+    "target": "1215",
+    "line": "중앙선",
+    "time": 240
+  },
+  {
+    "source": "1216",
+    "target": "1215",
+    "line": "중앙선",
+    "time": 210
+  },
+  {
+    "source": "1215",
+    "target": "1216",
+    "line": "중앙선",
+    "time": 210
+  },
+  {
+    "source": "1217",
+    "target": "1216",
+    "line": "중앙선",
+    "time": 180
+  },
+  {
+    "source": "1216",
+    "target": "1217",
+    "line": "중앙선",
+    "time": 180
+  },
+  {
+    "source": "1218",
+    "target": "1217",
+    "line": "중앙선",
+    "time": 300
+  },
+  {
+    "source": "1217",
+    "target": "1218",
+    "line": "중앙선",
+    "time": 300
+  },
+  {
+    "source": "1219",
+    "target": "1218",
+    "line": "중앙선",
+    "time": 270
+  },
+  {
+    "source": "1218",
+    "target": "1219",
+    "line": "중앙선",
+    "time": 270
+  },
+  {
+    "source": "1220",
+    "target": "1219",
+    "line": "중앙선",
+    "time": 300
+  },
+  {
+    "source": "1219",
+    "target": "1220",
+    "line": "중앙선",
+    "time": 300
+  },
+  {
+    "source": "1261",
+    "target": "1262",
+    "line": "경의선",
+    "time": 150
+  },
+  {
+    "source": "1262",
+    "target": "1261",
+    "line": "경의선",
+    "time": 150
+  },
+  {
+    "source": "1262",
+    "target": "1263",
+    "line": "경의선",
+    "time": 180
+  },
+  {
+    "source": "1263",
+    "target": "1262",
+    "line": "경의선",
+    "time": 180
+  },
+  {
+    "source": "1263",
+    "target": "1264",
+    "line": "경의선",
+    "time": 120
+  },
+  {
+    "source": "1264",
+    "target": "1263",
+    "line": "경의선",
+    "time": 120
+  },
+  {
+    "source": "1264",
+    "target": "1265",
+    "line": "경의선",
+    "time": 150
+  },
+  {
+    "source": "1265",
+    "target": "1264",
+    "line": "경의선",
+    "time": 150
+  },
+  {
+    "source": "1265",
+    "target": "1266",
+    "line": "경의선",
+    "time": 150
+  },
+  {
+    "source": "1266",
+    "target": "1265",
+    "line": "경의선",
+    "time": 150
+  },
+  {
+    "source": "1266",
+    "target": "1267",
+    "line": "경의선",
+    "time": 120
+  },
+  {
+    "source": "1267",
+    "target": "1266",
+    "line": "경의선",
+    "time": 120
+  },
+  {
+    "source": "1267",
+    "target": "1268",
+    "line": "경의선",
+    "time": 210
+  },
+  {
+    "source": "1268",
+    "target": "1267",
+    "line": "경의선",
+    "time": 210
+  },
+  {
+    "source": "1268",
+    "target": "1269",
+    "line": "경의선",
+    "time": 180
+  },
+  {
+    "source": "1269",
+    "target": "1268",
+    "line": "경의선",
+    "time": 180
+  },
+  {
+    "source": "1269",
+    "target": "1270",
+    "line": "경의선",
+    "time": 120
+  },
+  {
+    "source": "1270",
+    "target": "1269",
+    "line": "경의선",
+    "time": 120
+  },
+  {
+    "source": "1271",
+    "target": "1249",
+    "line": "경의선",
+    "time": 180
+  },
+  {
+    "source": "1249",
+    "target": "1271",
+    "line": "경의선",
+    "time": 180
+  },
+  {
+    "source": "1270",
+    "target": "1271",
+    "line": "경의선",
+    "time": 150
+  },
+  {
+    "source": "1271",
+    "target": "1270",
+    "line": "경의선",
+    "time": 150
+  },
+  {
+    "source": "1249",
+    "target": "1272",
+    "line": "경의선",
+    "time": 150
+  },
+  {
+    "source": "1272",
+    "target": "1249",
+    "line": "경의선",
+    "time": 150
+  },
+  {
+    "source": "1272",
+    "target": "1273",
+    "line": "경의선",
+    "time": 150
+  },
+  {
+    "source": "1273",
+    "target": "1272",
+    "line": "경의선",
+    "time": 150
+  },
+  {
+    "source": "1273",
+    "target": "1274",
+    "line": "경의선",
+    "time": 150
+  },
+  {
+    "source": "1274",
+    "target": "1273",
+    "line": "경의선",
+    "time": 150
+  },
+  {
+    "source": "1274",
+    "target": "1275",
+    "line": "경의선",
+    "time": 150
+  },
+  {
+    "source": "1275",
+    "target": "1274",
+    "line": "경의선",
+    "time": 150
+  },
+  {
+    "source": "1275",
+    "target": "1276",
+    "line": "경의선",
+    "time": 150
+  },
+  {
+    "source": "1276",
+    "target": "1275",
+    "line": "경의선",
+    "time": 150
+  },
+  {
+    "source": "1276",
+    "target": "1277",
+    "line": "경의선",
+    "time": 150
+  },
+  {
+    "source": "1277",
+    "target": "1276",
+    "line": "경의선",
+    "time": 150
+  },
+  {
+    "source": "1277",
+    "target": "1278",
+    "line": "경의선",
+    "time": 120
+  },
+  {
+    "source": "1278",
+    "target": "1277",
+    "line": "경의선",
+    "time": 120
+  },
+  {
+    "source": "1278",
+    "target": "1279",
+    "line": "경의선",
+    "time": 210
+  },
+  {
+    "source": "1279",
+    "target": "1278",
+    "line": "경의선",
+    "time": 210
+  },
+  {
+    "source": "1279",
+    "target": "1280",
+    "line": "경의선",
+    "time": 150
+  },
+  {
+    "source": "1280",
+    "target": "1279",
+    "line": "경의선",
+    "time": 150
+  },
+  {
+    "source": "1280",
+    "target": "1282",
+    "line": "경의선",
+    "time": 240
+  },
+  {
+    "source": "1282",
+    "target": "1280",
+    "line": "경의선",
+    "time": 240
+  },
+  {
+    "source": "1282",
+    "target": "1283",
+    "line": "경의선",
+    "time": 180
+  },
+  {
+    "source": "1283",
+    "target": "1282",
+    "line": "경의선",
+    "time": 180
+  },
+  {
+    "source": "1283",
+    "target": "1284",
+    "line": "경의선",
+    "time": 240
+  },
+  {
+    "source": "1284",
+    "target": "1283",
+    "line": "경의선",
+    "time": 240
+  },
+  {
+    "source": "1008",
+    "target": "1290",
+    "line": "경원선",
+    "time": 240
+  },
+  {
+    "source": "1290",
+    "target": "1008",
+    "line": "경의선",
+    "time": 240
+  },
+  {
+    "source": "1290",
+    "target": "1261",
+    "line": "경의선",
+    "time": 180
+  },
+  {
+    "source": "1261",
+    "target": "1290",
+    "line": "경의선",
+    "time": 180
+  },
+  {
+    "source": "1306",
+    "target": "1305",
+    "line": "경춘선",
+    "time": 240
+  },
+  {
+    "source": "1305",
+    "target": "1306",
+    "line": "경춘선",
+    "time": 240
+  },
+  {
+    "source": "1307",
+    "target": "1306",
+    "line": "경춘선",
+    "time": 180
+  },
+  {
+    "source": "1306",
+    "target": "1307",
+    "line": "경춘선",
+    "time": 180
+  },
+  {
+    "source": "1309",
+    "target": "1307",
+    "line": "경춘선",
+    "time": 120
+  },
+  {
+    "source": "1307",
+    "target": "1309",
+    "line": "경춘선",
+    "time": 120
+  },
+  {
+    "source": "5556",
+    "target": "1308",
+    "line": "경춘선",
+    "time": 480
+  },
+  {
+    "source": "1308",
+    "target": "5556",
+    "line": "경춘선",
+    "time": 480
+  },
+  {
+    "source": "1310",
+    "target": "1309",
+    "line": "경춘선",
+    "time": 90
+  },
+  {
+    "source": "1309",
+    "target": "1310",
+    "line": "경춘선",
+    "time": 90
+  },
+  {
+    "source": "1311",
+    "target": "1310",
+    "line": "경춘선",
+    "time": 180
+  },
+  {
+    "source": "1310",
+    "target": "1311",
+    "line": "경춘선",
+    "time": 180
+  },
+  {
+    "source": "1312",
+    "target": "1311",
+    "line": "경춘선",
+    "time": 200
+  },
+  {
+    "source": "1311",
+    "target": "1312",
+    "line": "경춘선",
+    "time": 200
+  },
+  {
+    "source": "1313",
+    "target": "1312",
+    "line": "경춘선",
+    "time": 120
+  },
+  {
+    "source": "1312",
+    "target": "1313",
+    "line": "경춘선",
+    "time": 120
+  },
+  {
+    "source": "1314",
+    "target": "1313",
+    "line": "경춘선",
+    "time": 150
+  },
+  {
+    "source": "1313",
+    "target": "1314",
+    "line": "경춘선",
+    "time": 150
+  },
+  {
+    "source": "1315",
+    "target": "1314",
+    "line": "경춘선",
+    "time": 210
+  },
+  {
+    "source": "1314",
+    "target": "1315",
+    "line": "경춘선",
+    "time": 210
+  },
+  {
+    "source": "1316",
+    "target": "1315",
+    "line": "경춘선",
+    "time": 210
+  },
+  {
+    "source": "1315",
+    "target": "1316",
+    "line": "경춘선",
+    "time": 210
+  },
+  {
+    "source": "1317",
+    "target": "1316",
+    "line": "경춘선",
+    "time": 240
+  },
+  {
+    "source": "1316",
+    "target": "1317",
+    "line": "경춘선",
+    "time": 240
+  },
+  {
+    "source": "1318",
+    "target": "1317",
+    "line": "경춘선",
+    "time": 180
+  },
+  {
+    "source": "1317",
+    "target": "1318",
+    "line": "경춘선",
+    "time": 180
+  },
+  {
+    "source": "1319",
+    "target": "1318",
+    "line": "경춘선",
+    "time": 210
+  },
+  {
+    "source": "1318",
+    "target": "1319",
+    "line": "경춘선",
+    "time": 210
+  },
+  {
+    "source": "1320",
+    "target": "1319",
+    "line": "경춘선",
+    "time": 370
+  },
+  {
+    "source": "1319",
+    "target": "1320",
+    "line": "경춘선",
+    "time": 370
+  },
+  {
+    "source": "1321",
+    "target": "1320",
+    "line": "경춘선",
+    "time": 390
+  },
+  {
+    "source": "1320",
+    "target": "1321",
+    "line": "경춘선",
+    "time": 390
+  },
+  {
+    "source": "1322",
+    "target": "1321",
+    "line": "경춘선",
+    "time": 270
+  },
+  {
+    "source": "1321",
+    "target": "1322",
+    "line": "경춘선",
+    "time": 270
+  },
+  {
+    "source": "1323",
+    "target": "1322",
+    "line": "경춘선",
+    "time": 360
+  },
+  {
+    "source": "1322",
+    "target": "1323",
+    "line": "경춘선",
+    "time": 360
+  },
+  {
+    "source": "1324",
+    "target": "1323",
+    "line": "경춘선",
+    "time": 270
+  },
+  {
+    "source": "1323",
+    "target": "1324",
+    "line": "경춘선",
+    "time": 270
+  },
+  {
+    "source": "1325",
+    "target": "1324",
+    "line": "경춘선",
+    "time": 210
+  },
+  {
+    "source": "1324",
+    "target": "1325",
+    "line": "경춘선",
+    "time": 210
+  },
+  {
+    "source": "1326",
+    "target": "1325",
+    "line": "경춘선",
+    "time": 300
+  },
+  {
+    "source": "1325",
+    "target": "1326",
+    "line": "경춘선",
+    "time": 300
+  },
+  {
+    "source": "1327",
+    "target": "1326",
+    "line": "경춘선",
+    "time": 360
+  },
+  {
+    "source": "1326",
+    "target": "1327",
+    "line": "경춘선",
+    "time": 360
+  },
+  {
+    "source": "1328",
+    "target": "1327",
+    "line": "경춘선",
+    "time": 330
+  },
+  {
+    "source": "1327",
+    "target": "1328",
+    "line": "경춘선",
+    "time": 330
+  },
+  {
+    "source": "1329",
+    "target": "1328",
+    "line": "경춘선",
+    "time": 210
+  },
+  {
+    "source": "1328",
+    "target": "1329",
+    "line": "경춘선",
+    "time": 210
+  },
+  {
+    "source": "1402",
+    "target": "1401",
+    "line": "장항선",
+    "time": 150
+  },
+  {
+    "source": "1401",
+    "target": "1402",
+    "line": "장항선",
+    "time": 150
+  },
+  {
+    "source": "1403",
+    "target": "1402",
+    "line": "장항선",
+    "time": 150
+  },
+  {
+    "source": "1402",
+    "target": "1403",
+    "line": "장항선",
+    "time": 150
+  },
+  {
+    "source": "1404",
+    "target": "1403",
+    "line": "장항선",
+    "time": 180
+  },
+  {
+    "source": "1403",
+    "target": "1404",
+    "line": "장항선",
+    "time": 180
+  },
+  {
+    "source": "1405",
+    "target": "1404",
+    "line": "장항선",
+    "time": 420
+  },
+  {
+    "source": "1404",
+    "target": "1405",
+    "line": "장항선",
+    "time": 420
+  },
+  {
+    "source": "1407",
+    "target": "1405",
+    "line": "장항선",
+    "time": 270
+  },
+  {
+    "source": "1405",
+    "target": "1407",
+    "line": "장항선",
+    "time": 270
+  },
+  {
+    "source": "1408",
+    "target": "1407",
+    "line": "장항선",
+    "time": 270
+  },
+  {
+    "source": "1407",
+    "target": "1408",
+    "line": "장항선",
+    "time": 270
+  },
+  {
+    "source": "1451",
+    "target": "1450",
+    "line": "과천선",
+    "time": 120
+  },
+  {
+    "source": "1450",
+    "target": "1451",
+    "line": "과천선",
+    "time": 120
+  },
+  {
+    "source": "1452",
+    "target": "1451",
+    "line": "과천선",
+    "time": 120
+  },
+  {
+    "source": "1451",
+    "target": "1452",
+    "line": "과천선",
+    "time": 120
+  },
+  {
+    "source": "1453",
+    "target": "1452",
+    "line": "과천선",
+    "time": 120
+  },
+  {
+    "source": "1452",
+    "target": "1453",
+    "line": "과천선",
+    "time": 120
+  },
+  {
+    "source": "1454",
+    "target": "1453",
+    "line": "과천선",
+    "time": 120
+  },
+  {
+    "source": "1453",
+    "target": "1454",
+    "line": "과천선",
+    "time": 120
+  },
+  {
+    "source": "1455",
+    "target": "1454",
+    "line": "과천선",
+    "time": 240
+  },
+  {
+    "source": "1454",
+    "target": "1455",
+    "line": "과천선",
+    "time": 240
+  },
+  {
+    "source": "1456",
+    "target": "1455",
+    "line": "과천선",
+    "time": 150
+  },
+  {
+    "source": "1455",
+    "target": "1456",
+    "line": "과천선",
+    "time": 150
+  },
+  {
+    "source": "1457",
+    "target": "1456",
+    "line": "과천선",
+    "time": 120
+  },
+  {
+    "source": "1456",
+    "target": "1457",
+    "line": "과천선",
+    "time": 120
+  },
+  {
+    "source": "1458",
+    "target": "1457",
+    "line": "과천선",
+    "time": 210
+  },
+  {
+    "source": "1457",
+    "target": "1458",
+    "line": "과천선",
+    "time": 210
+  },
+  {
+    "source": "1502",
+    "target": "1501",
+    "line": "경강선",
+    "time": 150
+  },
+  {
+    "source": "1501",
+    "target": "1502",
+    "line": "경강선",
+    "time": 150
+  },
+  {
+    "source": "1503",
+    "target": "1502",
+    "line": "경강선",
+    "time": 330
+  },
+  {
+    "source": "1502",
+    "target": "1503",
+    "line": "경강선",
+    "time": 330
+  },
+  {
+    "source": "1504",
+    "target": "1503",
+    "line": "경강선",
+    "time": 300
+  },
+  {
+    "source": "1503",
+    "target": "1504",
+    "line": "경강선",
+    "time": 300
+  },
+  {
+    "source": "1505",
+    "target": "1504",
+    "line": "경강선",
+    "time": 270
+  },
+  {
+    "source": "1504",
+    "target": "1505",
+    "line": "경강선",
+    "time": 270
+  },
+  {
+    "source": "1506",
+    "target": "1505",
+    "line": "경강선",
+    "time": 270
+  },
+  {
+    "source": "1505",
+    "target": "1506",
+    "line": "경강선",
+    "time": 270
+  },
+  {
+    "source": "1507",
+    "target": "1506",
+    "line": "경강선",
+    "time": 330
+  },
+  {
+    "source": "1506",
+    "target": "1507",
+    "line": "경강선",
+    "time": 330
+  },
+  {
+    "source": "1508",
+    "target": "1507",
+    "line": "경강선",
+    "time": 360
+  },
+  {
+    "source": "1507",
+    "target": "1508",
+    "line": "경강선",
+    "time": 360
+  },
+  {
+    "source": "1509",
+    "target": "1508",
+    "line": "경강선",
+    "time": 240
+  },
+  {
+    "source": "1508",
+    "target": "1509",
+    "line": "경강선",
+    "time": 240
+  },
+  {
+    "source": "1510",
+    "target": "1509",
+    "line": "경강선",
+    "time": 390
+  },
+  {
+    "source": "1509",
+    "target": "1510",
+    "line": "경강선",
+    "time": 390
+  },
+  {
+    "source": "1511",
+    "target": "1510",
+    "line": "경강선",
+    "time": 300
+  },
+  {
+    "source": "1510",
+    "target": "1511",
+    "line": "경강선",
+    "time": 300
+  },
+  {
+    "source": "1701",
+    "target": "1007",
+    "line": "경부선",
+    "time": 150
+  },
+  {
+    "source": "1007",
+    "target": "1701",
+    "line": "경부선",
+    "time": 150
+  },
+  {
+    "source": "1702",
+    "target": "1701",
+    "line": "경부선",
+    "time": 270
+  },
+  {
+    "source": "1701",
+    "target": "1702",
+    "line": "경부선",
+    "time": 270
+  },
+  {
+    "source": "1704",
+    "target": "1703",
+    "line": "경부선",
+    "time": 180
+  },
+  {
+    "source": "1703",
+    "target": "1704",
+    "line": "경부선",
+    "time": 180
+  },
+  {
+    "source": "1705",
+    "target": "1704",
+    "line": "경부선",
+    "time": 150
+  },
+  {
+    "source": "1704",
+    "target": "1705",
+    "line": "경부선",
+    "time": 150
+  },
+  {
+    "source": "1706",
+    "target": "1705",
+    "line": "경부선",
+    "time": 180
+  },
+  {
+    "source": "1705",
+    "target": "1706",
+    "line": "경부선",
+    "time": 180
+  },
+  {
+    "source": "1707",
+    "target": "1706",
+    "line": "경부선",
+    "time": 180
+  },
+  {
+    "source": "1706",
+    "target": "1707",
+    "line": "경부선",
+    "time": 180
+  },
+  {
+    "source": "1708",
+    "target": "1707",
+    "line": "경부선",
+    "time": 150
+  },
+  {
+    "source": "1707",
+    "target": "1708",
+    "line": "경부선",
+    "time": 150
+  },
+  {
+    "source": "1709",
+    "target": "1708",
+    "line": "경부선",
+    "time": 180
+  },
+  {
+    "source": "1708",
+    "target": "1709",
+    "line": "경부선",
+    "time": 180
+  },
+  {
+    "source": "1711",
+    "target": "1710",
+    "line": "경부선",
+    "time": 210
+  },
+  {
+    "source": "1710",
+    "target": "1711",
+    "line": "경부선",
+    "time": 210
+  },
+  {
+    "source": "1712",
+    "target": "1711",
+    "line": "경부선",
+    "time": 210
+  },
+  {
+    "source": "1711",
+    "target": "1712",
+    "line": "경부선",
+    "time": 210
+  },
+  {
+    "source": "1713",
+    "target": "1712",
+    "line": "경부선",
+    "time": 180
+  },
+  {
+    "source": "1712",
+    "target": "1713",
+    "line": "경부선",
+    "time": 180
+  },
+  {
+    "source": "1714",
+    "target": "1702",
+    "line": "경부선",
+    "time": 150
+  },
+  {
+    "source": "1702",
+    "target": "1714",
+    "line": "경부선",
+    "time": 150
+  },
+  {
+    "source": "1703",
+    "target": "1714",
+    "line": "경부선",
+    "time": 120
+  },
+  {
+    "source": "1714",
+    "target": "1703",
+    "line": "경부선",
+    "time": 120
+  },
+  {
+    "source": "1715",
+    "target": "1713",
+    "line": "경부선",
+    "time": 210
+  },
+  {
+    "source": "1713",
+    "target": "1715",
+    "line": "경부선",
+    "time": 210
+  },
+  {
+    "source": "1716",
+    "target": "1715",
+    "line": "경부선",
+    "time": 270
+  },
+  {
+    "source": "1715",
+    "target": "1716",
+    "line": "경부선",
+    "time": 270
+  },
+  {
+    "source": "1717",
+    "target": "1716",
+    "line": "경부선",
+    "time": 180
+  },
+  {
+    "source": "1716",
+    "target": "1717",
+    "line": "경부선",
+    "time": 180
+  },
+  {
+    "source": "1718",
+    "target": "1717",
+    "line": "경부선",
+    "time": 180
+  },
+  {
+    "source": "1717",
+    "target": "1718",
+    "line": "경부선",
+    "time": 180
+  },
+  {
+    "source": "1719",
+    "target": "1718",
+    "line": "경부선",
+    "time": 210
+  },
+  {
+    "source": "1718",
+    "target": "1719",
+    "line": "경부선",
+    "time": 210
+  },
+  {
+    "source": "1720",
+    "target": "1719",
+    "line": "경부선",
+    "time": 210
+  },
+  {
+    "source": "1719",
+    "target": "1720",
+    "line": "경부선",
+    "time": 210
+  },
+  {
+    "source": "1721",
+    "target": "1720",
+    "line": "경부선",
+    "time": 240
+  },
+  {
+    "source": "1720",
+    "target": "1721",
+    "line": "경부선",
+    "time": 240
+  },
+  {
+    "source": "1722",
+    "target": "1721",
+    "line": "경부선",
+    "time": 180
+  },
+  {
+    "source": "1721",
+    "target": "1722",
+    "line": "경부선",
+    "time": 180
+  },
+  {
+    "source": "1723",
+    "target": "1722",
+    "line": "경부선",
+    "time": 270
+  },
+  {
+    "source": "1722",
+    "target": "1723",
+    "line": "경부선",
+    "time": 270
+  },
+  {
+    "source": "1724",
+    "target": "1723",
+    "line": "경부선",
+    "time": 270
+  },
+  {
+    "source": "1723",
+    "target": "1724",
+    "line": "경부선",
+    "time": 270
+  },
+  {
+    "source": "1725",
+    "target": "1724",
+    "line": "경부선",
+    "time": 450
+  },
+  {
+    "source": "1724",
+    "target": "1725",
+    "line": "경부선",
+    "time": 450
+  },
+  {
+    "source": "1726",
+    "target": "1725",
+    "line": "경부선",
+    "time": 270
+  },
+  {
+    "source": "1725",
+    "target": "1726",
+    "line": "경부선",
+    "time": 270
+  },
+  {
+    "source": "1727",
+    "target": "1726",
+    "line": "경부선",
+    "time": 270
+  },
+  {
+    "source": "1726",
+    "target": "1727",
+    "line": "경부선",
+    "time": 270
+  },
+  {
+    "source": "1401",
+    "target": "1728",
+    "line": "장항선",
+    "time": 150
+  },
+  {
+    "source": "1728",
+    "target": "1401",
+    "line": "장항선",
+    "time": 150
+  },
+  {
+    "source": "1728",
+    "target": "1727",
+    "line": "경부선",
+    "time": 270
+  },
+  {
+    "source": "1727",
+    "target": "1728",
+    "line": "경부선",
+    "time": 270
+  },
+  {
+    "source": "1729",
+    "target": "1709",
+    "line": "경부선",
+    "time": 120
+  },
+  {
+    "source": "1709",
+    "target": "1729",
+    "line": "경부선",
+    "time": 120
+  },
+  {
+    "source": "1710",
+    "target": "1729",
+    "line": "경부선",
+    "time": 210
+  },
+  {
+    "source": "1729",
+    "target": "1710",
+    "line": "경부선",
+    "time": 210
+  },
+  {
+    "source": "1751",
+    "target": "1458",
+    "line": "안산선",
+    "time": 270
+  },
+  {
+    "source": "1458",
+    "target": "1751",
+    "line": "안산선",
+    "time": 270
+  },
+  {
+    "source": "1753",
+    "target": "1752",
+    "line": "안산선",
+    "time": 150
+  },
+  {
+    "source": "1752",
+    "target": "1753",
+    "line": "안산선",
+    "time": 150
+  },
+  {
+    "source": "1754",
+    "target": "1753",
+    "line": "안산선",
+    "time": 240
+  },
+  {
+    "source": "1753",
+    "target": "1754",
+    "line": "안산선",
+    "time": 240
+  },
+  {
+    "source": "1755",
+    "target": "1754",
+    "line": "안산선",
+    "time": 120
+  },
+  {
+    "source": "1754",
+    "target": "1755",
+    "line": "안산선",
+    "time": 120
+  },
+  {
+    "source": "1756",
+    "target": "1755",
+    "line": "안산선",
+    "time": 120
+  },
+  {
+    "source": "1755",
+    "target": "1756",
+    "line": "안산선",
+    "time": 120
+  },
+  {
+    "source": "1757",
+    "target": "1756",
+    "line": "안산선",
+    "time": 120
+  },
+  {
+    "source": "1756",
+    "target": "1757",
+    "line": "안산선",
+    "time": 120
+  },
+  {
+    "source": "1758",
+    "target": "1757",
+    "line": "안산선",
+    "time": 150
+  },
+  {
+    "source": "1757",
+    "target": "1758",
+    "line": "안산선",
+    "time": 150
+  },
+  {
+    "source": "1759",
+    "target": "1758",
+    "line": "안산선",
+    "time": 180
+  },
+  {
+    "source": "1758",
+    "target": "1759",
+    "line": "안산선",
+    "time": 180
+  },
+  {
+    "source": "1760",
+    "target": "1759",
+    "line": "안산선",
+    "time": 180
+  },
+  {
+    "source": "1759",
+    "target": "1760",
+    "line": "안산선",
+    "time": 180
+  },
+  {
+    "source": "1761",
+    "target": "1760",
+    "line": "안산선",
+    "time": 210
+  },
+  {
+    "source": "1760",
+    "target": "1761",
+    "line": "안산선",
+    "time": 210
+  },
+  {
+    "source": "1762",
+    "target": "1761",
+    "line": "안산선",
+    "time": 120
+  },
+  {
+    "source": "1761",
+    "target": "1762",
+    "line": "안산선",
+    "time": 120
+  },
+  {
+    "source": "1763",
+    "target": "1751",
+    "line": "안산선",
+    "time": 90
+  },
+  {
+    "source": "1751",
+    "target": "1763",
+    "line": "안산선",
+    "time": 90
+  },
+  {
+    "source": "1752",
+    "target": "1763",
+    "line": "안산선",
+    "time": 180
+  },
+  {
+    "source": "1763",
+    "target": "1752",
+    "line": "안산선",
+    "time": 180
+  },
+  {
+    "source": "1802",
+    "target": "1801",
+    "line": "경인선",
+    "time": 150
+  },
+  {
+    "source": "1801",
+    "target": "1802",
+    "line": "경인선",
+    "time": 150
+  },
+  {
+    "source": "1807",
+    "target": "1806",
+    "line": "경인선",
+    "time": 150
+  },
+  {
+    "source": "1806",
+    "target": "1807",
+    "line": "경인선",
+    "time": 150
+  },
+  {
+    "source": "1808",
+    "target": "1807",
+    "line": "경인선",
+    "time": 150
+  },
+  {
+    "source": "1807",
+    "target": "1808",
+    "line": "경인선",
+    "time": 150
+  },
+  {
+    "source": "1812",
+    "target": "1811",
+    "line": "경인선",
+    "time": 210
+  },
+  {
+    "source": "1811",
+    "target": "1812",
+    "line": "경인선",
+    "time": 210
+  },
+  {
+    "source": "1801",
+    "target": "1813",
+    "line": "경인선",
+    "time": 120
+  },
+  {
+    "source": "1813",
+    "target": "1801",
+    "line": "경인선",
+    "time": 120
+  },
+  {
+    "source": "1814",
+    "target": "1803",
+    "line": "경인선",
+    "time": 150
+  },
+  {
+    "source": "1803",
+    "target": "1814",
+    "line": "경인선",
+    "time": 150
+  },
+  {
+    "source": "1804",
+    "target": "1814",
+    "line": "경인선",
+    "time": 120
+  },
+  {
+    "source": "1814",
+    "target": "1804",
+    "line": "경인선",
+    "time": 120
+  },
+  {
+    "source": "1815",
+    "target": "1805",
+    "line": "경인선",
+    "time": 120
+  },
+  {
+    "source": "1805",
+    "target": "1815",
+    "line": "경인선",
+    "time": 120
+  },
+  {
+    "source": "1806",
+    "target": "1815",
+    "line": "경인선",
+    "time": 150
+  },
+  {
+    "source": "1815",
+    "target": "1806",
+    "line": "경인선",
+    "time": 150
+  },
+  {
+    "source": "1816",
+    "target": "1808",
+    "line": "경인선",
+    "time": 150
+  },
+  {
+    "source": "1808",
+    "target": "1816",
+    "line": "경인선",
+    "time": 150
+  },
+  {
+    "source": "1809",
+    "target": "1816",
+    "line": "경인선",
+    "time": 120
+  },
+  {
+    "source": "1816",
+    "target": "1809",
+    "line": "경인선",
+    "time": 120
+  },
+  {
+    "source": "1817",
+    "target": "1810",
+    "line": "경인선",
+    "time": 120
+  },
+  {
+    "source": "1810",
+    "target": "1817",
+    "line": "경인선",
+    "time": 120
+  },
+  {
+    "source": "1811",
+    "target": "1817",
+    "line": "경인선",
+    "time": 120
+  },
+  {
+    "source": "1817",
+    "target": "1811",
+    "line": "경인선",
+    "time": 120
+  },
+  {
+    "source": "1821",
+    "target": "1802",
+    "line": "경인선",
+    "time": 180
+  },
+  {
+    "source": "1802",
+    "target": "1821",
+    "line": "경인선",
+    "time": 180
+  },
+  {
+    "source": "1803",
+    "target": "1821",
+    "line": "경인선",
+    "time": 120
+  },
+  {
+    "source": "1821",
+    "target": "1803",
+    "line": "경인선",
+    "time": 120
+  },
+  {
+    "source": "1822",
+    "target": "1804",
+    "line": "경인선",
+    "time": 150
+  },
+  {
+    "source": "1804",
+    "target": "1822",
+    "line": "경인선",
+    "time": 150
+  },
+  {
+    "source": "1805",
+    "target": "1822",
+    "line": "경인선",
+    "time": 120
+  },
+  {
+    "source": "1822",
+    "target": "1805",
+    "line": "경인선",
+    "time": 120
+  },
+  {
+    "source": "1823",
+    "target": "1809",
+    "line": "경인선",
+    "time": 120
+  },
+  {
+    "source": "1809",
+    "target": "1823",
+    "line": "경인선",
+    "time": 120
+  },
+  {
+    "source": "1810",
+    "target": "1823",
+    "line": "경인선",
+    "time": 120
+  },
+  {
+    "source": "1823",
+    "target": "1810",
+    "line": "경인선",
+    "time": 120
+  },
+  {
+    "source": "1847",
+    "target": "1845",
+    "line": "분당선",
+    "time": 200
+  },
+  {
+    "source": "1845",
+    "target": "1847",
+    "line": "분당선",
+    "time": 200
+  },
+  {
+    "source": "1848",
+    "target": "1847",
+    "line": "분당선",
+    "time": 110
+  },
+  {
+    "source": "1847",
+    "target": "1848",
+    "line": "분당선",
+    "time": 110
+  },
+  {
+    "source": "1849",
+    "target": "1848",
+    "line": "분당선",
+    "time": 180
+  },
+  {
+    "source": "1848",
+    "target": "1849",
+    "line": "분당선",
+    "time": 180
+  },
+  {
+    "source": "1023",
+    "target": "1850",
+    "line": "분당선",
+    "time": 120
+  },
+  {
+    "source": "1850",
+    "target": "1023",
+    "line": "분당선",
+    "time": 120
+  },
+  {
+    "source": "1850",
+    "target": "1849",
+    "line": "분당선",
+    "time": 90
+  },
+  {
+    "source": "1849",
+    "target": "1850",
+    "line": "분당선",
+    "time": 90
+  },
+  {
+    "source": "1851",
+    "target": "1031",
+    "line": "분당선",
+    "time": 180
+  },
+  {
+    "source": "1031",
+    "target": "1851",
+    "line": "분당선",
+    "time": 180
+  },
+  {
+    "source": "1852",
+    "target": "1851",
+    "line": "분당선",
+    "time": 120
+  },
+  {
+    "source": "1851",
+    "target": "1852",
+    "line": "분당선",
+    "time": 120
+  },
+  {
+    "source": "1853",
+    "target": "1852",
+    "line": "분당선",
+    "time": 120
+  },
+  {
+    "source": "1852",
+    "target": "1853",
+    "line": "분당선",
+    "time": 120
+  },
+  {
+    "source": "1854",
+    "target": "1853",
+    "line": "분당선",
+    "time": 180
+  },
+  {
+    "source": "1853",
+    "target": "1854",
+    "line": "분당선",
+    "time": 180
+  },
+  {
+    "source": "1856",
+    "target": "1855",
+    "line": "분당선",
+    "time": 120
+  },
+  {
+    "source": "1855",
+    "target": "1856",
+    "line": "분당선",
+    "time": 120
+  },
+  {
+    "source": "1857",
+    "target": "1856",
+    "line": "분당선",
+    "time": 150
+  },
+  {
+    "source": "1856",
+    "target": "1857",
+    "line": "분당선",
+    "time": 150
+  },
+  {
+    "source": "1858",
+    "target": "1857",
+    "line": "분당선",
+    "time": 150
+  },
+  {
+    "source": "1857",
+    "target": "1858",
+    "line": "분당선",
+    "time": 150
+  },
+  {
+    "source": "1859",
+    "target": "1858",
+    "line": "분당선",
+    "time": 120
+  },
+  {
+    "source": "1858",
+    "target": "1859",
+    "line": "분당선",
+    "time": 120
+  },
+  {
+    "source": "1860",
+    "target": "1854",
+    "line": "분당선",
+    "time": 140
+  },
+  {
+    "source": "1854",
+    "target": "1860",
+    "line": "분당선",
+    "time": 140
+  },
+  {
+    "source": "1855",
+    "target": "1860",
+    "line": "분당선",
+    "time": 120
+  },
+  {
+    "source": "1860",
+    "target": "1855",
+    "line": "분당선",
+    "time": 120
+  },
+  {
+    "source": "1862",
+    "target": "1859",
+    "line": "분당선",
+    "time": 210
+  },
+  {
+    "source": "1859",
+    "target": "1862",
+    "line": "분당선",
+    "time": 210
+  },
+  {
+    "source": "1861",
+    "target": "1862",
+    "line": "분당선",
+    "time": 180
+  },
+  {
+    "source": "1862",
+    "target": "1861",
+    "line": "분당선",
+    "time": 180
+  },
+  {
+    "source": "1863",
+    "target": "1861",
+    "line": "분당선",
+    "time": 140
+  },
+  {
+    "source": "1861",
+    "target": "1863",
+    "line": "분당선",
+    "time": 140
+  },
+  {
+    "source": "1864",
+    "target": "1863",
+    "line": "분당선",
+    "time": 140
+  },
+  {
+    "source": "1863",
+    "target": "1864",
+    "line": "분당선",
+    "time": 140
+  },
+  {
+    "source": "1865",
+    "target": "1864",
+    "line": "분당선",
+    "time": 140
+  },
+  {
+    "source": "1864",
+    "target": "1865",
+    "line": "분당선",
+    "time": 140
+  },
+  {
+    "source": "1866",
+    "target": "1865",
+    "line": "분당선",
+    "time": 140
+  },
+  {
+    "source": "1865",
+    "target": "1866",
+    "line": "분당선",
+    "time": 140
+  },
+  {
+    "source": "1867",
+    "target": "1866",
+    "line": "분당선",
+    "time": 200
+  },
+  {
+    "source": "1866",
+    "target": "1867",
+    "line": "분당선",
+    "time": 200
+  },
+  {
+    "source": "1868",
+    "target": "1867",
+    "line": "분당선",
+    "time": 110
+  },
+  {
+    "source": "1867",
+    "target": "1868",
+    "line": "분당선",
+    "time": 110
+  },
+  {
+    "source": "1869",
+    "target": "1868",
+    "line": "분당선",
+    "time": 150
+  },
+  {
+    "source": "1868",
+    "target": "1869",
+    "line": "분당선",
+    "time": 150
+  },
+  {
+    "source": "1870",
+    "target": "1869",
+    "line": "분당선",
+    "time": 140
+  },
+  {
+    "source": "1869",
+    "target": "1870",
+    "line": "분당선",
+    "time": 140
+  },
+  {
+    "source": "1871",
+    "target": "1870",
+    "line": "분당선",
+    "time": 180
+  },
+  {
+    "source": "1870",
+    "target": "1871",
+    "line": "분당선",
+    "time": 180
+  },
+  {
+    "source": "1846",
+    "target": "1872",
+    "line": "분당선",
+    "time": 120
+  },
+  {
+    "source": "1872",
+    "target": "1846",
+    "line": "분당선",
+    "time": 120
+  },
+  {
+    "source": "1872",
+    "target": "1871",
+    "line": "분당선",
+    "time": 140
+  },
+  {
+    "source": "1871",
+    "target": "1872",
+    "line": "분당선",
+    "time": 140
+  },
+  {
+    "source": "1873",
+    "target": "1846",
+    "line": "수인선",
+    "time": 240
+  },
+  {
+    "source": "1846",
+    "target": "1873",
+    "line": "수인선",
+    "time": 240
+  },
+  {
+    "source": "1874",
+    "target": "1873",
+    "line": "수인선",
+    "time": 150
+  },
+  {
+    "source": "1873",
+    "target": "1874",
+    "line": "수인선",
+    "time": 150
+  },
+  {
+    "source": "1875",
+    "target": "1874",
+    "line": "수인선",
+    "time": 210
+  },
+  {
+    "source": "1874",
+    "target": "1875",
+    "line": "수인선",
+    "time": 210
+  },
+  {
+    "source": "1876",
+    "target": "1875",
+    "line": "수인선",
+    "time": 180
+  },
+  {
+    "source": "1875",
+    "target": "1876",
+    "line": "수인선",
+    "time": 180
+  },
+  {
+    "source": "1877",
+    "target": "1876",
+    "line": "수인선",
+    "time": 300
+  },
+  {
+    "source": "1876",
+    "target": "1877",
+    "line": "수인선",
+    "time": 300
+  },
+  {
+    "source": "1878",
+    "target": "5762",
+    "line": "수인선",
+    "time": 180
+  },
+  {
+    "source": "5762",
+    "target": "1878",
+    "line": "수인선",
+    "time": 180
+  },
+  {
+    "source": "1879",
+    "target": "1878",
+    "line": "수인선",
+    "time": 150
+  },
+  {
+    "source": "1878",
+    "target": "1879",
+    "line": "수인선",
+    "time": 150
+  },
+  {
+    "source": "1880",
+    "target": "1879",
+    "line": "수인선",
+    "time": 120
+  },
+  {
+    "source": "1879",
+    "target": "1880",
+    "line": "수인선",
+    "time": 120
+  },
+  {
+    "source": "1881",
+    "target": "1880",
+    "line": "수인선",
+    "time": 120
+  },
+  {
+    "source": "1880",
+    "target": "1881",
+    "line": "수인선",
+    "time": 120
+  },
+  {
+    "source": "1882",
+    "target": "1881",
+    "line": "수인선",
+    "time": 120
+  },
+  {
+    "source": "1881",
+    "target": "1882",
+    "line": "수인선",
+    "time": 120
+  },
+  {
+    "source": "1883",
+    "target": "1882",
+    "line": "수인선",
+    "time": 120
+  },
+  {
+    "source": "1882",
+    "target": "1883",
+    "line": "수인선",
+    "time": 120
+  },
+  {
+    "source": "1884",
+    "target": "1883",
+    "line": "수인선",
+    "time": 120
+  },
+  {
+    "source": "1883",
+    "target": "1884",
+    "line": "수인선",
+    "time": 120
+  },
+  {
+    "source": "1885",
+    "target": "1884",
+    "line": "수인선",
+    "time": 120
+  },
+  {
+    "source": "1884",
+    "target": "1885",
+    "line": "수인선",
+    "time": 120
+  },
+  {
+    "source": "1886",
+    "target": "1885",
+    "line": "수인선",
+    "time": 210
+  },
+  {
+    "source": "1885",
+    "target": "1886",
+    "line": "수인선",
+    "time": 210
+  },
+  {
+    "source": "1888",
+    "target": "1886",
+    "line": "수인선",
+    "time": 150
+  },
+  {
+    "source": "1886",
+    "target": "1888",
+    "line": "수인선",
+    "time": 150
+  },
+  {
+    "source": "1889",
+    "target": "1888",
+    "line": "수인선",
+    "time": 150
+  },
+  {
+    "source": "1888",
+    "target": "1889",
+    "line": "수인선",
+    "time": 150
+  },
+  {
+    "source": "1890",
+    "target": "1889",
+    "line": "수인선",
+    "time": 150
+  },
+  {
+    "source": "1889",
+    "target": "1890",
+    "line": "수인선",
+    "time": 150
+  },
+  {
+    "source": "1891",
+    "target": "1890",
+    "line": "수인선",
+    "time": 90
+  },
+  {
+    "source": "1890",
+    "target": "1891",
+    "line": "수인선",
+    "time": 90
+  },
+  {
+    "source": "1022",
+    "target": "1901",
+    "line": "경원선",
+    "time": 150
+  },
+  {
+    "source": "1901",
+    "target": "1022",
+    "line": "경원선",
+    "time": 150
+  },
+  {
+    "source": "1901",
+    "target": "1902",
+    "line": "경원선",
+    "time": 120
+  },
+  {
+    "source": "1902",
+    "target": "1901",
+    "line": "경원선",
+    "time": 120
+  },
+  {
+    "source": "1902",
+    "target": "1903",
+    "line": "경원선",
+    "time": 120
+  },
+  {
+    "source": "1903",
+    "target": "1902",
+    "line": "경원선",
+    "time": 120
+  },
+  {
+    "source": "1903",
+    "target": "1904",
+    "line": "경원선",
+    "time": 180
+  },
+  {
+    "source": "1904",
+    "target": "1903",
+    "line": "경원선",
+    "time": 180
+  },
+  {
+    "source": "1904",
+    "target": "1905",
+    "line": "경원선",
+    "time": 150
+  },
+  {
+    "source": "1905",
+    "target": "1904",
+    "line": "경원선",
+    "time": 150
+  },
+  {
+    "source": "1905",
+    "target": "1906",
+    "line": "경원선",
+    "time": 180
+  },
+  {
+    "source": "1906",
+    "target": "1905",
+    "line": "경원선",
+    "time": 180
+  },
+  {
+    "source": "1906",
+    "target": "1907",
+    "line": "경원선",
+    "time": 150
+  },
+  {
+    "source": "1907",
+    "target": "1906",
+    "line": "경원선",
+    "time": 150
+  },
+  {
+    "source": "1907",
+    "target": "1908",
+    "line": "경원선",
+    "time": 120
+  },
+  {
+    "source": "1908",
+    "target": "1907",
+    "line": "경원선",
+    "time": 120
+  },
+  {
+    "source": "1908",
+    "target": "1909",
+    "line": "경원선",
+    "time": 150
+  },
+  {
+    "source": "1909",
+    "target": "1908",
+    "line": "경원선",
+    "time": 150
+  },
+  {
+    "source": "1909",
+    "target": "1910",
+    "line": "경원선",
+    "time": 300
+  },
+  {
+    "source": "1910",
+    "target": "1909",
+    "line": "경원선",
+    "time": 300
+  },
+  {
+    "source": "1910",
+    "target": "1911",
+    "line": "경원선",
+    "time": 210
+  },
+  {
+    "source": "1911",
+    "target": "1910",
+    "line": "경원선",
+    "time": 210
+  },
+  {
+    "source": "1911",
+    "target": "1912",
+    "line": "경원선",
+    "time": 300
+  },
+  {
+    "source": "1912",
+    "target": "1911",
+    "line": "경원선",
+    "time": 300
+  },
+  {
+    "source": "1912",
+    "target": "1913",
+    "line": "경원선",
+    "time": 120
+  },
+  {
+    "source": "1913",
+    "target": "1912",
+    "line": "경원선",
+    "time": 120
+  },
+  {
+    "source": "1913",
+    "target": "1914",
+    "line": "경원선",
+    "time": 150
+  },
+  {
+    "source": "1914",
+    "target": "1913",
+    "line": "경원선",
+    "time": 150
+  },
+  {
+    "source": "1914",
+    "target": "1915",
+    "line": "경원선",
+    "time": 150
+  },
+  {
+    "source": "1915",
+    "target": "1914",
+    "line": "경원선",
+    "time": 150
+  },
+  {
+    "source": "1915",
+    "target": "1916",
+    "line": "경원선",
+    "time": 210
+  },
+  {
+    "source": "1916",
+    "target": "1915",
+    "line": "경원선",
+    "time": 210
+  },
+  {
+    "source": "1950",
+    "target": "1948",
+    "line": "일산선",
+    "time": 150
+  },
+  {
+    "source": "1948",
+    "target": "1950",
+    "line": "일산선",
+    "time": 150
+  },
+  {
+    "source": "1948",
+    "target": "1951",
+    "line": "일산선",
+    "time": 180
+  },
+  {
+    "source": "1951",
+    "target": "1948",
+    "line": "일산선",
+    "time": 180
+  },
+  {
+    "source": "1951",
+    "target": "1952",
+    "line": "일산선",
+    "time": 210
+  },
+  {
+    "source": "1952",
+    "target": "1951",
+    "line": "일산선",
+    "time": 210
+  },
+  {
+    "source": "1952",
+    "target": "1953",
+    "line": "일산선",
+    "time": 180
+  },
+  {
+    "source": "1953",
+    "target": "1952",
+    "line": "일산선",
+    "time": 180
+  },
+  {
+    "source": "1953",
+    "target": "1954",
+    "line": "일산선",
+    "time": 210
+  },
+  {
+    "source": "1954",
+    "target": "1953",
+    "line": "일산선",
+    "time": 210
+  },
+  {
+    "source": "1954",
+    "target": "1955",
+    "line": "일산선",
+    "time": 150
+  },
+  {
+    "source": "1955",
+    "target": "1954",
+    "line": "일산선",
+    "time": 150
+  },
+  {
+    "source": "1955",
+    "target": "1956",
+    "line": "일산선",
+    "time": 120
+  },
+  {
+    "source": "1956",
+    "target": "1955",
+    "line": "일산선",
+    "time": 120
+  },
+  {
+    "source": "1956",
+    "target": "1957",
+    "line": "일산선",
+    "time": 150
+  },
+  {
+    "source": "1957",
+    "target": "1956",
+    "line": "일산선",
+    "time": 150
+  },
+  {
+    "source": "1957",
+    "target": "1958",
+    "line": "일산선",
+    "time": 150
+  },
+  {
+    "source": "1958",
+    "target": "1957",
+    "line": "일산선",
+    "time": 150
+  },
+  {
+    "source": "2512",
+    "target": "2511",
+    "line": "5호선",
+    "time": 120
+  },
+  {
+    "source": "2511",
+    "target": "2512",
+    "line": "5호선",
+    "time": 120
+  },
+  {
+    "source": "2513",
+    "target": "2512",
+    "line": "5호선",
+    "time": 130
+  },
+  {
+    "source": "2512",
+    "target": "2513",
+    "line": "5호선",
+    "time": 130
+  },
+  {
+    "source": "2514",
+    "target": "2513",
+    "line": "5호선",
+    "time": 160
+  },
+  {
+    "source": "2513",
+    "target": "2514",
+    "line": "5호선",
+    "time": 160
+  },
+  {
+    "source": "2515",
+    "target": "2514",
+    "line": "5호선",
+    "time": 110
+  },
+  {
+    "source": "2514",
+    "target": "2515",
+    "line": "5호선",
+    "time": 110
+  },
+  {
+    "source": "2516",
+    "target": "2515",
+    "line": "5호선",
+    "time": 130
+  },
+  {
+    "source": "2515",
+    "target": "2516",
+    "line": "5호선",
+    "time": 130
+  },
+  {
+    "source": "2517",
+    "target": "2516",
+    "line": "5호선",
+    "time": 120
+  },
+  {
+    "source": "2516",
+    "target": "2517",
+    "line": "5호선",
+    "time": 120
+  },
+  {
+    "source": "2518",
+    "target": "2517",
+    "line": "5호선",
+    "time": 120
+  },
+  {
+    "source": "2517",
+    "target": "2518",
+    "line": "5호선",
+    "time": 120
+  },
+  {
+    "source": "2519",
+    "target": "2518",
+    "line": "5호선",
+    "time": 120
+  },
+  {
+    "source": "2518",
+    "target": "2519",
+    "line": "5호선",
+    "time": 120
+  },
+  {
+    "source": "2520",
+    "target": "2519",
+    "line": "5호선",
+    "time": 130
+  },
+  {
+    "source": "2519",
+    "target": "2520",
+    "line": "5호선",
+    "time": 130
+  },
+  {
+    "source": "2521",
+    "target": "2520",
+    "line": "5호선",
+    "time": 100
+  },
+  {
+    "source": "2520",
+    "target": "2521",
+    "line": "5호선",
+    "time": 100
+  },
+  {
+    "source": "2522",
+    "target": "2521",
+    "line": "5호선",
+    "time": 110
+  },
+  {
+    "source": "2521",
+    "target": "2522",
+    "line": "5호선",
+    "time": 110
+  },
+  {
+    "source": "2523",
+    "target": "2522",
+    "line": "5호선",
+    "time": 100
+  },
+  {
+    "source": "2522",
+    "target": "2523",
+    "line": "5호선",
+    "time": 100
+  },
+  {
+    "source": "2524",
+    "target": "2523",
+    "line": "5호선",
+    "time": 100
+  },
+  {
+    "source": "2523",
+    "target": "2524",
+    "line": "5호선",
+    "time": 100
+  },
+  {
+    "source": "2525",
+    "target": "2524",
+    "line": "5호선",
+    "time": 90
+  },
+  {
+    "source": "2524",
+    "target": "2525",
+    "line": "5호선",
+    "time": 90
+  },
+  {
+    "source": "2526",
+    "target": "2525",
+    "line": "5호선",
+    "time": 120
+  },
+  {
+    "source": "2525",
+    "target": "2526",
+    "line": "5호선",
+    "time": 120
+  },
+  {
+    "source": "2527",
+    "target": "2526",
+    "line": "5호선",
+    "time": 120
+  },
+  {
+    "source": "2526",
+    "target": "2527",
+    "line": "5호선",
+    "time": 120
+  },
+  {
+    "source": "2528",
+    "target": "2527",
+    "line": "5호선",
+    "time": 100
+  },
+  {
+    "source": "2527",
+    "target": "2528",
+    "line": "5호선",
+    "time": 100
+  },
+  {
+    "source": "2529",
+    "target": "2528",
+    "line": "5호선",
+    "time": 150
+  },
+  {
+    "source": "2528",
+    "target": "2529",
+    "line": "5호선",
+    "time": 150
+  },
+  {
+    "source": "2530",
+    "target": "2529",
+    "line": "5호선",
+    "time": 110
+  },
+  {
+    "source": "2529",
+    "target": "2530",
+    "line": "5호선",
+    "time": 110
+  },
+  {
+    "source": "2531",
+    "target": "2530",
+    "line": "5호선",
+    "time": 100
+  },
+  {
+    "source": "2530",
+    "target": "2531",
+    "line": "5호선",
+    "time": 100
+  },
+  {
+    "source": "2532",
+    "target": "2531",
+    "line": "5호선",
+    "time": 110
+  },
+  {
+    "source": "2531",
+    "target": "2532",
+    "line": "5호선",
+    "time": 110
+  },
+  {
+    "source": "2533",
+    "target": "2532",
+    "line": "5호선",
+    "time": 90
+  },
+  {
+    "source": "2532",
+    "target": "2533",
+    "line": "5호선",
+    "time": 90
+  },
+  {
+    "source": "2534",
+    "target": "2533",
+    "line": "5호선",
+    "time": 120
+  },
+  {
+    "source": "2533",
+    "target": "2534",
+    "line": "5호선",
+    "time": 120
+  },
+  {
+    "source": "2535",
+    "target": "2534",
+    "line": "5호선",
+    "time": 130
+  },
+  {
+    "source": "2534",
+    "target": "2535",
+    "line": "5호선",
+    "time": 130
+  },
+  {
+    "source": "2536",
+    "target": "2535",
+    "line": "5호선",
+    "time": 130
+  },
+  {
+    "source": "2535",
+    "target": "2536",
+    "line": "5호선",
+    "time": 130
+  },
+  {
+    "source": "2537",
+    "target": "2536",
+    "line": "5호선",
+    "time": 130
+  },
+  {
+    "source": "2536",
+    "target": "2537",
+    "line": "5호선",
+    "time": 130
+  },
+  {
+    "source": "2538",
+    "target": "2537",
+    "line": "5호선",
+    "time": 110
+  },
+  {
+    "source": "2537",
+    "target": "2538",
+    "line": "5호선",
+    "time": 110
+  },
+  {
+    "source": "2539",
+    "target": "2538",
+    "line": "5호선",
+    "time": 110
+  },
+  {
+    "source": "2538",
+    "target": "2539",
+    "line": "5호선",
+    "time": 110
+  },
+  {
+    "source": "2540",
+    "target": "2539",
+    "line": "5호선",
+    "time": 100
+  },
+  {
+    "source": "2539",
+    "target": "2540",
+    "line": "5호선",
+    "time": 100
+  },
+  {
+    "source": "2541",
+    "target": "2540",
+    "line": "5호선",
+    "time": 100
+  },
+  {
+    "source": "2540",
+    "target": "2541",
+    "line": "5호선",
+    "time": 100
+  },
+  {
+    "source": "2542",
+    "target": "2541",
+    "line": "5호선",
+    "time": 80
+  },
+  {
+    "source": "2541",
+    "target": "2542",
+    "line": "5호선",
+    "time": 80
+  },
+  {
+    "source": "2543",
+    "target": "2542",
+    "line": "5호선",
+    "time": 130
+  },
+  {
+    "source": "2542",
+    "target": "2543",
+    "line": "5호선",
+    "time": 130
+  },
+  {
+    "source": "2544",
+    "target": "2543",
+    "line": "5호선",
+    "time": 130
+  },
+  {
+    "source": "2543",
+    "target": "2544",
+    "line": "5호선",
+    "time": 130
+  },
+  {
+    "source": "2545",
+    "target": "2544",
+    "line": "5호선",
+    "time": 140
+  },
+  {
+    "source": "2544",
+    "target": "2545",
+    "line": "5호선",
+    "time": 140
+  },
+  {
+    "source": "2546",
+    "target": "2545",
+    "line": "5호선",
+    "time": 110
+  },
+  {
+    "source": "2545",
+    "target": "2546",
+    "line": "5호선",
+    "time": 110
+  },
+  {
+    "source": "2547",
+    "target": "2546",
+    "line": "5호선",
+    "time": 130
+  },
+  {
+    "source": "2546",
+    "target": "2547",
+    "line": "5호선",
+    "time": 130
+  },
+  {
+    "source": "2548",
+    "target": "2547",
+    "line": "5호선",
+    "time": 160
+  },
+  {
+    "source": "2547",
+    "target": "2548",
+    "line": "5호선",
+    "time": 160
+  },
+  {
+    "source": "2549",
+    "target": "2548",
+    "line": "5호선",
+    "time": 110
+  },
+  {
+    "source": "2548",
+    "target": "2549",
+    "line": "5호선",
+    "time": 110
+  },
+  {
+    "source": "2551",
+    "target": "2550",
+    "line": "5호선",
+    "time": 100
+  },
+  {
+    "source": "2550",
+    "target": "2551",
+    "line": "5호선",
+    "time": 100
+  },
+  {
+    "source": "2552",
+    "target": "2551",
+    "line": "5호선",
+    "time": 100
+  },
+  {
+    "source": "2551",
+    "target": "2552",
+    "line": "5호선",
+    "time": 100
+  },
+  {
+    "source": "2553",
+    "target": "2552",
+    "line": "5호선",
+    "time": 130
+  },
+  {
+    "source": "2552",
+    "target": "2553",
+    "line": "5호선",
+    "time": 130
+  },
+  {
+    "source": "2554",
+    "target": "2553",
+    "line": "5호선",
+    "time": 100
+  },
+  {
+    "source": "2553",
+    "target": "2554",
+    "line": "5호선",
+    "time": 100
+  },
+  {
+    "source": "2555",
+    "target": "2549",
+    "line": "5호선마천선",
+    "time": 140
+  },
+  {
+    "source": "2549",
+    "target": "2555",
+    "line": "5호선마천선",
+    "time": 140
+  },
+  {
+    "source": "2556",
+    "target": "2555",
+    "line": "5호선마천선",
+    "time": 130
+  },
+  {
+    "source": "2555",
+    "target": "2556",
+    "line": "5호선마천선",
+    "time": 130
+  },
+  {
+    "source": "2557",
+    "target": "2556",
+    "line": "5호선마천선",
+    "time": 110
+  },
+  {
+    "source": "2556",
+    "target": "2557",
+    "line": "5호선마천선",
+    "time": 110
+  },
+  {
+    "source": "2558",
+    "target": "2557",
+    "line": "5호선마천선",
+    "time": 110
+  },
+  {
+    "source": "2557",
+    "target": "2558",
+    "line": "5호선마천선",
+    "time": 110
+  },
+  {
+    "source": "2559",
+    "target": "2558",
+    "line": "5호선마천선",
+    "time": 100
+  },
+  {
+    "source": "2558",
+    "target": "2559",
+    "line": "5호선마천선",
+    "time": 100
+  },
+  {
+    "source": "2560",
+    "target": "2559",
+    "line": "5호선마천선",
+    "time": 110
+  },
+  {
+    "source": "2559",
+    "target": "2560",
+    "line": "5호선마천선",
+    "time": 110
+  },
+  {
+    "source": "2561",
+    "target": "2560",
+    "line": "5호선마천선",
+    "time": 90
+  },
+  {
+    "source": "2560",
+    "target": "2561",
+    "line": "5호선마천선",
+    "time": 90
+  },
+  {
+    "source": "2562",
+    "target": "2554",
+    "line": "5호선하남선",
+    "time": 110
+  },
+  {
+    "source": "2554",
+    "target": "2562",
+    "line": "5호선하남선",
+    "time": 120
+  },
+  {
+    "source": "2563",
+    "target": "2562",
+    "line": "5호선하남선",
+    "time": 140
+  },
+  {
+    "source": "2562",
+    "target": "2563",
+    "line": "5호선하남선",
+    "time": 130
+  },
+  {
+    "source": "2564",
+    "target": "2563",
+    "line": "5호선하남선",
+    "time": 180
+  },
+  {
+    "source": "2563",
+    "target": "2564",
+    "line": "5호선하남선",
+    "time": 180
+  },
+  {
+    "source": "2565",
+    "target": "2564",
+    "line": "5호선하남선",
+    "time": 130
+  },
+  {
+    "source": "2564",
+    "target": "2565",
+    "line": "5호선하남선",
+    "time": 130
+  },
+  {
+    "source": "2566",
+    "target": "2565",
+    "line": "5호선하남선",
+    "time": 150
+  },
+  {
+    "source": "2565",
+    "target": "2566",
+    "line": "5호선하남선",
+    "time": 150
+  },
+  {
+    "source": "2617",
+    "target": "2611",
+    "line": "6호선",
+    "time": 110
+  },
+  {
+    "source": "2611",
+    "target": "2617",
+    "line": "6호선",
+    "time": 110
+  },
+  {
+    "source": "2618",
+    "target": "2617",
+    "line": "6호선",
+    "time": 100
+  },
+  {
+    "source": "2617",
+    "target": "2618",
+    "line": "6호선",
+    "time": 100
+  },
+  {
+    "source": "2619",
+    "target": "2618",
+    "line": "6호선",
+    "time": 120
+  },
+  {
+    "source": "2618",
+    "target": "2619",
+    "line": "6호선",
+    "time": 120
+  },
+  {
+    "source": "2620",
+    "target": "2619",
+    "line": "6호선",
+    "time": 100
+  },
+  {
+    "source": "2619",
+    "target": "2620",
+    "line": "6호선",
+    "time": 100
+  },
+  {
+    "source": "2621",
+    "target": "2620",
+    "line": "6호선",
+    "time": 100
+  },
+  {
+    "source": "2620",
+    "target": "2621",
+    "line": "6호선",
+    "time": 100
+  },
+  {
+    "source": "2622",
+    "target": "2621",
+    "line": "6호선",
+    "time": 110
+  },
+  {
+    "source": "2621",
+    "target": "2622",
+    "line": "6호선",
+    "time": 110
+  },
+  {
+    "source": "2623",
+    "target": "2622",
+    "line": "6호선",
+    "time": 120
+  },
+  {
+    "source": "2622",
+    "target": "2623",
+    "line": "6호선",
+    "time": 120
+  },
+  {
+    "source": "2624",
+    "target": "2623",
+    "line": "6호선",
+    "time": 90
+  },
+  {
+    "source": "2623",
+    "target": "2624",
+    "line": "6호선",
+    "time": 90
+  },
+  {
+    "source": "2625",
+    "target": "2624",
+    "line": "6호선",
+    "time": 100
+  },
+  {
+    "source": "2624",
+    "target": "2625",
+    "line": "6호선",
+    "time": 100
+  },
+  {
+    "source": "2626",
+    "target": "2625",
+    "line": "6호선",
+    "time": 120
+  },
+  {
+    "source": "2625",
+    "target": "2626",
+    "line": "6호선",
+    "time": 120
+  },
+  {
+    "source": "2627",
+    "target": "2626",
+    "line": "6호선",
+    "time": 120
+  },
+  {
+    "source": "2626",
+    "target": "2627",
+    "line": "6호선",
+    "time": 120
+  },
+  {
+    "source": "2628",
+    "target": "2627",
+    "line": "6호선",
+    "time": 110
+  },
+  {
+    "source": "2627",
+    "target": "2628",
+    "line": "6호선",
+    "time": 110
+  },
+  {
+    "source": "2629",
+    "target": "2628",
+    "line": "6호선",
+    "time": 120
+  },
+  {
+    "source": "2628",
+    "target": "2629",
+    "line": "6호선",
+    "time": 120
+  },
+  {
+    "source": "2630",
+    "target": "2629",
+    "line": "6호선",
+    "time": 120
+  },
+  {
+    "source": "2629",
+    "target": "2630",
+    "line": "6호선",
+    "time": 120
+  },
+  {
+    "source": "2631",
+    "target": "2630",
+    "line": "6호선",
+    "time": 100
+  },
+  {
+    "source": "2630",
+    "target": "2631",
+    "line": "6호선",
+    "time": 100
+  },
+  {
+    "source": "2632",
+    "target": "2631",
+    "line": "6호선",
+    "time": 110
+  },
+  {
+    "source": "2631",
+    "target": "2632",
+    "line": "6호선",
+    "time": 110
+  },
+  {
+    "source": "2633",
+    "target": "2632",
+    "line": "6호선",
+    "time": 110
+  },
+  {
+    "source": "2632",
+    "target": "2633",
+    "line": "6호선",
+    "time": 110
+  },
+  {
+    "source": "2634",
+    "target": "2633",
+    "line": "6호선",
+    "time": 110
+  },
+  {
+    "source": "2633",
+    "target": "2634",
+    "line": "6호선",
+    "time": 110
+  },
+  {
+    "source": "2635",
+    "target": "2634",
+    "line": "6호선",
+    "time": 100
+  },
+  {
+    "source": "2634",
+    "target": "2635",
+    "line": "6호선",
+    "time": 100
+  },
+  {
+    "source": "2636",
+    "target": "2635",
+    "line": "6호선",
+    "time": 100
+  },
+  {
+    "source": "2635",
+    "target": "2636",
+    "line": "6호선",
+    "time": 100
+  },
+  {
+    "source": "2637",
+    "target": "2636",
+    "line": "6호선",
+    "time": 90
+  },
+  {
+    "source": "2636",
+    "target": "2637",
+    "line": "6호선",
+    "time": 90
+  },
+  {
+    "source": "2638",
+    "target": "2637",
+    "line": "6호선",
+    "time": 110
+  },
+  {
+    "source": "2637",
+    "target": "2638",
+    "line": "6호선",
+    "time": 110
+  },
+  {
+    "source": "2639",
+    "target": "2638",
+    "line": "6호선",
+    "time": 100
+  },
+  {
+    "source": "2638",
+    "target": "2639",
+    "line": "6호선",
+    "time": 100
+  },
+  {
+    "source": "2640",
+    "target": "2639",
+    "line": "6호선",
+    "time": 100
+  },
+  {
+    "source": "2639",
+    "target": "2640",
+    "line": "6호선",
+    "time": 100
+  },
+  {
+    "source": "2641",
+    "target": "2640",
+    "line": "6호선",
+    "time": 100
+  },
+  {
+    "source": "2640",
+    "target": "2641",
+    "line": "6호선",
+    "time": 100
+  },
+  {
+    "source": "2642",
+    "target": "2641",
+    "line": "6호선",
+    "time": 130
+  },
+  {
+    "source": "2641",
+    "target": "2642",
+    "line": "6호선",
+    "time": 130
+  },
+  {
+    "source": "2643",
+    "target": "2642",
+    "line": "6호선",
+    "time": 100
+  },
+  {
+    "source": "2642",
+    "target": "2643",
+    "line": "6호선",
+    "time": 100
+  },
+  {
+    "source": "2644",
+    "target": "2643",
+    "line": "6호선",
+    "time": 90
+  },
+  {
+    "source": "2643",
+    "target": "2644",
+    "line": "6호선",
+    "time": 90
+  },
+  {
+    "source": "2645",
+    "target": "2644",
+    "line": "6호선",
+    "time": 120
+  },
+  {
+    "source": "2644",
+    "target": "2645",
+    "line": "6호선",
+    "time": 120
+  },
+  {
+    "source": "2646",
+    "target": "2645",
+    "line": "6호선",
+    "time": 100
+  },
+  {
+    "source": "2645",
+    "target": "2646",
+    "line": "6호선",
+    "time": 100
+  },
+  {
+    "source": "2647",
+    "target": "2646",
+    "line": "6호선",
+    "time": 100
+  },
+  {
+    "source": "2646",
+    "target": "2647",
+    "line": "6호선",
+    "time": 100
+  },
+  {
+    "source": "2648",
+    "target": "2647",
+    "line": "6호선",
+    "time": 80
+  },
+  {
+    "source": "2647",
+    "target": "2648",
+    "line": "6호선",
+    "time": 80
+  },
+  {
+    "source": "2648",
+    "target": "2649",
+    "line": "6호선",
+    "time": 270
+  },
+  {
+    "source": "2649",
+    "target": "2648",
+    "line": "6호선",
+    "time": 270
+  },
+  {
+    "source": "2712",
+    "target": "2711",
+    "line": "7호선",
+    "time": 300
+  },
+  {
+    "source": "2711",
+    "target": "2712",
+    "line": "7호선",
+    "time": 300
+  },
+  {
+    "source": "2713",
+    "target": "2712",
+    "line": "7호선",
+    "time": 170
+  },
+  {
+    "source": "2712",
+    "target": "2713",
+    "line": "7호선",
+    "time": 170
+  },
+  {
+    "source": "2714",
+    "target": "2713",
+    "line": "7호선",
+    "time": 150
+  },
+  {
+    "source": "2713",
+    "target": "2714",
+    "line": "7호선",
+    "time": 150
+  },
+  {
+    "source": "2715",
+    "target": "2714",
+    "line": "7호선",
+    "time": 120
+  },
+  {
+    "source": "2714",
+    "target": "2715",
+    "line": "7호선",
+    "time": 120
+  },
+  {
+    "source": "2716",
+    "target": "2715",
+    "line": "7호선",
+    "time": 110
+  },
+  {
+    "source": "2715",
+    "target": "2716",
+    "line": "7호선",
+    "time": 110
+  },
+  {
+    "source": "2717",
+    "target": "2716",
+    "line": "7호선",
+    "time": 100
+  },
+  {
+    "source": "2716",
+    "target": "2717",
+    "line": "7호선",
+    "time": 100
+  },
+  {
+    "source": "2718",
+    "target": "2717",
+    "line": "7호선",
+    "time": 120
+  },
+  {
+    "source": "2717",
+    "target": "2718",
+    "line": "7호선",
+    "time": 120
+  },
+  {
+    "source": "2719",
+    "target": "2718",
+    "line": "7호선",
+    "time": 90
+  },
+  {
+    "source": "2718",
+    "target": "2719",
+    "line": "7호선",
+    "time": 90
+  },
+  {
+    "source": "2720",
+    "target": "2719",
+    "line": "7호선",
+    "time": 100
+  },
+  {
+    "source": "2719",
+    "target": "2720",
+    "line": "7호선",
+    "time": 100
+  },
+  {
+    "source": "2721",
+    "target": "2720",
+    "line": "7호선",
+    "time": 110
+  },
+  {
+    "source": "2720",
+    "target": "2721",
+    "line": "7호선",
+    "time": 110
+  },
+  {
+    "source": "2722",
+    "target": "2721",
+    "line": "7호선",
+    "time": 140
+  },
+  {
+    "source": "2721",
+    "target": "2722",
+    "line": "7호선",
+    "time": 140
+  },
+  {
+    "source": "2723",
+    "target": "2722",
+    "line": "7호선",
+    "time": 100
+  },
+  {
+    "source": "2722",
+    "target": "2723",
+    "line": "7호선",
+    "time": 100
+  },
+  {
+    "source": "2724",
+    "target": "2723",
+    "line": "7호선",
+    "time": 100
+  },
+  {
+    "source": "2723",
+    "target": "2724",
+    "line": "7호선",
+    "time": 100
+  },
+  {
+    "source": "2725",
+    "target": "2724",
+    "line": "7호선",
+    "time": 90
+  },
+  {
+    "source": "2724",
+    "target": "2725",
+    "line": "7호선",
+    "time": 90
+  },
+  {
+    "source": "2726",
+    "target": "2725",
+    "line": "7호선",
+    "time": 110
+  },
+  {
+    "source": "2725",
+    "target": "2726",
+    "line": "7호선",
+    "time": 110
+  },
+  {
+    "source": "2727",
+    "target": "2726",
+    "line": "7호선",
+    "time": 120
+  },
+  {
+    "source": "2726",
+    "target": "2727",
+    "line": "7호선",
+    "time": 120
+  },
+  {
+    "source": "2728",
+    "target": "2727",
+    "line": "7호선",
+    "time": 110
+  },
+  {
+    "source": "2727",
+    "target": "2728",
+    "line": "7호선",
+    "time": 110
+  },
+  {
+    "source": "2729",
+    "target": "2728",
+    "line": "7호선",
+    "time": 120
+  },
+  {
+    "source": "2728",
+    "target": "2729",
+    "line": "7호선",
+    "time": 120
+  },
+  {
+    "source": "2730",
+    "target": "2729",
+    "line": "7호선",
+    "time": 110
+  },
+  {
+    "source": "2729",
+    "target": "2730",
+    "line": "7호선",
+    "time": 110
+  },
+  {
+    "source": "2731",
+    "target": "2730",
+    "line": "7호선",
+    "time": 180
+  },
+  {
+    "source": "2730",
+    "target": "2731",
+    "line": "7호선",
+    "time": 180
+  },
+  {
+    "source": "2732",
+    "target": "2731",
+    "line": "7호선",
+    "time": 120
+  },
+  {
+    "source": "2731",
+    "target": "2732",
+    "line": "7호선",
+    "time": 120
+  },
+  {
+    "source": "2733",
+    "target": "2732",
+    "line": "7호선",
+    "time": 100
+  },
+  {
+    "source": "2732",
+    "target": "2733",
+    "line": "7호선",
+    "time": 100
+  },
+  {
+    "source": "2734",
+    "target": "2733",
+    "line": "7호선",
+    "time": 110
+  },
+  {
+    "source": "2733",
+    "target": "2734",
+    "line": "7호선",
+    "time": 110
+  },
+  {
+    "source": "2735",
+    "target": "2734",
+    "line": "7호선",
+    "time": 90
+  },
+  {
+    "source": "2734",
+    "target": "2735",
+    "line": "7호선",
+    "time": 90
+  },
+  {
+    "source": "2736",
+    "target": "2735",
+    "line": "7호선",
+    "time": 130
+  },
+  {
+    "source": "2735",
+    "target": "2736",
+    "line": "7호선",
+    "time": 130
+  },
+  {
+    "source": "2737",
+    "target": "2736",
+    "line": "7호선",
+    "time": 180
+  },
+  {
+    "source": "2736",
+    "target": "2737",
+    "line": "7호선",
+    "time": 180
+  },
+  {
+    "source": "2738",
+    "target": "2737",
+    "line": "7호선",
+    "time": 130
+  },
+  {
+    "source": "2737",
+    "target": "2738",
+    "line": "7호선",
+    "time": 130
+  },
+  {
+    "source": "2739",
+    "target": "2738",
+    "line": "7호선",
+    "time": 110
+  },
+  {
+    "source": "2738",
+    "target": "2739",
+    "line": "7호선",
+    "time": 110
+  },
+  {
+    "source": "2740",
+    "target": "2739",
+    "line": "7호선",
+    "time": 180
+  },
+  {
+    "source": "2739",
+    "target": "2740",
+    "line": "7호선",
+    "time": 180
+  },
+  {
+    "source": "2741",
+    "target": "2740",
+    "line": "7호선",
+    "time": 100
+  },
+  {
+    "source": "2740",
+    "target": "2741",
+    "line": "7호선",
+    "time": 100
+  },
+  {
+    "source": "2742",
+    "target": "2741",
+    "line": "7호선",
+    "time": 120
+  },
+  {
+    "source": "2741",
+    "target": "2742",
+    "line": "7호선",
+    "time": 120
+  },
+  {
+    "source": "2743",
+    "target": "2742",
+    "line": "7호선",
+    "time": 140
+  },
+  {
+    "source": "2742",
+    "target": "2743",
+    "line": "7호선",
+    "time": 140
+  },
+  {
+    "source": "2744",
+    "target": "2743",
+    "line": "7호선",
+    "time": 100
+  },
+  {
+    "source": "2743",
+    "target": "2744",
+    "line": "7호선",
+    "time": 100
+  },
+  {
+    "source": "2745",
+    "target": "2744",
+    "line": "7호선",
+    "time": 110
+  },
+  {
+    "source": "2744",
+    "target": "2745",
+    "line": "7호선",
+    "time": 110
+  },
+  {
+    "source": "2746",
+    "target": "2745",
+    "line": "7호선",
+    "time": 150
+  },
+  {
+    "source": "2745",
+    "target": "2746",
+    "line": "7호선",
+    "time": 150
+  },
+  {
+    "source": "2747",
+    "target": "2746",
+    "line": "7호선",
+    "time": 120
+  },
+  {
+    "source": "2746",
+    "target": "2747",
+    "line": "7호선",
+    "time": 120
+  },
+  {
+    "source": "2748",
+    "target": "2747",
+    "line": "7호선",
+    "time": 110
+  },
+  {
+    "source": "2747",
+    "target": "2748",
+    "line": "7호선",
+    "time": 110
+  },
+  {
+    "source": "2749",
+    "target": "2748",
+    "line": "7호선",
+    "time": 150
+  },
+  {
+    "source": "2748",
+    "target": "2749",
+    "line": "7호선",
+    "time": 150
+  },
+  {
+    "source": "2750",
+    "target": "2749",
+    "line": "7호선",
+    "time": 140
+  },
+  {
+    "source": "2749",
+    "target": "2750",
+    "line": "7호선",
+    "time": 140
+  },
+  {
+    "source": "2751",
+    "target": "2750",
+    "line": "7호선",
+    "time": 140
+  },
+  {
+    "source": "2750",
+    "target": "2751",
+    "line": "7호선",
+    "time": 140
+  },
+  {
+    "source": "2752",
+    "target": "2751",
+    "line": "7호선",
+    "time": 170
+  },
+  {
+    "source": "2751",
+    "target": "2752",
+    "line": "7호선",
+    "time": 170
+  },
+  {
+    "source": "3753",
+    "target": "2752",
+    "line": "7호선",
+    "time": 180
+  },
+  {
+    "source": "2752",
+    "target": "3753",
+    "line": "7호선",
+    "time": 180
+  },
+  {
+    "source": "3754",
+    "target": "3753",
+    "line": "7호선",
+    "time": 120
+  },
+  {
+    "source": "3753",
+    "target": "3754",
+    "line": "7호선",
+    "time": 120
+  },
+  {
+    "source": "3755",
+    "target": "3754",
+    "line": "7호선",
+    "time": 110
+  },
+  {
+    "source": "3754",
+    "target": "3755",
+    "line": "7호선",
+    "time": 110
+  },
+  {
+    "source": "3756",
+    "target": "3755",
+    "line": "7호선",
+    "time": 110
+  },
+  {
+    "source": "3755",
+    "target": "3756",
+    "line": "7호선",
+    "time": 110
+  },
+  {
+    "source": "3757",
+    "target": "3756",
+    "line": "7호선",
+    "time": 110
+  },
+  {
+    "source": "3756",
+    "target": "3757",
+    "line": "7호선",
+    "time": 110
+  },
+  {
+    "source": "3758",
+    "target": "3757",
+    "line": "7호선",
+    "time": 100
+  },
+  {
+    "source": "3757",
+    "target": "3758",
+    "line": "7호선",
+    "time": 100
+  },
+  {
+    "source": "3759",
+    "target": "3758",
+    "line": "7호선",
+    "time": 110
+  },
+  {
+    "source": "3758",
+    "target": "3759",
+    "line": "7호선",
+    "time": 110
+  },
+  {
+    "source": "3760",
+    "target": "3759",
+    "line": "7호선",
+    "time": 100
+  },
+  {
+    "source": "3759",
+    "target": "3760",
+    "line": "7호선",
+    "time": 100
+  },
+  {
+    "source": "3761",
+    "target": "3760",
+    "line": "7호선",
+    "time": 80
+  },
+  {
+    "source": "3760",
+    "target": "3761",
+    "line": "7호선",
+    "time": 80
+  },
+  {
+    "source": "2812",
+    "target": "2811",
+    "line": "8호선",
+    "time": 130
+  },
+  {
+    "source": "2811",
+    "target": "2812",
+    "line": "8호선",
+    "time": 130
+  },
+  {
+    "source": "2813",
+    "target": "2812",
+    "line": "8호선",
+    "time": 110
+  },
+  {
+    "source": "2812",
+    "target": "2813",
+    "line": "8호선",
+    "time": 110
+  },
+  {
+    "source": "2814",
+    "target": "2813",
+    "line": "8호선",
+    "time": 150
+  },
+  {
+    "source": "2813",
+    "target": "2814",
+    "line": "8호선",
+    "time": 150
+  },
+  {
+    "source": "2815",
+    "target": "2814",
+    "line": "8호선",
+    "time": 120
+  },
+  {
+    "source": "2814",
+    "target": "2815",
+    "line": "8호선",
+    "time": 120
+  },
+  {
+    "source": "2816",
+    "target": "2815",
+    "line": "8호선",
+    "time": 140
+  },
+  {
+    "source": "2815",
+    "target": "2816",
+    "line": "8호선",
+    "time": 140
+  },
+  {
+    "source": "2817",
+    "target": "2816",
+    "line": "8호선",
+    "time": 100
+  },
+  {
+    "source": "2816",
+    "target": "2817",
+    "line": "8호선",
+    "time": 100
+  },
+  {
+    "source": "2818",
+    "target": "2817",
+    "line": "8호선",
+    "time": 110
+  },
+  {
+    "source": "2817",
+    "target": "2818",
+    "line": "8호선",
+    "time": 110
+  },
+  {
+    "source": "2819",
+    "target": "2818",
+    "line": "8호선",
+    "time": 90
+  },
+  {
+    "source": "2818",
+    "target": "2819",
+    "line": "8호선",
+    "time": 90
+  },
+  {
+    "source": "2820",
+    "target": "2819",
+    "line": "8호선",
+    "time": 90
+  },
+  {
+    "source": "2819",
+    "target": "2820",
+    "line": "8호선",
+    "time": 90
+  },
+  {
+    "source": "2821",
+    "target": "2820",
+    "line": "8호선",
+    "time": 110
+  },
+  {
+    "source": "2820",
+    "target": "2821",
+    "line": "8호선",
+    "time": 110
+  },
+  {
+    "source": "2823",
+    "target": "2822",
+    "line": "8호선",
+    "time": 160
+  },
+  {
+    "source": "2822",
+    "target": "2823",
+    "line": "8호선",
+    "time": 160
+  },
+  {
+    "source": "2824",
+    "target": "2823",
+    "line": "8호선",
+    "time": 100
+  },
+  {
+    "source": "2823",
+    "target": "2824",
+    "line": "8호선",
+    "time": 100
+  },
+  {
+    "source": "2825",
+    "target": "2824",
+    "line": "8호선",
+    "time": 90
+  },
+  {
+    "source": "2824",
+    "target": "2825",
+    "line": "8호선",
+    "time": 90
+  },
+  {
+    "source": "2826",
+    "target": "2825",
+    "line": "8호선",
+    "time": 90
+  },
+  {
+    "source": "2825",
+    "target": "2826",
+    "line": "8호선",
+    "time": 90
+  },
+  {
+    "source": "2827",
+    "target": "2826",
+    "line": "8호선",
+    "time": 90
+  },
+  {
+    "source": "2826",
+    "target": "2827",
+    "line": "8호선",
+    "time": 90
+  },
+  {
+    "source": "3111",
+    "target": "3110",
+    "line": "인천1호선",
+    "time": 120
+  },
+  {
+    "source": "3110",
+    "target": "3111",
+    "line": "인천1호선",
+    "time": 120
+  },
+  {
+    "source": "3112",
+    "target": "3111",
+    "line": "인천1호선",
+    "time": 180
+  },
+  {
+    "source": "3111",
+    "target": "3112",
+    "line": "인천1호선",
+    "time": 180
+  },
+  {
+    "source": "3113",
+    "target": "3112",
+    "line": "인천1호선",
+    "time": 120
+  },
+  {
+    "source": "3112",
+    "target": "3113",
+    "line": "인천1호선",
+    "time": 120
+  },
+  {
+    "source": "3114",
+    "target": "3113",
+    "line": "인천1호선",
+    "time": 120
+  },
+  {
+    "source": "3113",
+    "target": "3114",
+    "line": "인천1호선",
+    "time": 120
+  },
+  {
+    "source": "3115",
+    "target": "3114",
+    "line": "인천1호선",
+    "time": 120
+  },
+  {
+    "source": "3114",
+    "target": "3115",
+    "line": "인천1호선",
+    "time": 120
+  },
+  {
+    "source": "3116",
+    "target": "3115",
+    "line": "인천1호선",
+    "time": 90
+  },
+  {
+    "source": "3115",
+    "target": "3116",
+    "line": "인천1호선",
+    "time": 90
+  },
+  {
+    "source": "3117",
+    "target": "3116",
+    "line": "인천1호선",
+    "time": 120
+  },
+  {
+    "source": "3116",
+    "target": "3117",
+    "line": "인천1호선",
+    "time": 120
+  },
+  {
+    "source": "3118",
+    "target": "3117",
+    "line": "인천1호선",
+    "time": 120
+  },
+  {
+    "source": "3117",
+    "target": "3118",
+    "line": "인천1호선",
+    "time": 120
+  },
+  {
+    "source": "3119",
+    "target": "3118",
+    "line": "인천1호선",
+    "time": 120
+  },
+  {
+    "source": "3118",
+    "target": "3119",
+    "line": "인천1호선",
+    "time": 120
+  },
+  {
+    "source": "3120",
+    "target": "3119",
+    "line": "인천1호선",
+    "time": 90
+  },
+  {
+    "source": "3119",
+    "target": "3120",
+    "line": "인천1호선",
+    "time": 90
+  },
+  {
+    "source": "3121",
+    "target": "3120",
+    "line": "인천1호선",
+    "time": 120
+  },
+  {
+    "source": "3120",
+    "target": "3121",
+    "line": "인천1호선",
+    "time": 120
+  },
+  {
+    "source": "3122",
+    "target": "3121",
+    "line": "인천1호선",
+    "time": 120
+  },
+  {
+    "source": "3121",
+    "target": "3122",
+    "line": "인천1호선",
+    "time": 120
+  },
+  {
+    "source": "3123",
+    "target": "3122",
+    "line": "인천1호선",
+    "time": 120
+  },
+  {
+    "source": "3122",
+    "target": "3123",
+    "line": "인천1호선",
+    "time": 120
+  },
+  {
+    "source": "3124",
+    "target": "3123",
+    "line": "인천1호선",
+    "time": 180
+  },
+  {
+    "source": "3123",
+    "target": "3124",
+    "line": "인천1호선",
+    "time": 180
+  },
+  {
+    "source": "3125",
+    "target": "3124",
+    "line": "인천1호선",
+    "time": 120
+  },
+  {
+    "source": "3124",
+    "target": "3125",
+    "line": "인천1호선",
+    "time": 120
+  },
+  {
+    "source": "3126",
+    "target": "3125",
+    "line": "인천1호선",
+    "time": 90
+  },
+  {
+    "source": "3125",
+    "target": "3126",
+    "line": "인천1호선",
+    "time": 90
+  },
+  {
+    "source": "3127",
+    "target": "3126",
+    "line": "인천1호선",
+    "time": 90
+  },
+  {
+    "source": "3126",
+    "target": "3127",
+    "line": "인천1호선",
+    "time": 90
+  },
+  {
+    "source": "3128",
+    "target": "3127",
+    "line": "인천1호선",
+    "time": 90
+  },
+  {
+    "source": "3127",
+    "target": "3128",
+    "line": "인천1호선",
+    "time": 90
+  },
+  {
+    "source": "3129",
+    "target": "3128",
+    "line": "인천1호선",
+    "time": 120
+  },
+  {
+    "source": "3128",
+    "target": "3129",
+    "line": "인천1호선",
+    "time": 120
+  },
+  {
+    "source": "3130",
+    "target": "3129",
+    "line": "인천1호선",
+    "time": 90
+  },
+  {
+    "source": "3129",
+    "target": "3130",
+    "line": "인천1호선",
+    "time": 90
+  },
+  {
+    "source": "3131",
+    "target": "3130",
+    "line": "인천1호선",
+    "time": 120
+  },
+  {
+    "source": "3130",
+    "target": "3131",
+    "line": "인천1호선",
+    "time": 120
+  },
+  {
+    "source": "3132",
+    "target": "3131",
+    "line": "인천1호선",
+    "time": 120
+  },
+  {
+    "source": "3131",
+    "target": "3132",
+    "line": "인천1호선",
+    "time": 120
+  },
+  {
+    "source": "3133",
+    "target": "3132",
+    "line": "인천1호선",
+    "time": 150
+  },
+  {
+    "source": "3132",
+    "target": "3133",
+    "line": "인천1호선",
+    "time": 150
+  },
+  {
+    "source": "3134",
+    "target": "3133",
+    "line": "인천1호선",
+    "time": 90
+  },
+  {
+    "source": "3133",
+    "target": "3134",
+    "line": "인천1호선",
+    "time": 90
+  },
+  {
+    "source": "3135",
+    "target": "3134",
+    "line": "인천1호선",
+    "time": 150
+  },
+  {
+    "source": "3134",
+    "target": "3135",
+    "line": "인천1호선",
+    "time": 150
+  },
+  {
+    "source": "3136",
+    "target": "3135",
+    "line": "인천1호선",
+    "time": 90
+  },
+  {
+    "source": "3135",
+    "target": "3136",
+    "line": "인천1호선",
+    "time": 90
+  },
+  {
+    "source": "3137",
+    "target": "3136",
+    "line": "인천1호선",
+    "time": 90
+  },
+  {
+    "source": "3136",
+    "target": "3137",
+    "line": "인천1호선",
+    "time": 90
+  },
+  {
+    "source": "3138",
+    "target": "3137",
+    "line": "인천1호선",
+    "time": 90
+  },
+  {
+    "source": "3137",
+    "target": "3138",
+    "line": "인천1호선",
+    "time": 90
+  },
+  {
+    "source": "3139",
+    "target": "3138",
+    "line": "인천1호선",
+    "time": 180
+  },
+  {
+    "source": "3138",
+    "target": "3139",
+    "line": "인천1호선",
+    "time": 180
+  },
+  {
+    "source": "3202",
+    "target": "3201",
+    "line": "인천2호선",
+    "time": 119
+  },
+  {
+    "source": "3201",
+    "target": "3202",
+    "line": "인천2호선",
+    "time": 119
+  },
+  {
+    "source": "3203",
+    "target": "3202",
+    "line": "인천2호선",
+    "time": 120
+  },
+  {
+    "source": "3202",
+    "target": "3203",
+    "line": "인천2호선",
+    "time": 120
+  },
+  {
+    "source": "3204",
+    "target": "3203",
+    "line": "인천2호선",
+    "time": 120
+  },
+  {
+    "source": "3203",
+    "target": "3204",
+    "line": "인천2호선",
+    "time": 120
+  },
+  {
+    "source": "3205",
+    "target": "3204",
+    "line": "인천2호선",
+    "time": 93
+  },
+  {
+    "source": "3204",
+    "target": "3205",
+    "line": "인천2호선",
+    "time": 93
+  },
+  {
+    "source": "3206",
+    "target": "3205",
+    "line": "인천2호선",
+    "time": 98
+  },
+  {
+    "source": "3205",
+    "target": "3206",
+    "line": "인천2호선",
+    "time": 98
+  },
+  {
+    "source": "3207",
+    "target": "3206",
+    "line": "인천2호선",
+    "time": 154
+  },
+  {
+    "source": "3206",
+    "target": "3207",
+    "line": "인천2호선",
+    "time": 154
+  },
+  {
+    "source": "3208",
+    "target": "3207",
+    "line": "인천2호선",
+    "time": 103
+  },
+  {
+    "source": "3207",
+    "target": "3208",
+    "line": "인천2호선",
+    "time": 103
+  },
+  {
+    "source": "3209",
+    "target": "3208",
+    "line": "인천2호선",
+    "time": 109
+  },
+  {
+    "source": "3208",
+    "target": "3209",
+    "line": "인천2호선",
+    "time": 109
+  },
+  {
+    "source": "3210",
+    "target": "3209",
+    "line": "인천2호선",
+    "time": 93
+  },
+  {
+    "source": "3209",
+    "target": "3210",
+    "line": "인천2호선",
+    "time": 93
+  },
+  {
+    "source": "3211",
+    "target": "3210",
+    "line": "인천2호선",
+    "time": 153
+  },
+  {
+    "source": "3210",
+    "target": "3211",
+    "line": "인천2호선",
+    "time": 153
+  },
+  {
+    "source": "3212",
+    "target": "3211",
+    "line": "인천2호선",
+    "time": 116
+  },
+  {
+    "source": "3211",
+    "target": "3212",
+    "line": "인천2호선",
+    "time": 116
+  },
+  {
+    "source": "3213",
+    "target": "3212",
+    "line": "인천2호선",
+    "time": 102
+  },
+  {
+    "source": "3212",
+    "target": "3213",
+    "line": "인천2호선",
+    "time": 102
+  },
+  {
+    "source": "3214",
+    "target": "3213",
+    "line": "인천2호선",
+    "time": 87
+  },
+  {
+    "source": "3213",
+    "target": "3214",
+    "line": "인천2호선",
+    "time": 87
+  },
+  {
+    "source": "3215",
+    "target": "3214",
+    "line": "인천2호선",
+    "time": 107
+  },
+  {
+    "source": "3214",
+    "target": "3215",
+    "line": "인천2호선",
+    "time": 107
+  },
+  {
+    "source": "3216",
+    "target": "3215",
+    "line": "인천2호선",
+    "time": 125
+  },
+  {
+    "source": "3215",
+    "target": "3216",
+    "line": "인천2호선",
+    "time": 125
+  },
+  {
+    "source": "3217",
+    "target": "3216",
+    "line": "인천2호선",
+    "time": 132
+  },
+  {
+    "source": "3216",
+    "target": "3217",
+    "line": "인천2호선",
+    "time": 132
+  },
+  {
+    "source": "3218",
+    "target": "3217",
+    "line": "인천2호선",
+    "time": 114
+  },
+  {
+    "source": "3217",
+    "target": "3218",
+    "line": "인천2호선",
+    "time": 114
+  },
+  {
+    "source": "3219",
+    "target": "3218",
+    "line": "인천2호선",
+    "time": 122
+  },
+  {
+    "source": "3218",
+    "target": "3219",
+    "line": "인천2호선",
+    "time": 122
+  },
+  {
+    "source": "3220",
+    "target": "3219",
+    "line": "인천2호선",
+    "time": 100
+  },
+  {
+    "source": "3219",
+    "target": "3220",
+    "line": "인천2호선",
+    "time": 100
+  },
+  {
+    "source": "3221",
+    "target": "3220",
+    "line": "인천2호선",
+    "time": 101
+  },
+  {
+    "source": "3220",
+    "target": "3221",
+    "line": "인천2호선",
+    "time": 101
+  },
+  {
+    "source": "3222",
+    "target": "3221",
+    "line": "인천2호선",
+    "time": 91
+  },
+  {
+    "source": "3221",
+    "target": "3222",
+    "line": "인천2호선",
+    "time": 91
+  },
+  {
+    "source": "3223",
+    "target": "3222",
+    "line": "인천2호선",
+    "time": 98
+  },
+  {
+    "source": "3222",
+    "target": "3223",
+    "line": "인천2호선",
+    "time": 98
+  },
+  {
+    "source": "3224",
+    "target": "3223",
+    "line": "인천2호선",
+    "time": 102
+  },
+  {
+    "source": "3223",
+    "target": "3224",
+    "line": "인천2호선",
+    "time": 102
+  },
+  {
+    "source": "3225",
+    "target": "3224",
+    "line": "인천2호선",
+    "time": 143
+  },
+  {
+    "source": "3224",
+    "target": "3225",
+    "line": "인천2호선",
+    "time": 143
+  },
+  {
+    "source": "3226",
+    "target": "3225",
+    "line": "인천2호선",
+    "time": 177
+  },
+  {
+    "source": "3225",
+    "target": "3226",
+    "line": "인천2호선",
+    "time": 177
+  },
+  {
+    "source": "3227",
+    "target": "3226",
+    "line": "인천2호선",
+    "time": 133
+  },
+  {
+    "source": "3226",
+    "target": "3227",
+    "line": "인천2호선",
+    "time": 133
+  },
+  {
+    "source": "3762",
+    "target": "3761",
+    "line": "7호선",
+    "time": 130
+  },
+  {
+    "source": "3761",
+    "target": "3762",
+    "line": "7호선",
+    "time": 130
+  },
+  {
+    "source": "3763",
+    "target": "3762",
+    "line": "7호선",
+    "time": 170
+  },
+  {
+    "source": "3762",
+    "target": "3763",
+    "line": "7호선",
+    "time": 170
+  },
+  {
+    "source": "4101",
+    "target": "4102",
+    "line": "9호선",
+    "time": 310
+  },
+  {
+    "source": "4102",
+    "target": "4101",
+    "line": "9호선",
+    "time": 310
+  },
+  {
+    "source": "4102",
+    "target": "4103",
+    "line": "9호선",
+    "time": 115
+  },
+  {
+    "source": "4103",
+    "target": "4102",
+    "line": "9호선",
+    "time": 115
+  },
+  {
+    "source": "4103",
+    "target": "4104",
+    "line": "9호선",
+    "time": 105
+  },
+  {
+    "source": "4104",
+    "target": "4103",
+    "line": "9호선",
+    "time": 105
+  },
+  {
+    "source": "4104",
+    "target": "4105",
+    "line": "9호선",
+    "time": 125
+  },
+  {
+    "source": "4105",
+    "target": "4104",
+    "line": "9호선",
+    "time": 125
+  },
+  {
+    "source": "4105",
+    "target": "4106",
+    "line": "9호선",
+    "time": 150
+  },
+  {
+    "source": "4106",
+    "target": "4105",
+    "line": "9호선",
+    "time": 150
+  },
+  {
+    "source": "4106",
+    "target": "4107",
+    "line": "9호선",
+    "time": 285
+  },
+  {
+    "source": "4107",
+    "target": "4106",
+    "line": "9호선",
+    "time": 285
+  },
+  {
+    "source": "4107",
+    "target": "4108",
+    "line": "9호선",
+    "time": 140
+  },
+  {
+    "source": "4108",
+    "target": "4107",
+    "line": "9호선",
+    "time": 140
+  },
+  {
+    "source": "4108",
+    "target": "4109",
+    "line": "9호선",
+    "time": 140
+  },
+  {
+    "source": "4109",
+    "target": "4108",
+    "line": "9호선",
+    "time": 140
+  },
+  {
+    "source": "4109",
+    "target": "4110",
+    "line": "9호선",
+    "time": 155
+  },
+  {
+    "source": "4110",
+    "target": "4109",
+    "line": "9호선",
+    "time": 155
+  },
+  {
+    "source": "4110",
+    "target": "4111",
+    "line": "9호선",
+    "time": 140
+  },
+  {
+    "source": "4111",
+    "target": "4110",
+    "line": "9호선",
+    "time": 140
+  },
+  {
+    "source": "4111",
+    "target": "4112",
+    "line": "9호선",
+    "time": 155
+  },
+  {
+    "source": "4112",
+    "target": "4111",
+    "line": "9호선",
+    "time": 155
+  },
+  {
+    "source": "4112",
+    "target": "4113",
+    "line": "9호선",
+    "time": 155
+  },
+  {
+    "source": "4113",
+    "target": "4112",
+    "line": "9호선",
+    "time": 155
+  },
+  {
+    "source": "4113",
+    "target": "4114",
+    "line": "9호선",
+    "time": 155
+  },
+  {
+    "source": "4114",
+    "target": "4113",
+    "line": "9호선",
+    "time": 155
+  },
+  {
+    "source": "4114",
+    "target": "4115",
+    "line": "9호선",
+    "time": 135
+  },
+  {
+    "source": "4115",
+    "target": "4114",
+    "line": "9호선",
+    "time": 135
+  },
+  {
+    "source": "4115",
+    "target": "4116",
+    "line": "9호선",
+    "time": 260
+  },
+  {
+    "source": "4116",
+    "target": "4115",
+    "line": "9호선",
+    "time": 260
+  },
+  {
+    "source": "4116",
+    "target": "4117",
+    "line": "9호선",
+    "time": 165
+  },
+  {
+    "source": "4117",
+    "target": "4116",
+    "line": "9호선",
+    "time": 165
+  },
+  {
+    "source": "4117",
+    "target": "4118",
+    "line": "9호선",
+    "time": 145
+  },
+  {
+    "source": "4118",
+    "target": "4117",
+    "line": "9호선",
+    "time": 145
+  },
+  {
+    "source": "4118",
+    "target": "4119",
+    "line": "9호선",
+    "time": 145
+  },
+  {
+    "source": "4119",
+    "target": "4118",
+    "line": "9호선",
+    "time": 145
+  },
+  {
+    "source": "4119",
+    "target": "4120",
+    "line": "9호선",
+    "time": 185
+  },
+  {
+    "source": "4120",
+    "target": "4119",
+    "line": "9호선",
+    "time": 185
+  },
+  {
+    "source": "4120",
+    "target": "4121",
+    "line": "9호선",
+    "time": 140
+  },
+  {
+    "source": "4121",
+    "target": "4120",
+    "line": "9호선",
+    "time": 140
+  },
+  {
+    "source": "4121",
+    "target": "4122",
+    "line": "9호선",
+    "time": 125
+  },
+  {
+    "source": "4122",
+    "target": "4121",
+    "line": "9호선",
+    "time": 125
+  },
+  {
+    "source": "4122",
+    "target": "4123",
+    "line": "9호선",
+    "time": 140
+  },
+  {
+    "source": "4123",
+    "target": "4122",
+    "line": "9호선",
+    "time": 140
+  },
+  {
+    "source": "4123",
+    "target": "4124",
+    "line": "9호선",
+    "time": 260
+  },
+  {
+    "source": "4124",
+    "target": "4123",
+    "line": "9호선",
+    "time": 260
+  },
+  {
+    "source": "4124",
+    "target": "4125",
+    "line": "9호선",
+    "time": 125
+  },
+  {
+    "source": "4125",
+    "target": "4124",
+    "line": "9호선",
+    "time": 125
+  },
+  {
+    "source": "4125",
+    "target": "4126",
+    "line": "9호선",
+    "time": 110
+  },
+  {
+    "source": "4126",
+    "target": "4125",
+    "line": "9호선",
+    "time": 110
+  },
+  {
+    "source": "4126",
+    "target": "4127",
+    "line": "9호선",
+    "time": 115
+  },
+  {
+    "source": "4127",
+    "target": "4126",
+    "line": "9호선",
+    "time": 115
+  },
+  {
+    "source": "4127",
+    "target": "4128",
+    "line": "9호선",
+    "time": 120
+  },
+  {
+    "source": "4128",
+    "target": "4127",
+    "line": "9호선",
+    "time": 120
+  },
+  {
+    "source": "4128",
+    "target": "4129",
+    "line": "9호선",
+    "time": 125
+  },
+  {
+    "source": "4129",
+    "target": "4128",
+    "line": "9호선",
+    "time": 125
+  },
+  {
+    "source": "4129",
+    "target": "4130",
+    "line": "9호선",
+    "time": 155
+  },
+  {
+    "source": "4130",
+    "target": "4129",
+    "line": "9호선",
+    "time": 155
+  },
+  {
+    "source": "4130",
+    "target": "4131",
+    "line": "9호선",
+    "time": 169
+  },
+  {
+    "source": "4131",
+    "target": "4130",
+    "line": "9호선",
+    "time": 166
+  },
+  {
+    "source": "4131",
+    "target": "4132",
+    "line": "9호선",
+    "time": 116
+  },
+  {
+    "source": "4132",
+    "target": "4131",
+    "line": "9호선",
+    "time": 119
+  },
+  {
+    "source": "4132",
+    "target": "4133",
+    "line": "9호선",
+    "time": 115
+  },
+  {
+    "source": "4133",
+    "target": "4132",
+    "line": "9호선",
+    "time": 115
+  },
+  {
+    "source": "4133",
+    "target": "4134",
+    "line": "9호선",
+    "time": 235
+  },
+  {
+    "source": "4134",
+    "target": "4133",
+    "line": "9호선",
+    "time": 117
+  },
+  {
+    "source": "4134",
+    "target": "4135",
+    "line": "9호선",
+    "time": 119
+  },
+  {
+    "source": "4135",
+    "target": "4134",
+    "line": "9호선",
+    "time": 223
+  },
+  {
+    "source": "4135",
+    "target": "4136",
+    "line": "9호선",
+    "time": 164
+  },
+  {
+    "source": "4136",
+    "target": "4135",
+    "line": "9호선",
+    "time": 155
+  },
+  {
+    "source": "4136",
+    "target": "4137",
+    "line": "9호선",
+    "time": 134
+  },
+  {
+    "source": "4137",
+    "target": "4136",
+    "line": "9호선",
+    "time": 130
+  },
+  {
+    "source": "4137",
+    "target": "4138",
+    "line": "9호선",
+    "time": 151
+  },
+  {
+    "source": "4138",
+    "target": "4137",
+    "line": "9호선",
+    "time": 170
+  },
+  {
+    "source": "4202",
+    "target": "4201",
+    "line": "공항철도",
+    "time": 240
+  },
+  {
+    "source": "4201",
+    "target": "4202",
+    "line": "공항철도",
+    "time": 240
+  },
+  {
+    "source": "4203",
+    "target": "4202",
+    "line": "공항철도",
+    "time": 210
+  },
+  {
+    "source": "4202",
+    "target": "4203",
+    "line": "공항철도",
+    "time": 210
+  },
+  {
+    "source": "4204",
+    "target": "4203",
+    "line": "공항철도",
+    "time": 240
+  },
+  {
+    "source": "4203",
+    "target": "4204",
+    "line": "공항철도",
+    "time": 240
+  },
+  {
+    "source": "4206",
+    "target": "4204",
+    "line": "공항철도",
+    "time": 433
+  },
+  {
+    "source": "4204",
+    "target": "4206",
+    "line": "공항철도",
+    "time": 420
+  },
+  {
+    "source": "4207",
+    "target": "4206",
+    "line": "공항철도",
+    "time": 210
+  },
+  {
+    "source": "4206",
+    "target": "4207",
+    "line": "공항철도",
+    "time": 210
+  },
+  {
+    "source": "4208",
+    "target": "4207",
+    "line": "공항철도",
+    "time": 390
+  },
+  {
+    "source": "4207",
+    "target": "4208",
+    "line": "공항철도",
+    "time": 390
+  },
+  {
+    "source": "4209",
+    "target": "4208",
+    "line": "공항철도",
+    "time": 360
+  },
+  {
+    "source": "4208",
+    "target": "4209",
+    "line": "공항철도",
+    "time": 360
+  },
+  {
+    "source": "4210",
+    "target": "4209",
+    "line": "공항철도",
+    "time": 270
+  },
+  {
+    "source": "4209",
+    "target": "4210",
+    "line": "공항철도",
+    "time": 270
+  },
+  {
+    "source": "4212",
+    "target": "4211",
+    "line": "공항철도",
+    "time": 270
+  },
+  {
+    "source": "4211",
+    "target": "4212",
+    "line": "공항철도",
+    "time": 270
+  },
+  {
+    "source": "4213",
+    "target": "4212",
+    "line": "공항철도",
+    "time": 210
+  },
+  {
+    "source": "4212",
+    "target": "4213",
+    "line": "공항철도",
+    "time": 210
+  },
+  {
+    "source": "4215",
+    "target": "4213",
+    "line": "공항철도",
+    "time": 420
+  },
+  {
+    "source": "4213",
+    "target": "4215",
+    "line": "공항철도",
+    "time": 361
+  },
+  {
+    "source": "4217",
+    "target": "4210",
+    "line": "공항철도",
+    "time": 510
+  },
+  {
+    "source": "4210",
+    "target": "4217",
+    "line": "공항철도",
+    "time": 510
+  },
+  {
+    "source": "4211",
+    "target": "4217",
+    "line": "공항철도",
+    "time": 240
+  },
+  {
+    "source": "4217",
+    "target": "4211",
+    "line": "공항철도",
+    "time": 240
+  },
+  {
+    "source": "4305",
+    "target": "4304",
+    "line": "신분당선",
+    "time": 101
+  },
+  {
+    "source": "4304",
+    "target": "4305",
+    "line": "신분당선",
+    "time": 97
+  },
+  {
+    "source": "4306",
+    "target": "4305",
+    "line": "신분당선",
+    "time": 106
+  },
+  {
+    "source": "4305",
+    "target": "4306",
+    "line": "신분당선",
+    "time": 104
+  },
+  {
+    "source": "4307",
+    "target": "4306",
+    "line": "신분당선",
+    "time": 106
+  },
+  {
+    "source": "4306",
+    "target": "4307",
+    "line": "신분당선",
+    "time": 109
+  },
+  {
+    "source": "4308",
+    "target": "4307",
+    "line": "신분당선",
+    "time": 131
+  },
+  {
+    "source": "4307",
+    "target": "4308",
+    "line": "신분당선",
+    "time": 131
+  },
+  {
+    "source": "4309",
+    "target": "4308",
+    "line": "신분당선",
+    "time": 131
+  },
+  {
+    "source": "4308",
+    "target": "4309",
+    "line": "신분당선",
+    "time": 131
+  },
+  {
+    "source": "4310",
+    "target": "4309",
+    "line": "신분당선",
+    "time": 180
+  },
+  {
+    "source": "4309",
+    "target": "4310",
+    "line": "신분당선",
+    "time": 180
+  },
+  {
+    "source": "4311",
+    "target": "4310",
+    "line": "신분당선",
+    "time": 393
+  },
+  {
+    "source": "4310",
+    "target": "4311",
+    "line": "신분당선",
+    "time": 393
+  },
+  {
+    "source": "4312",
+    "target": "4311",
+    "line": "신분당선",
+    "time": 203
+  },
+  {
+    "source": "4311",
+    "target": "4312",
+    "line": "신분당선",
+    "time": 203
+  },
+  {
+    "source": "4313",
+    "target": "4312",
+    "line": "신분당선",
+    "time": 149
+  },
+  {
+    "source": "4312",
+    "target": "4313",
+    "line": "신분당선",
+    "time": 144
+  },
+  {
+    "source": "4314",
+    "target": "4313",
+    "line": "신분당선",
+    "time": 162
+  },
+  {
+    "source": "4313",
+    "target": "4314",
+    "line": "신분당선",
+    "time": 158
+  },
+  {
+    "source": "4315",
+    "target": "4314",
+    "line": "신분당선",
+    "time": 174
+  },
+  {
+    "source": "4314",
+    "target": "4315",
+    "line": "신분당선",
+    "time": 174
+  },
+  {
+    "source": "4316",
+    "target": "4315",
+    "line": "신분당선",
+    "time": 152
+  },
+  {
+    "source": "4315",
+    "target": "4316",
+    "line": "신분당선",
+    "time": 152
+  },
+  {
+    "source": "4317",
+    "target": "4316",
+    "line": "신분당선",
+    "time": 181
+  },
+  {
+    "source": "4316",
+    "target": "4317",
+    "line": "신분당선",
+    "time": 181
+  },
+  {
+    "source": "4318",
+    "target": "4317",
+    "line": "신분당선",
+    "time": 196
+  },
+  {
+    "source": "4317",
+    "target": "4318",
+    "line": "신분당선",
+    "time": 196
+  },
+  {
+    "source": "4319",
+    "target": "4318",
+    "line": "신분당선",
+    "time": 239
+  },
+  {
+    "source": "4318",
+    "target": "4319",
+    "line": "신분당선",
+    "time": 239
+  },
+  {
+    "source": "4402",
+    "target": "4401",
+    "line": "신림선",
+    "time": 120
+  },
+  {
+    "source": "4401",
+    "target": "4402",
+    "line": "신림선",
+    "time": 120
+  },
+  {
+    "source": "4403",
+    "target": "4402",
+    "line": "신림선",
+    "time": 70
+  },
+  {
+    "source": "4402",
+    "target": "4403",
+    "line": "신림선",
+    "time": 70
+  },
+  {
+    "source": "4404",
+    "target": "4403",
+    "line": "신림선",
+    "time": 120
+  },
+  {
+    "source": "4403",
+    "target": "4404",
+    "line": "신림선",
+    "time": 120
+  },
+  {
+    "source": "4405",
+    "target": "4404",
+    "line": "신림선",
+    "time": 120
+  },
+  {
+    "source": "4404",
+    "target": "4405",
+    "line": "신림선",
+    "time": 120
+  },
+  {
+    "source": "4406",
+    "target": "4405",
+    "line": "신림선",
+    "time": 70
+  },
+  {
+    "source": "4405",
+    "target": "4406",
+    "line": "신림선",
+    "time": 70
+  },
+  {
+    "source": "4407",
+    "target": "4406",
+    "line": "신림선",
+    "time": 70
+  },
+  {
+    "source": "4406",
+    "target": "4407",
+    "line": "신림선",
+    "time": 70
+  },
+  {
+    "source": "4408",
+    "target": "4407",
+    "line": "신림선",
+    "time": 70
+  },
+  {
+    "source": "4407",
+    "target": "4408",
+    "line": "신림선",
+    "time": 70
+  },
+  {
+    "source": "4409",
+    "target": "4408",
+    "line": "신림선",
+    "time": 120
+  },
+  {
+    "source": "4408",
+    "target": "4409",
+    "line": "신림선",
+    "time": 120
+  },
+  {
+    "source": "4410",
+    "target": "4409",
+    "line": "신림선",
+    "time": 120
+  },
+  {
+    "source": "4409",
+    "target": "4410",
+    "line": "신림선",
+    "time": 120
+  },
+  {
+    "source": "4411",
+    "target": "4410",
+    "line": "신림선",
+    "time": 120
+  },
+  {
+    "source": "4410",
+    "target": "4411",
+    "line": "신림선",
+    "time": 120
+  },
+  {
+    "source": "4502",
+    "target": "4501",
+    "line": "에버라인선",
+    "time": 107
+  },
+  {
+    "source": "4501",
+    "target": "4502",
+    "line": "에버라인선",
+    "time": 107
+  },
+  {
+    "source": "4503",
+    "target": "4502",
+    "line": "에버라인선",
+    "time": 93
+  },
+  {
+    "source": "4502",
+    "target": "4503",
+    "line": "에버라인선",
+    "time": 93
+  },
+  {
+    "source": "4504",
+    "target": "4503",
+    "line": "에버라인선",
+    "time": 94
+  },
+  {
+    "source": "4503",
+    "target": "4504",
+    "line": "에버라인선",
+    "time": 94
+  },
+  {
+    "source": "4505",
+    "target": "4504",
+    "line": "에버라인선",
+    "time": 103
+  },
+  {
+    "source": "4504",
+    "target": "4505",
+    "line": "에버라인선",
+    "time": 103
+  },
+  {
+    "source": "4506",
+    "target": "4505",
+    "line": "에버라인선",
+    "time": 84
+  },
+  {
+    "source": "4505",
+    "target": "4506",
+    "line": "에버라인선",
+    "time": 84
+  },
+  {
+    "source": "4508",
+    "target": "4506",
+    "line": "에버라인선",
+    "time": 184
+  },
+  {
+    "source": "4506",
+    "target": "4508",
+    "line": "에버라인선",
+    "time": 184
+  },
+  {
+    "source": "4509",
+    "target": "4508",
+    "line": "에버라인선",
+    "time": 94
+  },
+  {
+    "source": "4508",
+    "target": "4509",
+    "line": "에버라인선",
+    "time": 94
+  },
+  {
+    "source": "4510",
+    "target": "4509",
+    "line": "에버라인선",
+    "time": 94
+  },
+  {
+    "source": "4509",
+    "target": "4510",
+    "line": "에버라인선",
+    "time": 94
+  },
+  {
+    "source": "4511",
+    "target": "4510",
+    "line": "에버라인선",
+    "time": 83
+  },
+  {
+    "source": "4510",
+    "target": "4511",
+    "line": "에버라인선",
+    "time": 83
+  },
+  {
+    "source": "4512",
+    "target": "4511",
+    "line": "에버라인선",
+    "time": 90
+  },
+  {
+    "source": "4511",
+    "target": "4512",
+    "line": "에버라인선",
+    "time": 90
+  },
+  {
+    "source": "4513",
+    "target": "4512",
+    "line": "에버라인선",
+    "time": 94
+  },
+  {
+    "source": "4512",
+    "target": "4513",
+    "line": "에버라인선",
+    "time": 94
+  },
+  {
+    "source": "4514",
+    "target": "4513",
+    "line": "에버라인선",
+    "time": 127
+  },
+  {
+    "source": "4513",
+    "target": "4514",
+    "line": "에버라인선",
+    "time": 127
+  },
+  {
+    "source": "4515",
+    "target": "4514",
+    "line": "에버라인선",
+    "time": 86
+  },
+  {
+    "source": "4514",
+    "target": "4515",
+    "line": "에버라인선",
+    "time": 86
+  },
+  {
+    "source": "4517",
+    "target": "4515",
+    "line": "에버라인선",
+    "time": 177
+  },
+  {
+    "source": "4515",
+    "target": "4517",
+    "line": "에버라인선",
+    "time": 177
+  },
+  {
+    "source": "4602",
+    "target": "4601",
+    "line": "의정부경전철",
+    "time": 113
+  },
+  {
+    "source": "4601",
+    "target": "4602",
+    "line": "의정부경전철",
+    "time": 113
+  },
+  {
+    "source": "4603",
+    "target": "4602",
+    "line": "의정부경전철",
+    "time": 89
+  },
+  {
+    "source": "4602",
+    "target": "4603",
+    "line": "의정부경전철",
+    "time": 89
+  },
+  {
+    "source": "4604",
+    "target": "4603",
+    "line": "의정부경전철",
+    "time": 80
+  },
+  {
+    "source": "4603",
+    "target": "4604",
+    "line": "의정부경전철",
+    "time": 80
+  },
+  {
+    "source": "4605",
+    "target": "4604",
+    "line": "의정부경전철",
+    "time": 86
+  },
+  {
+    "source": "4604",
+    "target": "4605",
+    "line": "의정부경전철",
+    "time": 86
+  },
+  {
+    "source": "4606",
+    "target": "4605",
+    "line": "의정부경전철",
+    "time": 98
+  },
+  {
+    "source": "4605",
+    "target": "4606",
+    "line": "의정부경전철",
+    "time": 98
+  },
+  {
+    "source": "4607",
+    "target": "4606",
+    "line": "의정부경전철",
+    "time": 83
+  },
+  {
+    "source": "4606",
+    "target": "4607",
+    "line": "의정부경전철",
+    "time": 83
+  },
+  {
+    "source": "4608",
+    "target": "4607",
+    "line": "의정부경전철",
+    "time": 95
+  },
+  {
+    "source": "4607",
+    "target": "4608",
+    "line": "의정부경전철",
+    "time": 95
+  },
+  {
+    "source": "4609",
+    "target": "4608",
+    "line": "의정부경전철",
+    "time": 86
+  },
+  {
+    "source": "4608",
+    "target": "4609",
+    "line": "의정부경전철",
+    "time": 86
+  },
+  {
+    "source": "4610",
+    "target": "4609",
+    "line": "의정부경전철",
+    "time": 76
+  },
+  {
+    "source": "4609",
+    "target": "4610",
+    "line": "의정부경전철",
+    "time": 76
+  },
+  {
+    "source": "4611",
+    "target": "4610",
+    "line": "의정부경전철",
+    "time": 75
+  },
+  {
+    "source": "4610",
+    "target": "4611",
+    "line": "의정부경전철",
+    "time": 75
+  },
+  {
+    "source": "4612",
+    "target": "4611",
+    "line": "의정부경전철",
+    "time": 72
+  },
+  {
+    "source": "4611",
+    "target": "4612",
+    "line": "의정부경전철",
+    "time": 72
+  },
+  {
+    "source": "4613",
+    "target": "4612",
+    "line": "의정부경전철",
+    "time": 84
+  },
+  {
+    "source": "4612",
+    "target": "4613",
+    "line": "의정부경전철",
+    "time": 84
+  },
+  {
+    "source": "4614",
+    "target": "4613",
+    "line": "의정부경전철",
+    "time": 89
+  },
+  {
+    "source": "4613",
+    "target": "4614",
+    "line": "의정부경전철",
+    "time": 89
+  },
+  {
+    "source": "4615",
+    "target": "4614",
+    "line": "의정부경전철",
+    "time": 56
+  },
+  {
+    "source": "4614",
+    "target": "4615",
+    "line": "의정부경전철",
+    "time": 56
+  },
+  {
+    "source": "4702",
+    "target": "4701",
+    "line": "우이신설선",
+    "time": 91
+  },
+  {
+    "source": "4701",
+    "target": "4702",
+    "line": "우이신설선",
+    "time": 103
+  },
+  {
+    "source": "4703",
+    "target": "4702",
+    "line": "우이신설선",
+    "time": 98
+  },
+  {
+    "source": "4702",
+    "target": "4703",
+    "line": "우이신설선",
+    "time": 97
+  },
+  {
+    "source": "4704",
+    "target": "4703",
+    "line": "우이신설선",
+    "time": 108
+  },
+  {
+    "source": "4703",
+    "target": "4704",
+    "line": "우이신설선",
+    "time": 107
+  },
+  {
+    "source": "4705",
+    "target": "4704",
+    "line": "우이신설선",
+    "time": 103
+  },
+  {
+    "source": "4704",
+    "target": "4705",
+    "line": "우이신설선",
+    "time": 104
+  },
+  {
+    "source": "4706",
+    "target": "4705",
+    "line": "우이신설선",
+    "time": 98
+  },
+  {
+    "source": "4705",
+    "target": "4706",
+    "line": "우이신설선",
+    "time": 102
+  },
+  {
+    "source": "4707",
+    "target": "4706",
+    "line": "우이신설선",
+    "time": 101
+  },
+  {
+    "source": "4706",
+    "target": "4707",
+    "line": "우이신설선",
+    "time": 100
+  },
+  {
+    "source": "4708",
+    "target": "4707",
+    "line": "우이신설선",
+    "time": 115
+  },
+  {
+    "source": "4707",
+    "target": "4708",
+    "line": "우이신설선",
+    "time": 110
+  },
+  {
+    "source": "4709",
+    "target": "4708",
+    "line": "우이신설선",
+    "time": 155
+  },
+  {
+    "source": "4708",
+    "target": "4709",
+    "line": "우이신설선",
+    "time": 150
+  },
+  {
+    "source": "4710",
+    "target": "4709",
+    "line": "우이신설선",
+    "time": 138
+  },
+  {
+    "source": "4709",
+    "target": "4710",
+    "line": "우이신설선",
+    "time": 135
+  },
+  {
+    "source": "4711",
+    "target": "4710",
+    "line": "우이신설선",
+    "time": 119
+  },
+  {
+    "source": "4710",
+    "target": "4711",
+    "line": "우이신설선",
+    "time": 128
+  },
+  {
+    "source": "4712",
+    "target": "4711",
+    "line": "우이신설선",
+    "time": 124
+  },
+  {
+    "source": "4711",
+    "target": "4712",
+    "line": "우이신설선",
+    "time": 126
+  },
+  {
+    "source": "4713",
+    "target": "4712",
+    "line": "우이신설선",
+    "time": 130
+  },
+  {
+    "source": "4712",
+    "target": "4713",
+    "line": "우이신설선",
+    "time": 118
+  },
+  {
+    "source": "4805",
+    "target": "4804",
+    "line": "서해선",
+    "time": 150
+  },
+  {
+    "source": "4804",
+    "target": "4805",
+    "line": "서해선",
+    "time": 180
+  },
+  {
+    "source": "4806",
+    "target": "4805",
+    "line": "서해선",
+    "time": 150
+  },
+  {
+    "source": "4805",
+    "target": "4806",
+    "line": "서해선",
+    "time": 150
+  },
+  {
+    "source": "4807",
+    "target": "4806",
+    "line": "서해선",
+    "time": 150
+  },
+  {
+    "source": "4806",
+    "target": "4807",
+    "line": "서해선",
+    "time": 150
+  },
+  {
+    "source": "4808",
+    "target": "4807",
+    "line": "서해선",
+    "time": 240
+  },
+  {
+    "source": "4807",
+    "target": "4808",
+    "line": "서해선",
+    "time": 240
+  },
+  {
+    "source": "4809",
+    "target": "4808",
+    "line": "서해선",
+    "time": 270
+  },
+  {
+    "source": "4808",
+    "target": "4809",
+    "line": "서해선",
+    "time": 270
+  },
+  {
+    "source": "4810",
+    "target": "4809",
+    "line": "서해선",
+    "time": 150
+  },
+  {
+    "source": "4809",
+    "target": "4810",
+    "line": "서해선",
+    "time": 150
+  },
+  {
+    "source": "4811",
+    "target": "4810",
+    "line": "서해선",
+    "time": 180
+  },
+  {
+    "source": "4810",
+    "target": "4811",
+    "line": "서해선",
+    "time": 180
+  },
+  {
+    "source": "4812",
+    "target": "4811",
+    "line": "서해선",
+    "time": 150
+  },
+  {
+    "source": "4811",
+    "target": "4812",
+    "line": "서해선",
+    "time": 150
+  },
+  {
+    "source": "4813",
+    "target": "4812",
+    "line": "서해선",
+    "time": 180
+  },
+  {
+    "source": "4812",
+    "target": "4813",
+    "line": "서해선",
+    "time": 180
+  },
+  {
+    "source": "4814",
+    "target": "4813",
+    "line": "서해선",
+    "time": 150
+  },
+  {
+    "source": "4813",
+    "target": "4814",
+    "line": "서해선",
+    "time": 150
+  },
+  {
+    "source": "4815",
+    "target": "4814",
+    "line": "서해선",
+    "time": 150
+  },
+  {
+    "source": "4814",
+    "target": "4815",
+    "line": "서해선",
+    "time": 120
+  },
+  {
+    "source": "4921",
+    "target": "4920",
+    "line": "김포골드라인",
+    "time": 175
+  },
+  {
+    "source": "4920",
+    "target": "4921",
+    "line": "김포골드라인",
+    "time": 154
+  },
+  {
+    "source": "4922",
+    "target": "4921",
+    "line": "김포골드라인",
+    "time": 205
+  },
+  {
+    "source": "4921",
+    "target": "4922",
+    "line": "김포골드라인",
+    "time": 193
+  },
+  {
+    "source": "4923",
+    "target": "4922",
+    "line": "김포골드라인",
+    "time": 236
+  },
+  {
+    "source": "4922",
+    "target": "4923",
+    "line": "김포골드라인",
+    "time": 226
+  },
+  {
+    "source": "4924",
+    "target": "4923",
+    "line": "김포골드라인",
+    "time": 154
+  },
+  {
+    "source": "4923",
+    "target": "4924",
+    "line": "김포골드라인",
+    "time": 150
+  },
+  {
+    "source": "4925",
+    "target": "4924",
+    "line": "김포골드라인",
+    "time": 244
+  },
+  {
+    "source": "4924",
+    "target": "4925",
+    "line": "김포골드라인",
+    "time": 247
+  },
+  {
+    "source": "4926",
+    "target": "4925",
+    "line": "김포골드라인",
+    "time": 166
+  },
+  {
+    "source": "4925",
+    "target": "4926",
+    "line": "김포골드라인",
+    "time": 163
+  },
+  {
+    "source": "4927",
+    "target": "4926",
+    "line": "김포골드라인",
+    "time": 136
+  },
+  {
+    "source": "4926",
+    "target": "4927",
+    "line": "김포골드라인",
+    "time": 136
+  },
+  {
+    "source": "4928",
+    "target": "4927",
+    "line": "김포골드라인",
+    "time": 279
+  },
+  {
+    "source": "4927",
+    "target": "4928",
+    "line": "김포골드라인",
+    "time": 263
+  },
+  {
+    "source": "4929",
+    "target": "4928",
+    "line": "김포골드라인",
+    "time": 403
+  },
+  {
+    "source": "4928",
+    "target": "4929",
+    "line": "김포골드라인",
+    "time": 422
+  },
+  {
+    "source": "1251",
+    "target": "1252",
+    "line": "경의선",
+    "time": 390
+  },
+  {
+    "source": "1252",
+    "target": "1251",
+    "line": "경의선",
+    "time": 390
+  },
+  {
+    "source": "1252",
+    "target": "5265",
+    "line": "경의선",
+    "time": 180
+  },
+  {
+    "source": "5265",
+    "target": "1252",
+    "line": "경의선",
+    "time": 180
+  },
+  {
+    "source": "5265",
+    "target": "5266",
+    "line": "경의선",
+    "time": 150
+  },
+  {
+    "source": "5266",
+    "target": "5265",
+    "line": "경의선",
+    "time": 150
+  },
+  {
+    "source": "1845",
+    "target": "5550",
+    "line": "분당선",
+    "time": 300
+  },
+  {
+    "source": "5550",
+    "target": "1845",
+    "line": "분당선",
+    "time": 300
+  },
+  {
+    "source": "5553",
+    "target": "1007",
+    "line": "경부선",
+    "time": 120
+  },
+  {
+    "source": "1007",
+    "target": "5553",
+    "line": "경부선",
+    "time": 120
+  },
+  {
+    "source": "1813",
+    "target": "5553",
+    "line": "경인선",
+    "time": 150
+  },
+  {
+    "source": "5553",
+    "target": "1813",
+    "line": "경인선",
+    "time": 150
+  },
+  {
+    "source": "2550",
+    "target": "5554",
+    "line": "5호선",
+    "time": 120
+  },
+  {
+    "source": "5554",
+    "target": "2550",
+    "line": "5호선",
+    "time": 120
+  },
+  {
+    "source": "5755",
+    "target": "1877",
+    "line": "수인선",
+    "time": 210
+  },
+  {
+    "source": "1877",
+    "target": "5755",
+    "line": "수인선",
+    "time": 210
+  },
+  {
+    "source": "5756",
+    "target": "5755",
+    "line": "수인선",
+    "time": 150
+  },
+  {
+    "source": "5755",
+    "target": "5756",
+    "line": "수인선",
+    "time": 150
+  },
+  {
+    "source": "5757",
+    "target": "5756",
+    "line": "수인선",
+    "time": 120
+  },
+  {
+    "source": "5756",
+    "target": "5757",
+    "line": "수인선",
+    "time": 120
+  },
+  {
+    "source": "5758",
+    "target": "5757",
+    "line": "수인선",
+    "time": 150
+  },
+  {
+    "source": "5757",
+    "target": "5758",
+    "line": "수인선",
+    "time": 150
+  },
+  {
+    "source": "5759",
+    "target": "5758",
+    "line": "수인선",
+    "time": 150
+  },
+  {
+    "source": "5758",
+    "target": "5759",
+    "line": "수인선",
+    "time": 150
+  },
+  {
+    "source": "5760",
+    "target": "5759",
+    "line": "수인선",
+    "time": 180
+  },
+  {
+    "source": "5759",
+    "target": "5760",
+    "line": "수인선",
+    "time": 180
+  },
+  {
+    "source": "5762",
+    "target": "5761",
+    "line": "수인선",
+    "time": 180
+  },
+  {
+    "source": "5761",
+    "target": "5762",
+    "line": "수인선",
+    "time": 180
+  },
+  {
+    "source": "5761",
+    "target": "5760",
+    "line": "수인선",
+    "time": 180
+  },
+  {
+    "source": "5760",
+    "target": "5761",
+    "line": "수인선",
+    "time": 180
+  },
+  {
+    "source": "151",
+    "target": "201",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "201",
+    "target": "151",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "156",
+    "target": "246",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "246",
+    "target": "156",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "153",
+    "target": "319",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "319",
+    "target": "153",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "320",
+    "target": "203",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "203",
+    "target": "320",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "223",
+    "target": "330",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "330",
+    "target": "223",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "155",
+    "target": "421",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "421",
+    "target": "155",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "205",
+    "target": "422",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "422",
+    "target": "205",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "321",
+    "target": "423",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "423",
+    "target": "321",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "150",
+    "target": "426",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "426",
+    "target": "150",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "433",
+    "target": "226",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "226",
+    "target": "433",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "150",
+    "target": "1001",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "1001",
+    "target": "150",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "234",
+    "target": "1007",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "1007",
+    "target": "234",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "430",
+    "target": "1008",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "1008",
+    "target": "430",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "325",
+    "target": "1011",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "1011",
+    "target": "325",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "1013",
+    "target": "208",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "208",
+    "target": "1013",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "158",
+    "target": "1014",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "1014",
+    "target": "158",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "412",
+    "target": "1022",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "1022",
+    "target": "412",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "220",
+    "target": "1023",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "1023",
+    "target": "220",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "334",
+    "target": "1025",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "1025",
+    "target": "334",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "339",
+    "target": "1030",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "1030",
+    "target": "339",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "239",
+    "target": "1264",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "1264",
+    "target": "239",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "158",
+    "target": "1305",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "1305",
+    "target": "158",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "208",
+    "target": "1845",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "1845",
+    "target": "208",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "309",
+    "target": "1949",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "1949",
+    "target": "309",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "260",
+    "target": "2519",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "2519",
+    "target": "260",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "2524",
+    "target": "236",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "236",
+    "target": "2524",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "243",
+    "target": "2532",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "2532",
+    "target": "243",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "153",
+    "target": "2535",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "2535",
+    "target": "153",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "319",
+    "target": "2535",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "2535",
+    "target": "319",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "2536",
+    "target": "204",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "204",
+    "target": "2536",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "205",
+    "target": "2537",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "2537",
+    "target": "205",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "422",
+    "target": "2537",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "2537",
+    "target": "422",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "208",
+    "target": "2541",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "2541",
+    "target": "208",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "342",
+    "target": "2558",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "2558",
+    "target": "342",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "312",
+    "target": "2613",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "2613",
+    "target": "312",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "311",
+    "target": "2615",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "2615",
+    "target": "311",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "238",
+    "target": "2623",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "2623",
+    "target": "238",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "428",
+    "target": "2629",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "2629",
+    "target": "428",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "323",
+    "target": "2634",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "2634",
+    "target": "323",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "2636",
+    "target": "206",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "206",
+    "target": "2636",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "2637",
+    "target": "159",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "159",
+    "target": "2637",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "411",
+    "target": "2715",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "2715",
+    "target": "411",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "212",
+    "target": "2729",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "2729",
+    "target": "212",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "329",
+    "target": "2736",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "2736",
+    "target": "329",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "432",
+    "target": "2738",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "2738",
+    "target": "432",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "233",
+    "target": "2746",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "2746",
+    "target": "233",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "216",
+    "target": "2815",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "2815",
+    "target": "216",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "2818",
+    "target": "340",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "340",
+    "target": "2818",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "237",
+    "target": "4113",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "4113",
+    "target": "237",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "4120",
+    "target": "431",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "431",
+    "target": "4120",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "329",
+    "target": "4123",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "4123",
+    "target": "329",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "218",
+    "target": "4130",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "4130",
+    "target": "218",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "150",
+    "target": "4201",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "4201",
+    "target": "150",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "426",
+    "target": "4201",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "4201",
+    "target": "426",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "239",
+    "target": "4203",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "4203",
+    "target": "239",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "327",
+    "target": "4304",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "4304",
+    "target": "327",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "222",
+    "target": "4307",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "4307",
+    "target": "222",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "4308",
+    "target": "332",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "332",
+    "target": "4308",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "230",
+    "target": "4408",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "4408",
+    "target": "230",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "4711",
+    "target": "418",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "418",
+    "target": "4711",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "4713",
+    "target": "156",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "156",
+    "target": "4713",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "4713",
+    "target": "246",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "246",
+    "target": "4713",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "158",
+    "target": "5550",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "5550",
+    "target": "158",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "211",
+    "target": "5551",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "5551",
+    "target": "211",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "234",
+    "target": "5555",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "5555",
+    "target": "234",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "1200",
+    "target": "1015",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "1015",
+    "target": "1200",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "1003",
+    "target": "1290",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "1290",
+    "target": "1003",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "1305",
+    "target": "1014",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "1014",
+    "target": "1305",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "1306",
+    "target": "1015",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "1015",
+    "target": "1306",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "1200",
+    "target": "1306",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "1306",
+    "target": "1200",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "1307",
+    "target": "1201",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "1201",
+    "target": "1307",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "1308",
+    "target": "1019",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "1019",
+    "target": "1308",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "1309",
+    "target": "1202",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "1202",
+    "target": "1309",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "1203",
+    "target": "1310",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "1310",
+    "target": "1203",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "1708",
+    "target": "1458",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "1458",
+    "target": "1708",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "1716",
+    "target": "1749",
+    "line": "경부선",
+    "time": 330
+  },
+  {
+    "source": "1749",
+    "target": "1716",
+    "line": "경부선",
+    "time": 330
+  },
+  {
+    "source": "1703",
+    "target": "1750",
+    "line": "경부선",
+    "time": 270
+  },
+  {
+    "source": "1750",
+    "target": "1703",
+    "line": "경부선",
+    "time": 270
+  },
+  {
+    "source": "1845",
+    "target": "1013",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "1013",
+    "target": "1845",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "1713",
+    "target": "1846",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "1846",
+    "target": "1713",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "1502",
+    "target": "1860",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "1860",
+    "target": "1502",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "1762",
+    "target": "5762",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "5762",
+    "target": "1762",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "1812",
+    "target": "1891",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "1891",
+    "target": "1812",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "1249",
+    "target": "1953",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "1953",
+    "target": "1249",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "1032",
+    "target": "2526",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "2526",
+    "target": "1032",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "2530",
+    "target": "1262",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "1262",
+    "target": "2530",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "1013",
+    "target": "2541",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "2541",
+    "target": "1013",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "1845",
+    "target": "2541",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "2541",
+    "target": "1845",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "2611",
+    "target": "2612",
+    "line": "6호선",
+    "time": 120
+  },
+  {
+    "source": "2612",
+    "target": "2613",
+    "line": "6호선",
+    "time": 110
+  },
+  {
+    "source": "2613",
+    "target": "2614",
+    "line": "6호선",
+    "time": 100
+  },
+  {
+    "source": "2614",
+    "target": "2615",
+    "line": "6호선",
+    "time": 170
+  },
+  {
+    "source": "2616",
+    "target": "2611",
+    "line": "6호선",
+    "time": 160
+  },
+  {
+    "source": "2615",
+    "target": "2616",
+    "line": "6호선",
+    "time": 110
+  },
+  {
+    "source": "1266",
+    "target": "2619",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "2619",
+    "target": "1266",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "2627",
+    "target": "1262",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "1262",
+    "target": "2627",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "2530",
+    "target": "2627",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "2627",
+    "target": "2530",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "2628",
+    "target": "1261",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "1261",
+    "target": "2628",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "2538",
+    "target": "2635",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "2635",
+    "target": "2538",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "1018",
+    "target": "2645",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "2645",
+    "target": "1018",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "2649",
+    "target": "1311",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "1311",
+    "target": "2649",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "1903",
+    "target": "2712",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "2712",
+    "target": "1903",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "2646",
+    "target": "2719",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "2719",
+    "target": "2646",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "2722",
+    "target": "1202",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "1202",
+    "target": "2722",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "1309",
+    "target": "2722",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "2722",
+    "target": "1309",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "2545",
+    "target": "2727",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "2727",
+    "target": "2545",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "2732",
+    "target": "1849",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "1849",
+    "target": "2732",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "1702",
+    "target": "2748",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "2748",
+    "target": "1702",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "1821",
+    "target": "2752",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "2752",
+    "target": "1821",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "2812",
+    "target": "2548",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "2548",
+    "target": "2812",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "2821",
+    "target": "1031",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "1031",
+    "target": "2821",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "2827",
+    "target": "1853",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "1853",
+    "target": "2827",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "3761",
+    "target": "3118",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "3118",
+    "target": "3761",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "1806",
+    "target": "3120",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "3120",
+    "target": "1806",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "3130",
+    "target": "1884",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "1884",
+    "target": "3130",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "3218",
+    "target": "1809",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "1809",
+    "target": "3218",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "3221",
+    "target": "3124",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "3124",
+    "target": "3221",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "3213",
+    "target": "3763",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "3763",
+    "target": "3213",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "2513",
+    "target": "4102",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "4102",
+    "target": "2513",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "2527",
+    "target": "4115",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "4115",
+    "target": "2527",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "4117",
+    "target": "1004",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "1004",
+    "target": "4117",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "4123",
+    "target": "2736",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "2736",
+    "target": "4123",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "1850",
+    "target": "4127",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "4127",
+    "target": "1850",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "2816",
+    "target": "4133",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "4133",
+    "target": "2816",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "2556",
+    "target": "4136",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "4136",
+    "target": "2556",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "4202",
+    "target": "1262",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "1262",
+    "target": "4202",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "2530",
+    "target": "4202",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "4202",
+    "target": "2530",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "4202",
+    "target": "2627",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "2627",
+    "target": "4202",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "1264",
+    "target": "4203",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "4203",
+    "target": "1264",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "1266",
+    "target": "4204",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "4204",
+    "target": "1266",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "4204",
+    "target": "2619",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "2619",
+    "target": "4204",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "4105",
+    "target": "4206",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "4206",
+    "target": "4105",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "2513",
+    "target": "4207",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "4207",
+    "target": "2513",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "4207",
+    "target": "4102",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "4102",
+    "target": "4207",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "3110",
+    "target": "4208",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "4208",
+    "target": "3110",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "4209",
+    "target": "3207",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "3207",
+    "target": "4209",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "2734",
+    "target": "4305",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "4305",
+    "target": "2734",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "4125",
+    "target": "4306",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "4306",
+    "target": "4125",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "1501",
+    "target": "4311",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "4311",
+    "target": "1501",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "4312",
+    "target": "1857",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "1857",
+    "target": "4312",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "1858",
+    "target": "4313",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "4313",
+    "target": "1858",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "4116",
+    "target": "4401",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "4401",
+    "target": "4116",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "1005",
+    "target": "4402",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "4402",
+    "target": "1005",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "2744",
+    "target": "4404",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "4404",
+    "target": "2744",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "1865",
+    "target": "4501",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "4501",
+    "target": "1865",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "1905",
+    "target": "4602",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "4602",
+    "target": "1905",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "2639",
+    "target": "4712",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "4712",
+    "target": "2639",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "1814",
+    "target": "4804",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "4804",
+    "target": "1814",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "1758",
+    "target": "4813",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "4813",
+    "target": "1758",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "2513",
+    "target": "4929",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "4929",
+    "target": "2513",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "4102",
+    "target": "4929",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "4929",
+    "target": "4102",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "4207",
+    "target": "4929",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "4929",
+    "target": "4207",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "1265",
+    "target": "5265",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "5265",
+    "target": "1265",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "5266",
+    "target": "2619",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "2619",
+    "target": "5266",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "5266",
+    "target": "4204",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "4204",
+    "target": "5266",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "1284",
+    "target": "5284",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "5284",
+    "target": "1284",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "5550",
+    "target": "1014",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "1014",
+    "target": "5550",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "5550",
+    "target": "1305",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "1305",
+    "target": "5550",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "1701",
+    "target": "5553",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "5553",
+    "target": "1701",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "2549",
+    "target": "5554",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "5554",
+    "target": "2549",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "1309",
+    "target": "5556",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "5556",
+    "target": "1309",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "5755",
+    "target": "1755",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "1755",
+    "target": "5755",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "5756",
+    "target": "1756",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "1756",
+    "target": "5756",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "5757",
+    "target": "1757",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "1757",
+    "target": "5757",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "5758",
+    "target": "1758",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "1758",
+    "target": "5758",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "5758",
+    "target": "4813",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "4813",
+    "target": "5758",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "5759",
+    "target": "1759",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "1759",
+    "target": "5759",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "5760",
+    "target": "1760",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "1760",
+    "target": "5760",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "5761",
+    "target": "1761",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "1761",
+    "target": "5761",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "2822",
+    "target": "2828",
+    "line": "8호선",
+    "time": 130
+  },
+  {
+    "source": "2828",
+    "target": "2822",
+    "line": "8호선",
+    "time": 130
+  },
+  {
+    "source": "2828",
+    "target": "2821",
+    "line": "8호선",
+    "time": 140
+  },
+  {
+    "source": "2821",
+    "target": "2828",
+    "line": "8호선",
+    "time": 140
+  },
+  {
+    "source": "1286",
+    "target": "5284",
+    "line": "경의선",
+    "time": 300
+  },
+  {
+    "source": "5284",
+    "target": "1286",
+    "line": "경의선",
+    "time": 300
+  },
+  {
+    "source": "1285",
+    "target": "1286",
+    "line": "경의선",
+    "time": 240
+  },
+  {
+    "source": "1286",
+    "target": "1285",
+    "line": "경의선",
+    "time": 240
+  },
+  {
+    "source": "1007",
+    "target": "5555",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "5555",
+    "target": "1007",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "4804",
+    "target": "1982",
+    "line": "서해선",
+    "time": 231
+  },
+  {
+    "source": "1982",
+    "target": "4804",
+    "line": "서해선",
+    "time": 222
+  },
+  {
+    "source": "1982",
+    "target": "1981",
+    "line": "서해선",
+    "time": 204
+  },
+  {
+    "source": "1981",
+    "target": "1982",
+    "line": "서해선",
+    "time": 189
+  },
+  {
+    "source": "1981",
+    "target": "1980",
+    "line": "서해선",
+    "time": 289
+  },
+  {
+    "source": "1980",
+    "target": "1981",
+    "line": "서해선",
+    "time": 302
+  },
+  {
+    "source": "1980",
+    "target": "12711",
+    "line": "서해선",
+    "time": 428
+  },
+  {
+    "source": "12711",
+    "target": "1980",
+    "line": "서해선",
+    "time": 470
+  },
+  {
+    "source": "12711",
+    "target": "19531",
+    "line": "서해선",
+    "time": 142
+  },
+  {
+    "source": "19531",
+    "target": "12711",
+    "line": "서해선",
+    "time": 182
+  },
+  {
+    "source": "1916",
+    "target": "1917",
+    "line": "경원선",
+    "time": 370
+  },
+  {
+    "source": "1917",
+    "target": "1916",
+    "line": "경원선",
+    "time": 351
+  },
+  {
+    "source": "1917",
+    "target": "1918",
+    "line": "경원선",
+    "time": 220
+  },
+  {
+    "source": "1918",
+    "target": "1917",
+    "line": "경원선",
+    "time": 331
+  },
+  {
+    "source": "1918",
+    "target": "1919",
+    "line": "경원선",
+    "time": 523
+  },
+  {
+    "source": "1919",
+    "target": "1918",
+    "line": "경원선",
+    "time": 569
+  },
+  {
+    "source": "1982",
+    "target": "3754",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "3754",
+    "target": "1982",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "1980",
+    "target": "2513",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "2513",
+    "target": "1980",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "1980",
+    "target": "4102",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "4102",
+    "target": "1980",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "1980",
+    "target": "4207",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "4207",
+    "target": "1980",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "1980",
+    "target": "4929",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "4929",
+    "target": "1980",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "12711",
+    "target": "1271",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "1271",
+    "target": "12711",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "19531",
+    "target": "1249",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "1249",
+    "target": "19531",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "19531",
+    "target": "1953",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "1953",
+    "target": "19531",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "12741",
+    "target": "12751",
+    "line": "서해선",
+    "time": 150
+  },
+  {
+    "source": "12751",
+    "target": "12741",
+    "line": "서해선",
+    "time": 150
+  },
+  {
+    "source": "12731",
+    "target": "12741",
+    "line": "서해선",
+    "time": 150
+  },
+  {
+    "source": "12741",
+    "target": "12731",
+    "line": "서해선",
+    "time": 150
+  },
+  {
+    "source": "12721",
+    "target": "12731",
+    "line": "서해선",
+    "time": 150
+  },
+  {
+    "source": "12731",
+    "target": "12721",
+    "line": "서해선",
+    "time": 150
+  },
+  {
+    "source": "19531",
+    "target": "12721",
+    "line": "서해선",
+    "time": 150
+  },
+  {
+    "source": "12721",
+    "target": "19531",
+    "line": "서해선",
+    "time": 150
+  },
+  {
+    "source": "12751",
+    "target": "1275",
+    "line": "환승",
+    "time": 0
+  },
+  {
+    "source": "1275",
+    "target": "12751",
+    "line": "환승",
+    "time": 0
+  }
+]

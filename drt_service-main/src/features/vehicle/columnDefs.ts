@@ -1,0 +1,33 @@
+export const vehicleColumnDefs = [
+  {
+    headerName: "번호",
+    valueGetter: "node.rowIndex + 1",
+    width: 100,
+    minWidth: 100,
+    maxWidth: 100,
+    flex: 0,
+    resizable: false,
+    suppressSizeToFit: true,
+  },
+  {
+    headerName: "차량ID",
+    field: "vehicle_id",
+    minWidth: 120,
+  },
+  {
+    headerName: "차량번호",
+    field: "vehicle_no",
+    minWidth: 120,
+  },
+  { headerName: "권역코드", field: "area", minWidth: 120 },
+  { headerName: "운수사", field: "chassis_no", minWidth: 120 },
+  { headerName: "차량종류", field: "vehicle_type", minWidth: 120 },
+  { headerName: "차량상태", field: "vehicle_status", minWidth: 120 },
+  { headerName: "제조사", field: "maker", minWidth: 120 },
+  { headerName: "모델명", field: "model_nm", minWidth: 120 },
+  { headerName: "정원", field: "capacity", minWidth: 100 },
+  { headerName: "적용시작일", field: "start_dt", minWidth: 140 },
+  { headerName: "적용종료일", field: "end_dt", minWidth: 140 },
+  { headerName: "연료형태", field: "fuel_type", minWidth: 120 },
+  { headerName: "비고", field: "remark", minWidth: 200 },
+];
