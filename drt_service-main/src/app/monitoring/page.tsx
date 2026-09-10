@@ -5,7 +5,7 @@ import "ol/ol.css";
 import { Map, View } from "ol";
 import { XYZ } from "ol/source";
 import { Tile } from "ol/layer";
-import { defaults } from "ol/control";
+import { defaults, FullScreen } from "ol/control";
 import { fromLonLat } from "ol/proj";
 import { Vector as VectorLayer } from "ol/layer";
 import { Vector as VectorSource } from "ol/source";
@@ -341,7 +341,7 @@ export default function MonitoringPage() {
     });
 
     const map = new Map({
-      controls: defaults({ zoom: true, rotate: false }).extend([]),
+      controls: defaults({ zoom: true, rotate: false }).extend([new FullScreen()]),
       layers: [
         new Tile({
           visible: true,

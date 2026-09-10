@@ -116,6 +116,7 @@
   padding-left: 16px !important;
   padding-right: 16px !important;
 }
+
 .ag-theme-alpine .ag-cell {
   padding-left: 16px !important;
   padding-right: 16px !important;
@@ -199,6 +200,7 @@ footer::before {
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }
@@ -217,14 +219,20 @@ footer::before {
 
 .ag-theme-alpine .ag-row-pinned.ag-row-pinned-bottom .ag-cell[col-id="stn_nm"],
 .ag-theme-alpine .ag-row-pinned.ag-row-pinned-bottom .ag-cell[col-id="line_nm"],
-.ag-theme-alpine
-  .ag-row-pinned.ag-row-pinned-bottom
-  .ag-cell[col-id="대상기관"] {
+.ag-theme-alpine .ag-row-pinned.ag-row-pinned-bottom .ag-cell[col-id="대상기관"] {
   color: #059669 !important;
   font-weight: bold !important;
 }
 
 .ag-theme-alpine .ag-cell.v-center {
   display: flex;
-  align-items: center; /* 세로 중앙 */
+  align-items: center;
+  /* 세로 중앙 */
+}
+
+/* OpenLayers 전체화면 버튼 위치를 좌측 상단(줌 컨트롤 바로 아래)으로 이동 */
+.ol-control.ol-full-screen {
+  top: 4em !important;
+  left: 0.5em !important;
+  right: auto !important;
 }
