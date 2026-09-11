@@ -7,6 +7,7 @@ import { FilterForm } from "@/components/ui/FilterForm";
 import { incidentColumnDefs } from "@/features/incident/columnDefs";
 import { defaultIncidentFilters, incidentFields } from "@/features/incident/fieldconfig";
 import type { IncidentFilters, IncidentRow } from "@/types/incident";
+import { getIncidentHistoryList } from "@/lib/api/incident";
 import type { RowClickedEvent } from "ag-grid-community";
 import type { Map } from "ol";
 import Feature from "ol/Feature";
@@ -35,34 +36,8 @@ export default function IncidentHistoryPage() {
     setLoading(true);
 
     try {
-      const response = await fetch("/api/incident/history", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          filters: searchFilters,
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error(`조회 실패 (상태코드: ${response.status})`);
-      }
-
-      const data = (await response.json()) as {
-        incidents?: Array<Record<string, unknown>>;
-      };
-
-      const mappedRows: IncidentRow[] = (data.incidents ?? []).map((item) => ({
-        occurred_dtm: String(item.occurred_dtm ?? item.occurredDate ?? ""),
-        vehicle_no: String(item.vehicle_no ?? item.vehicleNo ?? ""),
-        incident_type: String(item.incident_type ?? item.incidentType ?? ""),
-        latitude: Number(item.latitude ?? item.lat ?? 0),
-        longitude: Number(item.longitude ?? item.lng ?? 0),
-        description: String(item.description ?? item.details ?? ""),
-      }));
-
-      setAllRows(mappedRows);
+      const rows = await getIncidentHistoryList(searchFilters);
+      setAllRows(rows);
     } catch (error) {
       console.error("Error fetching incident data:", error);
     } finally {

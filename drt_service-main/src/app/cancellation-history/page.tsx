@@ -12,6 +12,50 @@ import type {
   CancellationFilters,
   CancellationRow,
 } from "@/types/cancellation";
+import { getCancellationHistoryList } from "@/lib/api/cancellation";
+
+const DUMMY_CANCELLATIONS: CancellationRow[] = [
+  {
+    cancel_dtm: "2026-09-11 08:30:00",
+    plan_dtm: "2026-09-11 09:00:00",
+    ship_nm: "금오페리 1호",
+    start_port_nm: "여천항",
+    end_port_nm: "신기항",
+    cancel_reason: "풍랑주의보 및 기상 악화",
+  },
+  {
+    cancel_dtm: "2026-09-11 10:15:00",
+    plan_dtm: "2026-09-11 11:00:00",
+    ship_nm: "한려카페리호",
+    start_port_nm: "신기항",
+    end_port_nm: "여천항",
+    cancel_reason: "기관 점검 및 긴급 정비",
+  },
+  {
+    cancel_dtm: "2026-09-10 14:00:00",
+    plan_dtm: "2026-09-10 14:30:00",
+    ship_nm: "금오고속훼리",
+    start_port_nm: "여수항",
+    end_port_nm: "직포항",
+    cancel_reason: "해상 짙은 안개 (저시정 경보)",
+  },
+  {
+    cancel_dtm: "2026-09-09 16:20:00",
+    plan_dtm: "2026-09-09 17:00:00",
+    ship_nm: "금오페리 2호",
+    start_port_nm: "여천항",
+    end_port_nm: "신기항",
+    cancel_reason: "너울성 파도 및 강풍",
+  },
+  {
+    cancel_dtm: "2026-09-08 07:45:00",
+    plan_dtm: "2026-09-08 08:30:00",
+    ship_nm: "남면아일랜드호",
+    start_port_nm: "직포항",
+    end_port_nm: "여천항",
+    cancel_reason: "선박 정기 안전검사",
+  },
+];
 
 export default function CancellationHistoryPage() {
   const gridRef = useRef(null);
@@ -19,7 +63,7 @@ export default function CancellationHistoryPage() {
   const [filters, setFilters] = useState<CancellationFilters>(
     defaultCancellationFilters
   );
-  const [allRows, setAllRows] = useState<CancellationRow[]>([]);
+  const [allRows, setAllRows] = useState<CancellationRow[]>(DUMMY_CANCELLATIONS);
   const [loading, setLoading] = useState(false);
 
   const columnDefs = useMemo(() => cancellationColumnDefs, []);
@@ -29,34 +73,8 @@ export default function CancellationHistoryPage() {
     setLoading(true);
 
     try {
-      const response = await fetch("/api/cancellation/history", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          filters: searchFilters,
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error(`조회 실패 (상태코드: ${response.status})`);
-      }
-
-      const data = (await response.json()) as {
-        cancellations?: Array<Record<string, unknown>>;
-      };
-
-      const mappedRows: CancellationRow[] = (data.cancellations ?? []).map((item) => ({
-        cancel_dtm: String(item.cancel_dtm ?? item.operation_date ?? ""),
-        plan_dtm: String(item.plan_dtm ?? item.scheduled_time ?? ""),
-        ship_nm: String(item.ship_nm ?? ""),
-        start_port_nm: String(item.start_port_nm ?? ""),
-        end_port_nm: String(item.end_port_nm ?? ""),
-        cancel_reason: String(item.cancel_reason ?? item.reason ?? ""),
-      }));
-
-      setAllRows(mappedRows);
+      const rows = await getCancellationHistoryList(searchFilters);
+      setAllRows(rows);
     } catch (error) {
       console.error("Error fetching ferry cancellation data:", error);
     } finally {

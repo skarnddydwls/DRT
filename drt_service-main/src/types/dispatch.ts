@@ -29,6 +29,7 @@ export interface DispatchListResponse {
 
 export interface DispatchListParams {
   dispatchDate?: string;
+  DISPATCH_DT?: string;
   page?: number;
   pageSize?: number;
 }

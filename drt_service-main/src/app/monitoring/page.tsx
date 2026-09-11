@@ -15,7 +15,7 @@ import LineString from "ol/geom/LineString";
 import { Style, Stroke, Icon } from "ol/style";
 import Overlay from "ol/Overlay";
 import { VWORLD_API_KEY } from "@/config/vworld";
-import { getActiveRouteNodes, getVehicleMarkers } from "@/lib/api/monitoring";
+import { getActiveRouteNodes, getVehicleMarkers, getBusArrivals } from "@/lib/api/monitoring";
 import type { ActiveRouteNode, VehicleMarker } from "@/types/monitoring";
 import { getStopList, type StopRow } from "@/lib/api/marker";
 import { Button } from "@/components/ui/button";
@@ -384,21 +384,7 @@ export default function MonitoringPage() {
       const cached = bitCache[stationNo];
       if (cached && cached.expiresAt > Date.now()) return cached.html;
 
-      const response = await fetch(`/api/bus-arrivals?stationNo=${encodeURIComponent(stationNo)}`, {
-        cache: "no-store",
-      });
-      const data = await response.json() as {
-        arrivals?: Array<{
-          routeNo: string;
-          routeType: string;
-          arrivalSeconds: number;
-          remainingStops: number;
-          vehicleType: string;
-        }>;
-        message?: string;
-        error?: string;
-      };
-      if (!response.ok) throw new Error(data.error || "BIT 조회 실패");
+      const data = await getBusArrivals(stationNo);
 
       const arrivals = data.arrivals ?? [];
       const html = arrivals.length > 0

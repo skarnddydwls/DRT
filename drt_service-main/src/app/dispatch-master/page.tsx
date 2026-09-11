@@ -327,7 +327,7 @@ export default function DispatchMasterPage() {
         <div className="mb-6 flex flex-wrap items-center gap-6 rounded-xl border border-gray-200 bg-gray-50/80 p-2.5">
           {/* 1. 계절 선택 */}
           <div className="flex items-center gap-2.5">
-            <span className="text-xs font-bold text-gray-500">계절</span>
+            <span className="text-xs font-bold text-gray-500 pl-5">계절</span>
             <div className="flex rounded-lg border border-gray-200 bg-white p-1 shadow-sm">
               {seasonOptions.map((item) => {
                 const active = season === item.code;

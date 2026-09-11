@@ -1,11 +1,12 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import NotificationMessageForm from "@/features/notifications/components/NotificationMessageForm";
 import NotificationSelectUser from "@/features/notifications/components/NotificationSelectUser";
 import type { NotificationSendFormState, TargetUser } from "@/types/notificationSend";
-import { MOCK_USERS } from "@/features/notifications/constants/mockUsers";
 import { Send, RotateCcw, AlertCircle, X, Users } from "lucide-react";
+import { getUserList } from "@/lib/api/user";
+import { sendNotification } from "@/lib/api/notification";
 
 const INITIAL_FORM_STATE: NotificationSendFormState = {
   notificationType: "NOTICE",
@@ -28,6 +29,39 @@ export default function NotificationSendPage() {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
+  const [userList, setUserList] = useState<TargetUser[]>([]);
+  const [loadingUser, setLoadingUser] = useState<boolean>(true);
+
+
+  useEffect(() => {
+    let isMounted = true;
+
+    async function fetchData() {
+      setLoadingUser(true);
+
+      try {
+        const result = await getUserList();
+        if (isMounted) {
+          setUserList(result.users ?? []);
+        }
+      } catch (error) {
+        console.error("사용자 목록 조회 실패:", error);
+
+      } finally {
+        if (isMounted) {
+          setLoadingUser(false);
+        }
+      }
+    }
+
+    fetchData();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [])
+
+
   const handleUserSelectionChange = (userIds: string[]) => {
     setFormData((prev) => ({
       ...prev,
@@ -48,11 +82,12 @@ export default function NotificationSendPage() {
 
   // 선택된 유저 상세 정보 매핑
   const selectedUserObjects = useMemo(() => {
-    const map = new Map(MOCK_USERS.map((u) => [u.userId, u]));
+    const map = new Map(userList.map((u) => [u.userId, u]));
     return formData.targetUserIds
       .map((id) => map.get(id))
       .filter((u): u is TargetUser => !!u);
-  }, [formData.targetUserIds]);
+  }, [formData.targetUserIds, userList]);
+
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -74,15 +109,7 @@ export default function NotificationSendPage() {
     setSubmitting(true);
 
     try {
-      const res = await fetch("/api/notifications/send", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
-
-      if (!res.ok) {
-        throw new Error(`HTTP error! status: ${res.status}`);
-      }
+      await sendNotification(formData);
 
       alert(
         `총 ${formData.targetUserIds.length}명에게 알림이 성공적으로 전송되었습니다.`
@@ -128,6 +155,8 @@ export default function NotificationSendPage() {
               <NotificationSelectUser
                 selectedUserIds={formData.targetUserIds}
                 onSelectionChange={handleUserSelectionChange}
+                userList={userList}
+                loading={loadingUser}
               />
             </div>
           </div>

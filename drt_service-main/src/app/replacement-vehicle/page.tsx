@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ActiveVehicleTable from "@/features/replacement-vehicle/components/ActiveVehicleTable";
 import StandbyVehicleList from "@/features/replacement-vehicle/components/StandVehicleList";
 import ReplacementActionForm from "@/features/replacement-vehicle/components/ReplacementActionForm";
@@ -9,27 +9,49 @@ import type {
   StandbyVehicle,
   ReplacementExecutePayload,
 } from "@/types/replacement-vehicle";
-
-const MOCK_ACTIVE_VEHICLES: ActiveVehicle[] = [
-  { id: "V-001", plate: "전남70바5011", driver: "김철수", route: "금오도 1코스 (여천항-직포)", passengers: "3명", status: "운행중" },
-  { id: "V-002", plate: "전남70자5014", driver: "박영진", route: "금오도 2코스 (남면소재지)", passengers: "1명", status: "운행중" },
-  { id: "V-003", plate: "전남70바5022", driver: "이민호", route: "여천항 연계 직통 노선", passengers: "0명", status: "운행중" },
-];
-
-const MOCK_STANDBY_VEHICLES: StandbyVehicle[] = [
-  { id: "V-008", plate: "전남70바5088", driver: "정대리 (대기조)", location: "남면 차고지" },
-  { id: "V-009", plate: "전남70자5099", driver: "송기사 (순환조)", location: "여천항 대기소" },
-];
+import {
+  getReplacementVehicleData,
+  executeReplacement,
+} from "@/lib/api/replacementVehicle";
 
 export default function ReplacementControlPage() {
-  const [activeVehicles] = useState<ActiveVehicle[]>(MOCK_ACTIVE_VEHICLES);
-  const [standbyVehicles] = useState<StandbyVehicle[]>(MOCK_STANDBY_VEHICLES);
+  const [activeVehicles, setActiveVehicles] = useState<ActiveVehicle[]>([]);
+  const [standbyVehicles, setStandbyVehicles] = useState<StandbyVehicle[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
 
   const [selectedOrigin, setSelectedOrigin] = useState<ActiveVehicle | null>(null);
   const [selectedTarget, setSelectedTarget] = useState<StandbyVehicle | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
-  const handleExecute = (payload: ReplacementExecutePayload) => {
+  // 마운트 시 차량 데이터 조회
+  useEffect(() => {
+    let isMounted = true;
+
+    async function loadData() {
+      setLoading(true);
+      try {
+        const data = await getReplacementVehicleData();
+        if (isMounted) {
+          setActiveVehicles(data.activeVehicles ?? []);
+          setStandbyVehicles(data.standbyVehicles ?? []);
+        }
+      } catch (err) {
+        console.error("차량 데이터 조회 실패:", err);
+      } finally {
+        if (isMounted) {
+          setLoading(false);
+        }
+      }
+    }
+
+    loadData();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  const handleExecute = async (payload: ReplacementExecutePayload) => {
     if (
       !confirm(
         `[대차 실행 확인]\n\n• 원차량: ${selectedOrigin?.plate}\n• 대체 투입: ${selectedTarget?.plate}\n\n즉시 배차를 인계하시겠습니까?`
@@ -40,11 +62,20 @@ export default function ReplacementControlPage() {
 
     setSubmitting(true);
     try {
-      console.log("대차 API 호출 Payload:", payload);
-      alert("대차가 성공적으로 실행되었습니다.");
-      handleReset();
+      const res = await executeReplacement(payload);
+      if (res.success) {
+        alert("대차가 성공적으로 실행되었습니다.");
+        handleReset();
+        // 대차 후 최신 차량 목록 갱신
+        const refreshed = await getReplacementVehicleData();
+        setActiveVehicles(refreshed.activeVehicles ?? []);
+        setStandbyVehicles(refreshed.standbyVehicles ?? []);
+      } else {
+        alert(res.message || "대차 실행에 실패했습니다.");
+      }
     } catch (e) {
-      console.error(e);
+      console.error("대차 실행 에러:", e);
+      alert("대차 처리 중 오류가 발생했습니다.");
     } finally {
       setSubmitting(false);
     }
@@ -71,13 +102,13 @@ export default function ReplacementControlPage() {
           <div className="flex items-center gap-2 rounded-lg bg-emerald-50 px-3 py-1.5 border border-emerald-200">
             <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
             <span className="text-xs font-semibold text-emerald-800">
-              운행 중 차량 <strong>{activeVehicles.length}</strong>대
+              운행 중 차량 <strong>{loading ? "-" : activeVehicles.length}</strong>대
             </span>
           </div>
           <div className="flex items-center gap-2 rounded-lg bg-blue-50 px-3 py-1.5 border border-blue-200">
             <span className="h-2 w-2 rounded-full bg-blue-500" />
             <span className="text-xs font-semibold text-blue-800">
-              대차 가능 차량 <strong>{standbyVehicles.length}</strong>대
+              대차 가능 차량 <strong>{loading ? "-" : standbyVehicles.length}</strong>대
             </span>
           </div>
         </div>

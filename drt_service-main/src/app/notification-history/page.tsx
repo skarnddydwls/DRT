@@ -12,6 +12,7 @@ import type {
   NotificationFilters,
   NotificationRow,
 } from "@/types/notification";
+import { getNotificationHistoryList } from "@/lib/api/notification";
 
 export default function NotificationHistoryPage() {
   const gridRef = useRef(null);
@@ -28,30 +29,8 @@ export default function NotificationHistoryPage() {
     setLoading(true);
 
     try {
-      const response = await fetch("/api/notifications/history", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          filters: searchFilters,
-        }),
-      });
-      if (!response.ok) {
-        throw new Error(`조회 실패 (상태코드: ${response.status})`);
-      }
-      const data = (await response.json()) as {
-        notifications?: Array<Record<string, unknown>>;
-      };
-      const mappedRows: NotificationRow[] = (data.notifications ?? []).map((item) => ({
-        noti_dtm: String(item.noti_dtm ?? ""),
-        noti_type: String(item.noti_type ?? ""),
-        noti_target: String(item.noti_target ?? ""),
-        noti_title: String(item.noti_title ?? ""),
-        noti_content: String(item.noti_content ?? ""),
-      }));
-
-      setAllRows(mappedRows);
+      const rows = await getNotificationHistoryList(searchFilters);
+      setAllRows(rows);
     }
     catch (error) {
       console.error("Error fetching notification data:", error);

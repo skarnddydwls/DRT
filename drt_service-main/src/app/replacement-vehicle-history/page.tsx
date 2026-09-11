@@ -12,6 +12,7 @@ import type {
   ReplacementVehicleFilters,
   ReplacementVehicleRow,
 } from "@/types/replacement-vehicle-history";
+import { getReplacementVehicleHistoryList } from "@/lib/api/replacementVehicle";
 
 export default function ReplacementHistoryPage() {
   const gridRef = useRef(null);
@@ -28,30 +29,8 @@ export default function ReplacementHistoryPage() {
       setLoading(true);
   
       try {
-        const response = await fetch("/api/replacement-vehicle/history", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            filters: searchFilters,
-          }),
-        });
-        if (!response.ok) {
-          throw new Error(`조회 실패 (상태코드: ${response.status})`);
-        }
-        const data = (await response.json()) as {
-          replacements?: Array<Record<string, unknown>>;
-        };
-        const mappedRows: ReplacementVehicleRow[] = (data.replacements ?? []).map((item) => ({
-          replace_dtm: String(item.replacement_date ?? ""),
-          origin_vehicle_id: String(item.origin_vehicle_id ?? ""),
-          replace_vehicle_id: String(item.replace_vehicle_id ?? ""),
-          status: String(item.replacement_status ?? ""),
-          reason: String(item.replacement_reason ?? ""),  
-        }));
-  
-        setAllRows(mappedRows);
+        const rows = await getReplacementVehicleHistoryList(searchFilters);
+        setAllRows(rows);
       }
       catch (error) {
         console.error("Error fetching replacement vehicle data:", error);

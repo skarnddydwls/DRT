@@ -4,6 +4,8 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import Grid from "@/components/Grid";
 import { FilterForm } from "@/components/ui/FilterForm";
 import { getOperLogList } from "@/lib/api/operLog";
+import { getRouteNodes } from "@/lib/api/monitoring";
+import { getDispatchList } from "@/lib/api/dispatch";
 import { operLogColumnDefs } from "@/features/operLog/columnDefs";
 import { defaultFilters, operLogFields } from "@/features/operLog/fieldconfig";
 import type { OperLogFilters, OperLogRow } from "@/types/operLog";
@@ -142,22 +144,10 @@ export default function OperLogPage() {
     const requestId = ++routeRequestRef.current;
     const dispatchDate = formatTimestamp(row.dispatch_dt || row.oper_dtm, "YYYY-MM-DD");
     try {
-      const [routeResponse, dispatchResponse] = await Promise.all([
-        fetch("/api/route-nodes", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ ROUTE_ID: row.route_id }),
-        }),
-        fetch("/api/dispatch", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ DISPATCH_DT: dispatchDate }),
-        }),
+      const [routeData, dispatchData] = await Promise.all([
+        getRouteNodes({ ROUTE_ID: row.route_id }),
+        getDispatchList({ DISPATCH_DT: dispatchDate }),
       ]);
-      if (!routeResponse.ok || !dispatchResponse.ok) throw new Error("Route request failed");
-
-      const routeData = await routeResponse.json() as { nodes?: Array<Record<string, unknown>> };
-      const dispatchData = await dispatchResponse.json() as { dispatches?: Array<Record<string, unknown>> };
       if (requestId !== routeRequestRef.current) return;
 
       const dispatchByPoint = new globalThis.Map<string, string>();

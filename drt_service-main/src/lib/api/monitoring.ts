@@ -2,7 +2,7 @@
  * Monitoring 관련 API 함수
  */
 
-import { post } from "@/lib/api/client";
+import { get, post } from "@/lib/api/client";
 import type {
   RouteNodeResponse,
   VehicleMarkerResponse,
@@ -30,3 +30,29 @@ export async function getActiveRouteNodes(): Promise<ActiveRouteNodeResponse> {
 export async function getVehicleMarkers(): Promise<VehicleMarkerResponse> {
   return post<VehicleMarkerResponse>("/api/vehicle-markers", {});
 }
+
+export interface BusArrivalItem {
+  routeNo: string;
+  routeType: string;
+  arrivalSeconds: number;
+  remainingStops: number;
+  vehicleType: string;
+}
+
+export interface BusArrivalsResponse {
+  arrivals?: BusArrivalItem[];
+  message?: string;
+  error?: string;
+}
+
+/**
+ * 정류장 버스 도착 예정 정보 (BIT) 조회 API
+ */
+export async function getBusArrivals(
+  stationNo: string
+): Promise<BusArrivalsResponse> {
+  return get<BusArrivalsResponse>(
+    `/api/bus-arrivals?stationNo=${encodeURIComponent(stationNo)}`
+  );
+}
+

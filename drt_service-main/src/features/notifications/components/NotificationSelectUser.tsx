@@ -1,21 +1,22 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { Search, Users, User, Car, X, CheckSquare, Square, RotateCcw } from "lucide-react";
+import { Search, Users, User, Car, X, CheckSquare, Square, RotateCcw, Loader2 } from "lucide-react";
 import { CustomSelect, CustomOption } from "@/components/ui/CustomSelect";
 import type { TargetUser, UserCategory } from "@/types/notificationSend";
-import { MOCK_USERS } from "@/features/notifications/constants/mockUsers";
 
 interface NotificationSelectUserProps {
   selectedUserIds: string[];
   onSelectionChange: (userIds: string[]) => void;
   userList?: TargetUser[];
+  loading?: boolean;
 }
 
 export default function NotificationSelectUser({
   selectedUserIds,
   onSelectionChange,
-  userList = MOCK_USERS,
+  userList = [],
+  loading = false,
 }: NotificationSelectUserProps) {
   const [category, setCategory] = useState<UserCategory>("ALL");
   const [searchKeyword, setSearchKeyword] = useState("");
@@ -151,7 +152,12 @@ export default function NotificationSelectUser({
 
       {/* 사용자 목록 스크롤 영역 (항목 증가 시 내부 스크롤 적용) */}
       <div className="flex-1 min-h-0 overflow-y-auto rounded-[12px] border border-gray-200 bg-[#FAFAFA]">
-        {filteredUsers.length === 0 ? (
+        {loading ? (
+          <div className="flex h-48 flex-col items-center justify-center text-center text-gray-400">
+            <Loader2 className="mb-2 h-8 w-8 animate-spin text-gray-400" />
+            <p className="text-sm font-medium">사용자 목록을 불러오는 중...</p>
+          </div>
+        ) : filteredUsers.length === 0 ? (
           <div className="flex h-48 flex-col items-center justify-center text-center text-gray-400">
             <Users className="mb-2 h-8 w-8 text-gray-300" />
             <p className="text-sm font-medium">검색 결과가 없습니다.</p>

@@ -10,6 +10,8 @@ export interface RouteNode {
   gps_x: number;
   gps_y: number;
   point_seq: number;
+  point_nm?: string | null;
+  direction?: string | null;
   created_at: number;
   updated_at: number;
 }
