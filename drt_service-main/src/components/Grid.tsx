@@ -1,5 +1,5 @@
 import { AgGridReact } from "ag-grid-react";
-import { useMemo, useRef, useState, useEffect, useCallback } from "react";
+import { useMemo } from "react";
 import {
   ModuleRegistry,
   AllCommunityModule,
@@ -34,113 +34,6 @@ export default function Grid({
   enableNumberColoring = false, // 기본값
   rowHeight = 35,
 }: GridProps) {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [minRowCount, setMinRowCount] = useState<number>(15);
-
-  // 컨테이너 크기 변경 감지하여 빈 공간을 채울 최소 행 개수 자동 계산
-  useEffect(() => {
-    if (!containerRef.current) return;
-    const updateCount = () => {
-      if (!containerRef.current) return;
-      const clientHeight = containerRef.current.clientHeight;
-      if (clientHeight > 0) {
-        const pinnedHeight = (pinnedBottomRowData?.length || 0) * rowHeight;
-        const availableHeight = clientHeight - 38 - pinnedHeight; // 헤더 높이 약 38px 차감
-        const count = Math.max(1, Math.ceil(availableHeight / rowHeight));
-        setMinRowCount(count);
-      }
-    };
-
-    updateCount();
-    const observer = new ResizeObserver(updateCount);
-    observer.observe(containerRef.current);
-    return () => observer.disconnect();
-  }, [rowHeight, pinnedBottomRowData?.length]);
-
-  // 빈 공간을 채울 고스트 행 패딩 (실제 DOM 요소로 생성하여 세로선 및 너비 완벽 일치)
-  const displayRowData = useMemo(() => {
-    const targetCount = Math.max(minRowCount, rowData.length);
-    if (rowData.length >= targetCount) return rowData;
-
-    const ghostCount = targetCount - rowData.length;
-    const ghostRows: Array<Record<string, unknown>> = Array.from(
-      { length: ghostCount },
-      (_, i) => ({
-        __isGhost: true,
-        __ghostId: `ghost-${i}`,
-      })
-    );
-
-    return [...rowData, ...ghostRows];
-  }, [rowData, minRowCount]);
-
-  const hasGhost = useMemo(() => {
-    return displayRowData.some((r) => r.__isGhost);
-  }, [displayRowData]);
-
-  // 고스트 행에서는 "번호" 열의 rowIndex 계산이나 커스텀 렌더러가 빈칸으로 나오도록 래핑
-  const processedColumnDefs = useMemo(() => {
-    const wrapCol = (col: ColDef | ColGroupDef): ColDef | ColGroupDef => {
-      if ("children" in col && Array.isArray(col.children)) {
-        return {
-          ...col,
-          children: col.children.map(wrapCol),
-        };
-      }
-      const c = col as ColDef;
-      const originalFormatter = c.valueFormatter;
-      const originalRenderer = c.cellRenderer;
-
-      return {
-        ...c,
-        valueFormatter: (params: any) => {
-          if (params.data?.__isGhost) return "";
-          if (typeof originalFormatter === "function") return originalFormatter(params);
-          return params.value;
-        },
-        ...(originalRenderer
-          ? {
-              cellRenderer: (params: any) => {
-                if (params.data?.__isGhost) return null;
-                if (typeof originalRenderer === "function") return originalRenderer(params);
-                return originalRenderer;
-              },
-            }
-          : {}),
-      };
-    };
-
-    return columnDefs.map(wrapCol);
-  }, [columnDefs]);
-
-  // 행 클릭 이벤트에서 고스트 행 클릭은 차단
-  const handleRowClicked = useCallback(
-    (event: any) => {
-      if (event.data?.__isGhost) return;
-      gridOptions.onRowClicked?.(event);
-    },
-    [gridOptions.onRowClicked]
-  );
-
-  // 고스트 행 클래스 주입
-  const getRowClass = useCallback(
-    (params: any) => {
-      let classes = "";
-      if (params.data?.__isGhost) {
-        classes += "ag-ghost-row";
-      }
-      if (gridOptions.getRowClass) {
-        const parentClass =
-          typeof gridOptions.getRowClass === "function"
-            ? gridOptions.getRowClass(params)
-            : gridOptions.getRowClass;
-        if (parentClass) classes += ` ${parentClass}`;
-      }
-      return classes.trim();
-    },
-    [gridOptions.getRowClass]
-  );
-
   // 공통 기본 컬럼 설정: 최소 너비 유지, 과도한 확장 방지, 필요 시 가로 스크롤 허용
   const mergedDefaultColDef = useMemo(
     () => ({
@@ -158,10 +51,8 @@ export default function Grid({
     () => ({
       ...gridOptions,
       theme: "legacy" as const,
-      getRowClass,
-      onRowClicked: handleRowClicked,
     }),
-    [gridOptions, getRowClass, handleRowClicked]
+    [gridOptions]
   );
 
   return (
@@ -195,43 +86,13 @@ export default function Grid({
         }
 
         /* 3. 실제 데이터 행 호버 효과 */
-        .ag-theme-alpine .ag-row:not(.ag-ghost-row):hover {
+        .ag-theme-alpine .ag-row:hover {
           background-color: #e5e7eb !important;
-        }
-
-        /* 4. 고스트 행(빈 공간 채움 행) 상호작용 차단 */
-        .ag-theme-alpine .ag-row.ag-ghost-row {
-          pointer-events: none !important;
-          cursor: default !important;
-          user-select: none !important;
-        }
-
-        /* 5. 고스트 행이 활성화되어 뷰포트를 채웠을 때는 불필요한 세로 스크롤바 감춤 */
-        .ag-theme-alpine[data-has-ghost="1"] .ag-body-vertical-scroll {
-          display: none !important;
-          width: 0 !important;
-        }
-        .ag-theme-alpine[data-has-ghost="1"] .ag-body-vertical-scroll-viewport {
-          display: none !important;
-          width: 0 !important;
-        }
-
-        /* 6. 데이터 없을 때 안내 문구 깔끔한 플로팅 카드 */
-        .ag-theme-alpine .ag-overlay-no-rows-center {
-          background-color: #ffffff !important;
-          padding: 16px 28px !important;
-          border-radius: 12px !important;
-          border: 1px solid #e2e8f0 !important;
-          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05) !important;
-          color: #64748b !important;
-          font-weight: 500 !important;
         }
       `}</style>
       <div
-        ref={containerRef}
-        className="ag-theme-alpine relative rounded-[24px] overflow-hidden w-full"
+        className="ag-theme-alpine rounded-[24px] overflow-hidden w-full"
         data-enable-number-coloring={enableNumberColoring ? "1" : "0"}
-        data-has-ghost={hasGhost ? "1" : "0"}
         style={{
           height,
           width: "100%",
@@ -245,8 +106,8 @@ export default function Grid({
         }}>
         <AgGridReact
           ref={gridRef}
-          rowData={displayRowData}
-          columnDefs={processedColumnDefs}
+          rowData={rowData}
+          columnDefs={columnDefs}
           pinnedBottomRowData={pinnedBottomRowData}
           rowHeight={rowHeight}
           suppressRowClickSelection={true}
@@ -258,17 +119,7 @@ export default function Grid({
           defaultColDef={mergedDefaultColDef}
           {...gridOptions}
           gridOptions={computedGridOptions}
-          getRowClass={getRowClass}
-          onRowClicked={handleRowClicked}
         />
-        {/* 실제 데이터가 0건일 때, 격자 줄무늬 위에 깔끔하게 띄우는 안내 오버레이 */}
-        {rowData.length === 0 && (
-          <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
-            <div className="bg-white/95 px-6 py-4 rounded-xl border border-slate-200 shadow-md text-slate-500 font-medium">
-              {gridOptions.localeText?.noRowsToShow || "조회된 결과가 없습니다. 조회를 진행해주세요"}
-            </div>
-          </div>
-        )}
       </div>
     </>
   );
