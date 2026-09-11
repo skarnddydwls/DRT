@@ -56,6 +56,11 @@ export default function SideBar() {
           className="flex items-center w-full px-3 py-2 text-sm rounded-full text-[#363636] hover:bg-[#E6E6E6] transition-colors duration-200">
           호출통계
         </Link>
+        <Link
+          href="/common-code"
+          className="flex items-center w-full px-3 py-2 text-sm rounded-full text-[#363636] hover:bg-[#E6E6E6] transition-colors duration-200">
+          공통코드 관리
+        </Link>
       </nav>
     </aside>
   );
