@@ -207,27 +207,17 @@ export function FilterForm<T extends FieldValues>({
           if (!isTwoRows) {
             // 1줄: 중앙 정렬
             if (fields.length === 1) {
-              // 단일 필드: 필드가 크게 늘어나고 버튼은 바로 우측에 위치
+              // 단일 필드: 가다꾸 살리는 520px 밸런스 중앙 정렬
               return (
-                <div className="w-full overflow-x-auto">
+                <div className="flex justify-center w-full py-1">
                   <div
-                    className={cn(
-                      "flex justify-center",
-                      getPaddingClass(fields.length)
-                    )}>
-                    <div
-                      className="grid gap-4 items-end justify-center w-full"
-                      style={{
-                        gridTemplateColumns: `1fr auto`,
-                        maxWidth: "100%",
-                        minWidth: 0,
-                      }}>
-                      {fields.map(renderField)}
-                      <div className="flex items-end justify-start">
-                        <Button type="submit" className="rounded-lg">
-                          조회
-                        </Button>
-                      </div>
+                    className="grid gap-3 items-end justify-center w-full max-w-[520px]"
+                    style={{ gridTemplateColumns: `1fr auto` }}>
+                    {fields.map(renderField)}
+                    <div className="flex items-end justify-start">
+                      <Button type="submit" className="rounded-lg">
+                        조회
+                      </Button>
                     </div>
                   </div>
                 </div>

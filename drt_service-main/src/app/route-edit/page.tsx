@@ -426,7 +426,7 @@ export default function RouteEditPage() {
                   <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
                   <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-emerald-400" />
                 </span>
-                <span>📍 지점 추가 모드 · 지도에서 원하는 위치를 클릭하세요</span>
+                <span>지도에서 추가하려는 위치를 클릭하세요</span>
                 <span className="h-3 w-px bg-white/30" />
                 <button
                   type="button"

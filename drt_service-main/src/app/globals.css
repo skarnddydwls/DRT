@@ -274,3 +274,21 @@ footer::before {
   left: 0.5em !important;
   right: auto !important;
 }
+
+/* Date Input 캘린더 아이콘 우측 끝 정렬 */
+input[type="date"] {
+  position: relative;
+  padding-right: 32px !important;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  margin: 0;
+  padding: 0;
+  cursor: pointer;
+  width: 18px;
+  height: 18px;
+}
