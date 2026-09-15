@@ -6,6 +6,7 @@ import { getRouteNodesForEdit, saveRouteNodes } from "@/lib/api/routeEdit";
 import { getStopList, type StopRow } from "@/lib/api/marker";
 import KakaoRouteEditorMap, { type KakaoEditorNode } from "@/components/KakaoRouteEditorMap";
 import type { RouteRow } from "@/types/route";
+import { MapPin, Crosshair } from "lucide-react";
 
 type EditorNode = KakaoEditorNode;
 
@@ -114,6 +115,9 @@ export default function RouteEditPage() {
       const loadedNodes = validRouteNodes.length ? validRouteNodes : sampleNodes;
       setNodes(loadedNodes);
       setSavedNodesSnapshot(JSON.stringify(loadedNodes));
+      if (loadedNodes.length > 0) {
+        setSelectedNodeId(loadedNodes[loadedNodes.length - 1].id);
+      }
       setMessage(
         validRouteNodes.length
           ? `노선 [${route.route_nm ?? routeId}] 노드 ${validRouteNodes.length}개를 불러왔습니다.${missingCoordinateCount ? ` 좌표 없는 ${missingCoordinateCount}개는 제외했습니다.` : ""}`
@@ -122,6 +126,9 @@ export default function RouteEditPage() {
     } catch {
       setNodes(sampleNodes);
       setSavedNodesSnapshot(JSON.stringify(sampleNodes));
+      if (sampleNodes.length > 0) {
+        setSelectedNodeId(sampleNodes[sampleNodes.length - 1].id);
+      }
       setMessage(`[${route.route_nm ?? routeId}] 백엔드가 연결되지 않아 예시 경로를 표시합니다.`);
     } finally {
       setLoading(false);
@@ -167,6 +174,20 @@ export default function RouteEditPage() {
     const copy = [...nodes];
     [copy[index], copy[next]] = [copy[next], copy[index]];
     setNodes(copy);
+  };
+
+  const deleteSelectedNode = () => {
+    if (!selectedNodeId) return;
+    setNodes((current) => {
+      const remaining = current.filter((node) => node.id !== selectedNodeId);
+      if (remaining.length > 0) {
+        setSelectedNodeId(remaining[remaining.length - 1].id);
+      } else {
+        setSelectedNodeId("");
+      }
+      return remaining;
+    });
+    setMessage("선택한 지점을 삭제했습니다.");
   };
 
   const openStopDialog = async () => {
@@ -330,7 +351,14 @@ export default function RouteEditPage() {
                 <div className="flex gap-2">
                   <button type="button" onClick={() => moveNode(-1)} className="rounded border px-2.5 py-0.5 text-xs hover:bg-gray-50">위로</button>
                   <button type="button" onClick={() => moveNode(1)} className="rounded border px-2.5 py-0.5 text-xs hover:bg-gray-50">아래로</button>
-                  <button type="button" onClick={() => setNodes((current) => current.filter((node) => node.id !== selectedNodeId))} className="rounded border border-red-300 px-2.5 py-0.5 text-xs text-red-600 hover:bg-red-50">삭제</button>
+                  <button
+                    type="button"
+                    onClick={deleteSelectedNode}
+                    disabled={!selectedNodeId || nodes.length === 0}
+                    className="rounded border border-red-300 px-2.5 py-0.5 text-xs text-red-600 hover:bg-red-50 disabled:cursor-not-allowed disabled:border-gray-200 disabled:text-gray-300 disabled:hover:bg-transparent"
+                  >
+                    삭제
+                  </button>
                 </div>
               </div>
               <div className="flex-1 min-h-0 overflow-y-auto rounded-xl border border-gray-300 bg-white">
@@ -374,7 +402,7 @@ export default function RouteEditPage() {
 
           <div
             className={`relative h-full min-h-0 overflow-hidden rounded-xl transition-all duration-300 ${addMode === "NODE"
-              ? "border-2 border-indigo-500 ring-4 ring-indigo-500/20 shadow-[0_0_25px_rgba(99,102,241,0.25)]"
+              ? "border-2 border-blue-500 ring-2 ring-blue-500/20"
               : "border border-gray-300 bg-gray-100"
               }`}
           >
@@ -385,61 +413,56 @@ export default function RouteEditPage() {
               onMapClick={handleMapClick}
               cursorMode={addMode}
             />
-            <div className="absolute right-4 top-4 z-10 flex flex-col gap-2 rounded-xl bg-white/95 p-1.5 shadow-md backdrop-blur">
+
+            {/* 우상단 모던 플로팅 툴바: 정류장 추가 / 지점 추가 */}
+            <div className="absolute right-4 top-4 z-10 flex items-center gap-1.5 rounded-2xl border border-white/60 bg-white/85 p-1.5 shadow-xl shadow-slate-900/5 backdrop-blur-md ring-1 ring-black/5">
+              {/* 1. 정류장 추가 버튼 */}
               <button
                 type="button"
                 onClick={openStopDialog}
-                className="flex h-10 w-[136px] items-center justify-center rounded-lg border border-green-500 bg-white text-sm font-semibold text-green-600 shadow-sm transition-colors hover:bg-green-50"
+                className="group flex h-9 min-w-[106px] items-center justify-center gap-2 rounded-xl border border-slate-200/80 bg-white px-3 text-xs font-semibold text-slate-700 shadow-xs transition-all duration-200 hover:-translate-y-0.5 hover:border-emerald-300 hover:bg-emerald-50/60 hover:text-emerald-700 active:translate-y-0 active:bg-slate-100"
               >
-                정류장 추가
+                <div className="flex h-5 w-5 items-center justify-center rounded-lg bg-emerald-100 text-emerald-600 transition-colors group-hover:bg-emerald-200">
+                  <MapPin className="h-3.5 w-3.5" />
+                </div>
+                <span>정류장 추가</span>
               </button>
+
+              {/* 디바이더 */}
+              <div className="h-4 w-px bg-slate-200" />
+
+              {/* 2. 지점 추가 버튼 (클릭 모드 토글) */}
               <button
                 type="button"
                 onClick={() => {
                   const next = addMode === "NODE" ? null : "NODE";
                   setAddMode(next);
-                  setMessage(next ? "지점 추가 모드: 지도에서 추가할 위치를 클릭하세요." : "지점 추가 모드를 종료했습니다.");
+                  setMessage(
+                    next
+                      ? "지점 추가 모드: 지도에서 추가할 위치를 클릭하세요."
+                      : "지점 추가 모드를 종료했습니다."
+                  );
                 }}
-                className={`flex h-10 w-[136px] items-center justify-center rounded-lg text-sm font-semibold shadow-sm transition-all ${addMode === "NODE"
-                  ? "bg-red-500 text-white hover:bg-red-600 ring-2 ring-red-300 animate-pulse"
-                  : "border border-indigo-500 bg-white text-indigo-600 hover:bg-indigo-50"
+                className={`group relative flex h-9 min-w-[106px] items-center justify-center gap-2 rounded-xl px-3 text-xs font-semibold transition-all duration-200 ${addMode === "NODE"
+                  ? "bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md shadow-blue-500/25 ring-2 ring-blue-400/50 hover:brightness-105"
+                  : "border border-slate-200/80 bg-white text-slate-700 shadow-xs hover:-translate-y-0.5 hover:border-blue-300 hover:bg-blue-50/60 hover:text-blue-700 active:translate-y-0"
                   }`}
               >
                 {addMode === "NODE" ? (
-                  <span className="flex items-center justify-center gap-1.5">
-                    <span className="relative flex h-2 w-2 shrink-0">
-                      <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-white opacity-75" />
-                      <span className="relative inline-flex h-2 w-2 rounded-full bg-white" />
-                    </span>
-                    <span>지점 추가 종료</span>
-                  </span>
+                  <>
+                    <Crosshair className="h-3.5 w-3.5 animate-spin" style={{ animationDuration: "6s" }} />
+                    <span>추가 종료</span>
+                  </>
                 ) : (
-                  <span>지점 추가</span>
+                  <>
+                    <div className="flex h-5 w-5 items-center justify-center rounded-lg bg-blue-100 text-blue-600 transition-colors group-hover:bg-blue-200">
+                      <Crosshair className="h-3.5 w-3.5" />
+                    </div>
+                    <span>지점 추가</span>
+                  </>
                 )}
               </button>
             </div>
-
-            {/* 지점 추가 모드 활성화 시 상단 중앙 플로팅 뱃지 배너 */}
-            {addMode === "NODE" && (
-              <div className="absolute top-4 left-1/2 z-20 -translate-x-1/2 flex items-center gap-3 rounded-full bg-[#1e1b4b]/95 px-5 py-2.5 text-sm font-medium text-white shadow-2xl backdrop-blur-md border border-indigo-400/40 animate-in fade-in slide-in-from-top-2 duration-200">
-                <span className="relative flex h-2.5 w-2.5">
-                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-                  <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-emerald-400" />
-                </span>
-                <span>지도에서 추가하려는 위치를 클릭하세요</span>
-                <span className="h-3 w-px bg-white/30" />
-                <button
-                  type="button"
-                  onClick={() => {
-                    setAddMode(null);
-                    setMessage("지점 추가 모드를 종료했습니다.");
-                  }}
-                  className="rounded-full bg-white/20 px-2.5 py-0.5 text-xs font-semibold text-white hover:bg-white/35 transition-colors"
-                >
-                  종료 (ESC)
-                </button>
-              </div>
-            )}
           </div>
         </div>
       </div>
