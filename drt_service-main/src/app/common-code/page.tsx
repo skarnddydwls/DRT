@@ -41,60 +41,24 @@ export interface CommonDetailCode {
 /* -------------------------------------------------------------------------- */
 
 const INITIAL_GROUPS: CommonGroupCode[] = [
-  { common_code: "OPER_ID", common_nm: "기관ID" },
-  { common_code: "CARD_DIV", common_nm: "카드구분" },
-  { common_code: "RIDE_OPRN_DT", common_nm: "승차운행일자" },
-  { common_code: "PROCESS_DIV", common_nm: "프로세스구분" },
-  { common_code: "ACTION_DIV", common_nm: "작업구분" },
-  { common_code: "HEADER_NODE", common_nm: "노드헤더" },
-  { common_code: "HEADER_LINK", common_nm: "링크헤더" },
-  { common_code: "HEADER_PLATFORM", common_nm: "플랫폼헤더" },
-  { common_code: "ROUTE_COLOR", common_nm: "노선도 색깔" },
-  { common_code: "STMT_GRP_ID", common_nm: "정산 대안" },
-  { common_code: "LINE_CD", common_nm: "위탁구간 노선구분" },
-  { common_code: "CONSIGN_OPER", common_nm: "위탁구간 기관" },
-  { common_code: "EXT_DISPATCH_DIV", common_nm: "특별배차 구분" },
-  { common_code: "SEASON_DIV", common_nm: "운행 시즌 구분" },
-  { common_code: "DAY_DIV", common_nm: "요일 배차 구분" },
-  { common_code: "NOTI_TYPE", common_nm: "알림 발송 유형" },
+
 ];
 
 const INITIAL_DETAILS: Record<string, CommonDetailCode[]> = {
   RIDE_OPRN_DT: [
-    { common_code: "RIDE_OPRN_DT", detail_code: "CD001", val_1: "2023-02-19", val_2: "2023-02-19", val_3: "", remark: "", use_yn: "Y", sys_yn: "Y" },
-    { common_code: "RIDE_OPRN_DT", detail_code: "CD002", val_1: "2023-02-20", val_2: "2023-02-20", val_3: "", remark: "", use_yn: "Y", sys_yn: "Y" },
-    { common_code: "RIDE_OPRN_DT", detail_code: "CD003", val_1: "2023-02-21", val_2: "2023-02-21", val_3: "", remark: "", use_yn: "Y", sys_yn: "Y" },
-    { common_code: "RIDE_OPRN_DT", detail_code: "CD004", val_1: "2023-02-22", val_2: "2023-02-22", val_3: "", remark: "", use_yn: "Y", sys_yn: "Y" },
-    { common_code: "RIDE_OPRN_DT", detail_code: "CD005", val_1: "2023-02-23", val_2: "2023-02-23", val_3: "", remark: "", use_yn: "Y", sys_yn: "Y" },
-    { common_code: "RIDE_OPRN_DT", detail_code: "CD006", val_1: "2023-02-24", val_2: "2023-02-24", val_3: "", remark: "", use_yn: "Y", sys_yn: "Y" },
-    { common_code: "RIDE_OPRN_DT", detail_code: "CD007", val_1: "2023-02-25", val_2: "2023-02-25", val_3: "", remark: "", use_yn: "Y", sys_yn: "Y" },
-    { common_code: "RIDE_OPRN_DT", detail_code: "CD008", val_1: "2023-05-14", val_2: "2023-05-14", val_3: "", remark: "", use_yn: "Y", sys_yn: "Y" },
-    { common_code: "RIDE_OPRN_DT", detail_code: "CD009", val_1: "2023-05-15", val_2: "2023-05-15", val_3: "", remark: "", use_yn: "Y", sys_yn: "Y" },
-    { common_code: "RIDE_OPRN_DT", detail_code: "CD010", val_1: "2023-05-16", val_2: "2023-05-16", val_3: "", remark: "", use_yn: "Y", sys_yn: "Y" },
-    { common_code: "RIDE_OPRN_DT", detail_code: "CD011", val_1: "2023-05-17", val_2: "2023-05-17", val_3: "", remark: "", use_yn: "Y", sys_yn: "Y" },
-    { common_code: "RIDE_OPRN_DT", detail_code: "CD012", val_1: "2023-05-18", val_2: "2023-05-18", val_3: "", remark: "", use_yn: "Y", sys_yn: "Y" },
-    { common_code: "RIDE_OPRN_DT", detail_code: "CD013", val_1: "2023-05-19", val_2: "2023-05-19", val_3: "", remark: "", use_yn: "Y", sys_yn: "Y" },
-    { common_code: "RIDE_OPRN_DT", detail_code: "CD014", val_1: "2023-05-20", val_2: "2023-05-20", val_3: "", remark: "", use_yn: "Y", sys_yn: "Y" },
+
   ],
   EXT_DISPATCH_DIV: [
-    { common_code: "EXT_DISPATCH_DIV", detail_code: "CD001", val_1: "#ffd400", val_2: "RESERVE_1", val_3: "오전배차", remark: "목요일 오전 특별 배차", use_yn: "Y", sys_yn: "Y" },
-    { common_code: "EXT_DISPATCH_DIV", detail_code: "CD002", val_1: "#ff6b6b", val_2: "RESERVE_2", val_3: "오후배차", remark: "목요일 오후 집중 배차", use_yn: "Y", sys_yn: "Y" },
-    { common_code: "EXT_DISPATCH_DIV", detail_code: "CD003", val_1: "#4dabf7", val_2: "RESERVE_3", val_3: "박람회", remark: "박람회 전용 셔틀 배차", use_yn: "Y", sys_yn: "N" },
+
   ],
   SEASON_DIV: [
-    { common_code: "SEASON_DIV", detail_code: "SUMMER", val_1: "06-01~08-31", val_2: "PEAK", val_3: "하계", remark: "하계 휴가철 증회 운행", use_yn: "Y", sys_yn: "Y" },
-    { common_code: "SEASON_DIV", detail_code: "WINTER", val_1: "12-01~02-28", val_2: "OFF_PEAK", val_3: "동계", remark: "동계 안전 감축 운행", use_yn: "Y", sys_yn: "Y" },
-    { common_code: "SEASON_DIV", detail_code: "REGULAR", val_1: "SPRING_FALL", val_2: "STANDARD", val_3: "평시", remark: "표준 배차 시간표", use_yn: "Y", sys_yn: "Y" },
+
   ],
   DAY_DIV: [
-    { common_code: "DAY_DIV", detail_code: "WEEKDAY", val_1: "MON,TUE,WED,FRI", val_2: "WORK", val_3: "평일", remark: "기본 통근/통학 시간표", use_yn: "Y", sys_yn: "Y" },
-    { common_code: "DAY_DIV", detail_code: "THU_SPECIAL", val_1: "THU", val_2: "MARKET", val_3: "장날", remark: "목요일 전통시장 연계 노선", use_yn: "Y", sys_yn: "N" },
-    { common_code: "DAY_DIV", detail_code: "WEEKEND", val_1: "SAT,SUN,HOL", val_2: "HOLIDAY", val_3: "주말", remark: "관광 연계 시간표", use_yn: "Y", sys_yn: "Y" },
+
   ],
   NOTI_TYPE: [
-    { common_code: "NOTI_TYPE", detail_code: "AUTO_DELAY", val_1: "DELAY", val_2: "SYS_AUTO", val_3: "자동", remark: "15분 이상 지연 시 자동 발송", use_yn: "Y", sys_yn: "Y" },
-    { common_code: "NOTI_TYPE", detail_code: "MANUAL_SMS", val_1: "SMS", val_2: "ADMIN", val_3: "수동", remark: "관리자 직접 작성 긴급 안내", use_yn: "Y", sys_yn: "N" },
-    { common_code: "NOTI_TYPE", detail_code: "FERRY_CANCEL", val_1: "FERRY", val_2: "LINK", val_3: "결항", remark: "여객선 결항 시 연계 버스 안내", use_yn: "Y", sys_yn: "Y" },
+
   ],
 };
 
