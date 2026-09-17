@@ -28,9 +28,13 @@ export default function RoutePage() {
     }
   };
 
+  useEffect(() => {
+    fetchRouteList();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const handleSearch = (searchFilters: RouteFilters = filters) => {
     setFilters(searchFilters);
-    fetchRouteList(searchFilters);
   };
 
   const rowData = useMemo(() => {
@@ -56,7 +60,6 @@ export default function RoutePage() {
           fields={routeFields}
           defaultValues={defaultFilters}
           values={filters}
-          onChange={setFilters}
           onSearch={handleSearch}
           className="mb-4"
         />

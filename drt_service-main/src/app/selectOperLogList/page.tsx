@@ -251,11 +251,29 @@ export default function OperLogPage() {
       setLoading(false);
     }
   };
-  // 2. 조회 버튼 눌렀을 때만 실행되는 핸들러
+
+  useEffect(() => {
+    fetchLogs({});
+  }, []);
+
+  // 2. 조회 버튼 눌렀을 때 상태만 갱신 (프론트 인메모리 필터링)
   const handleSearch = (newFilters: OperLogFilters) => {
     setFilters(newFilters);
-    fetchLogs(newFilters);
   };
+
+  const rowData = useMemo(() => {
+    return rows.filter((row) => {
+      const formattedDate = formatTimestamp(row.oper_dtm || row.dispatch_dt, "YYYY-MM-DD");
+      const matchDate = filters.operDate ? formattedDate === filters.operDate : true;
+      const matchRoute = filters.routeNm
+        ? String(row.route_nm ?? "").toLowerCase().includes(filters.routeNm.trim().toLowerCase())
+        : true;
+      const matchVehicle = filters.vehicleNo
+        ? String(row.vehicle_no ?? "").toLowerCase().includes(filters.vehicleNo.trim().toLowerCase())
+        : true;
+      return matchDate && matchRoute && matchVehicle;
+    });
+  }, [rows, filters]);
 
   const columnDefs = useMemo(() => operLogColumnDefs, []);
 
@@ -271,7 +289,6 @@ export default function OperLogPage() {
           fields={operLogFields}
           defaultValues={defaultFilters}
           values={filters}
-          onChange={setFilters}
           onSearch={handleSearch}
           className="mb-4"
         />
@@ -285,7 +302,7 @@ export default function OperLogPage() {
               </div>
             )}
             <Grid
-              rowData={rows}
+              rowData={rowData}
               columnDefs={columnDefs}
               gridRef={gridRef}
               gridOptions={{

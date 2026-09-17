@@ -2,9 +2,11 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Grid from "@/components/Grid";
+import { FilterForm } from "@/components/ui/FilterForm";
 import { getStatsList } from "@/lib/api/stats";
 import { statsColumnDefs } from "@/features/stats/columnDefs";
-import type { StatsRow } from "@/types/stats";
+import { defaultStatsFilters, statsFields } from "@/features/stats/fieldconfig";
+import type { StatsFilters, StatsRow } from "@/types/stats";
 import {
   BarChart,
   Bar,
@@ -30,10 +32,11 @@ const PIE_COLORS = ["#10b981", "#f59e0b"];
 
 export default function StatsPage() {
   const gridRef = useRef(null);
+  const [filters, setFilters] = useState<StatsFilters>(defaultStatsFilters);
   const [allRows, setAllRows] = useState<StatsRow[]>([]);
   const [loading, setLoading] = useState(false);
 
-  // API 호출로 데이터 가져오기
+  // API 호출로 데이터 가져오기 (마운트 시 1회 전체 조회)
   const fetchStatsList = useCallback(async () => {
     setLoading(true);
     try {
@@ -50,25 +53,42 @@ export default function StatsPage() {
     fetchStatsList();
   }, [fetchStatsList]);
 
+  // 조회 핸들러: 프론트엔드 상태만 갱신
+  const handleSearch = (newFilters: StatsFilters) => {
+    setFilters(newFilters);
+  };
+
+  // 프론트엔드 인메모리 필터링
+  const rowData = useMemo(() => {
+    return allRows.filter((row) => {
+      const matchRoute = filters.routeNm
+        ? String(row.route_nm ?? "")
+            .toLowerCase()
+            .includes(filters.routeNm.trim().toLowerCase())
+        : true;
+      return matchRoute;
+    });
+  }, [allRows, filters]);
+
   const columnDefs = useMemo(() => statsColumnDefs, []);
 
-  // 차트 데이터 준비
+  // 차트 데이터 준비 (필터링된 rowData 기반)
   const chartData = useMemo(() => {
-    return allRows.map((row) => ({
+    return rowData.map((row) => ({
       name: row.route_nm || row.route_id,
       전체호출: row.total_calls || 0,
       카드호출: row.card_calls || 0,
       현금호출: row.cash_calls || 0,
     }));
-  }, [allRows]);
+  }, [rowData]);
 
-  // 파이 차트 데이터 (전체 합계)
+  // 파이 차트 데이터 (필터링된 rowData 기반)
   const pieData = useMemo(() => {
-    const totalCard = allRows.reduce(
+    const totalCard = rowData.reduce(
       (sum, row) => sum + (row.card_calls || 0),
       0
     );
-    const totalCash = allRows.reduce(
+    const totalCash = rowData.reduce(
       (sum, row) => sum + (row.cash_calls || 0),
       0
     );
@@ -76,7 +96,7 @@ export default function StatsPage() {
       { name: "카드 호출", value: totalCard },
       { name: "현금 호출", value: totalCash },
     ];
-  }, [allRows]);
+  }, [rowData]);
 
   return (
     <section>
@@ -89,9 +109,17 @@ export default function StatsPage() {
       </div>
 
       <div className="rounded-xl border bg-white p-6 shadow-sm">
+        <FilterForm<StatsFilters>
+          fields={statsFields}
+          defaultValues={defaultStatsFilters}
+          values={filters}
+          onSearch={handleSearch}
+          className="mb-4"
+        />
+
         <div
           className="relative"
-          style={{ height: "calc(100vh - 310px)" }}>
+          style={{ height: "calc(100vh - 400px)" }}>
           {loading && (
             <div className="absolute inset-0 z-10 flex flex-col items-center justify-center rounded-xl bg-white/75 backdrop-blur-[1px]">
               <div className="mb-3 h-8 w-8 animate-spin rounded-full border-4 border-blue-600 border-t-transparent" />
@@ -107,12 +135,12 @@ export default function StatsPage() {
                   통계 데이터
                 </h2>
                 <span className="text-xs text-gray-500">
-                  총 {allRows.length}개 노선
+                  총 {rowData.length}개 노선
                 </span>
               </div>
               <div className="flex-1 min-h-0">
                 <Grid
-                  rowData={allRows}
+                  rowData={rowData}
                   columnDefs={columnDefs}
                   gridRef={gridRef}
                   gridOptions={{

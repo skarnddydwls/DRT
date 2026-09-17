@@ -70,10 +70,14 @@ export default function VehiclePage() {
     }
   };
 
+  useEffect(() => {
+    fetchVehicleList();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   // 조회 핸들러
   const handleSearch = (newFilters: VehicleFilters) => {
     setFilters(newFilters);
-    fetchVehicleList(newFilters);
   };
 
   // 필터링된 데이터 (필요시 클라이언트 사이드 추가 필터링)
@@ -195,7 +199,6 @@ export default function VehiclePage() {
           fields={vehicleFields}
           defaultValues={defaultFilters}
           values={filters}
-          onChange={setFilters}
           onSearch={handleSearch}
           className="mb-4"
         />

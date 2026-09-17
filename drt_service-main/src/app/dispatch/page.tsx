@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import type { ColDef, ICellRendererParams } from "ag-grid-community";
 
 import Grid from "@/components/Grid";
@@ -163,9 +163,13 @@ export default function DispatchPage() {
     }
   };
 
+  useEffect(() => {
+    fetchDispatchList();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const handleSearch = (newFilters: DispatchFilters) => {
     setFilters(newFilters);
-    fetchDispatchList(newFilters);
   };
 
   useEffect(() => {
@@ -472,7 +476,6 @@ export default function DispatchPage() {
           fields={dispatchFields}
           defaultValues={defaultFilters}
           values={filters}
-          onChange={setFilters}
           onSearch={handleSearch}
           className="mb-4"
         />

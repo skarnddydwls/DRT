@@ -40,11 +40,22 @@ export default function NotificationHistoryPage() {
     }
   }, []);
 
+  useEffect(() => {
+    fetchData(defaultNotificationFields);
+  }, [fetchData]);
+
   const handleSearch = (newFilters: NotificationFilters) => {
     setFilters(newFilters);
-    fetchData(newFilters);
   };
 
+  const rowData = useMemo(() => {
+    return allRows.filter((row) => {
+      const matchDate = filters.notificationDate
+        ? String(row.noti_dtm ?? "").startsWith(filters.notificationDate)
+        : true;
+      return matchDate;
+    });
+  }, [allRows, filters]);
 
   return (
     <section>
@@ -59,7 +70,6 @@ export default function NotificationHistoryPage() {
           fields={notificationFields}
           defaultValues={defaultNotificationFields}
           values={filters}
-          onChange={setFilters}
           onSearch={handleSearch}
           className="mb-4"
         />
@@ -72,7 +82,7 @@ export default function NotificationHistoryPage() {
             </div>
           )}
           <Grid
-            rowData={allRows}
+            rowData={rowData}
             columnDefs={columnDefs}
             gridRef={gridRef}
             gridOptions={{

@@ -42,10 +42,37 @@ export default function CallsPage() {
     }
   }, []);
 
+  useEffect(() => {
+    fetchCallList(defaultFilters);
+  }, [fetchCallList]);
+
   const handleSearch = (newFilters: CallFilters) => {
     setFilters(newFilters);
-    fetchCallList(newFilters);
   };
+
+  const rowData = useMemo(() => {
+    return allRows.filter((row) => {
+      const matchDate = filters.callDatetime
+        ? String(row.call_dtm ?? "").startsWith(filters.callDatetime)
+        : true;
+      const matchRoute = filters.routeNm
+        ? String(row.route_nm ?? "")
+          .toLowerCase()
+          .includes(filters.routeNm.trim().toLowerCase())
+        : true;
+      const matchStart = filters.startPointNm
+        ? String(row.start_point_nm ?? "")
+          .toLowerCase()
+          .includes(filters.startPointNm.trim().toLowerCase())
+        : true;
+      const matchEnd = filters.endPointNm
+        ? String(row.end_point_nm ?? "")
+          .toLowerCase()
+          .includes(filters.endPointNm.trim().toLowerCase())
+        : true;
+      return matchDate && matchRoute && matchStart && matchEnd;
+    });
+  }, [allRows, filters]);
 
   const columnDefs = useMemo(() => callColumnDefs, []);
 
@@ -103,7 +130,6 @@ export default function CallsPage() {
           fields={callFields}
           defaultValues={defaultFilters}
           values={filters}
-          onChange={setFilters}
           onSearch={handleSearch}
           className="mb-4"
         />
@@ -118,7 +144,7 @@ export default function CallsPage() {
               </div>
             )}
             <Grid
-              rowData={allRows}
+              rowData={rowData}
               columnDefs={columnDefs}
               gridRef={gridRef}
               gridOptions={{

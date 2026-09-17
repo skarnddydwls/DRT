@@ -46,9 +46,13 @@ export default function StopPage() {
     }
   };
 
+  useEffect(() => {
+    fetchStopList();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   const handleSearch = (newFilters: StopFilters) => {
     setFilters(newFilters);
-    fetchStopList(newFilters);
   };
 
   const rowData = useMemo(() => {
@@ -258,7 +262,6 @@ export default function StopPage() {
           fields={stopFields}
           defaultValues={defaultFilters}
           values={filters}
-          onChange={setFilters}
           onSearch={handleSearch}
           className="mb-4"
         />

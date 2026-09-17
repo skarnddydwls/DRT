@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useRef, useState, useCallback } from "react";
+import { useMemo, useRef, useState, useCallback, useEffect } from "react";
 import Grid from "@/components/Grid";
 import { FilterForm } from "@/components/ui/FilterForm";
 import { replacementVehicleColumnDefs } from "@/features/replacement-vehicle-history/columnDefs";
@@ -40,12 +40,22 @@ export default function ReplacementHistoryPage() {
       }
     }, []);
 
+    useEffect(() => {
+      fetchData(defaultReplacementFields);
+    }, [fetchData]);
 
     const handleSearch = (newFilters: ReplacementVehicleFilters) => {
       setFilters(newFilters);
-      fetchData(newFilters);
     };
 
+    const rowData = useMemo(() => {
+      return allRows.filter((row) => {
+        const matchDate = filters.replacementDate
+          ? String(row.replace_dtm ?? "").startsWith(filters.replacementDate)
+          : true;
+        return matchDate;
+      });
+    }, [allRows, filters]);
 
   return (
     <section>
@@ -60,7 +70,6 @@ export default function ReplacementHistoryPage() {
           fields={replacementVehicleFields}
           defaultValues={defaultReplacementFields}
           values={filters}
-          onChange={setFilters}
           onSearch={handleSearch}
           className="mb-4"
         />
@@ -73,7 +82,7 @@ export default function ReplacementHistoryPage() {
             </div>
           )}
           <Grid
-            rowData={allRows}
+            rowData={rowData}
             columnDefs={columnDefs}
             gridRef={gridRef}
             gridOptions={{

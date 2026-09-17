@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useRef, useState, useCallback } from "react";
+import { useMemo, useRef, useState, useCallback, useEffect } from "react";
 import Grid from "@/components/Grid";
 import { FilterForm } from "@/components/ui/FilterForm";
 import { cancellationColumnDefs } from "@/features/cancellation/columnDefs";
@@ -82,10 +82,22 @@ export default function CancellationHistoryPage() {
     }
   }, []);
 
+  useEffect(() => {
+    fetchData(defaultCancellationFilters);
+  }, [fetchData]);
+
   const handleSearch = (newFilters: CancellationFilters) => {
     setFilters(newFilters);
-    fetchData(newFilters);
   };
+
+  const rowData = useMemo(() => {
+    return allRows.filter((row) => {
+      const matchDate = filters.cancellationDate
+        ? String(row.cancel_dtm ?? "").startsWith(filters.cancellationDate)
+        : true;
+      return matchDate;
+    });
+  }, [allRows, filters]);
 
   return (
     <section>
@@ -99,7 +111,6 @@ export default function CancellationHistoryPage() {
           fields={cancellationFields}
           defaultValues={defaultCancellationFilters}
           values={filters}
-          onChange={setFilters}
           onSearch={handleSearch}
           className="mb-4"
         />
@@ -112,7 +123,7 @@ export default function CancellationHistoryPage() {
             </div>
           )}
           <Grid
-            rowData={allRows}
+            rowData={rowData}
             columnDefs={columnDefs}
             gridRef={gridRef}
             gridOptions={{

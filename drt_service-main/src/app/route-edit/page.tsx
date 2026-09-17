@@ -10,23 +10,12 @@ import { MapPin, Crosshair } from "lucide-react";
 
 type EditorNode = KakaoEditorNode;
 
-const sampleRoutes: RouteRow[] = [
-  { route_id: "sample-365", route_nm: "365-1(1)", o_stn_nm: "두포마을분무골", d_stn_nm: "우학터미널" },
-];
-
-const sampleNodes: EditorNode[] = [
-  { id: "sample-1", name: "두포마을분무골", type: "STN", longitude: 126.095, latitude: 34.995 },
-  { id: "sample-2", name: "두포마을", type: "NODE", longitude: 126.102, latitude: 34.993 },
-  { id: "sample-3", name: "두모초등학교", type: "STN", longitude: 126.124, latitude: 34.988 },
-  { id: "sample-4", name: "두모", type: "STN", longitude: 126.139, latitude: 34.978 },
-  { id: "sample-5", name: "우학터미널", type: "NODE", longitude: 126.151, latitude: 34.958 },
-];
-
 export default function RouteEditPage() {
   const [routes, setRoutes] = useState<RouteRow[]>([]);
   const [nodes, setNodes] = useState<EditorNode[]>([]);
   const [loading, setLoading] = useState(false);
   const [query, setQuery] = useState("");
+  const [appliedQuery, setAppliedQuery] = useState("");
   const [selectedRouteId, setSelectedRouteId] = useState("");
   const [selectedNodeId, setSelectedNodeId] = useState("");
   const [addMode, setAddMode] = useState<"STN" | "NODE" | null>(null);
@@ -42,8 +31,8 @@ export default function RouteEditPage() {
   const [saving, setSaving] = useState(false);
 
   const visibleRoutes = useMemo(
-    () => routes.filter((route) => String(route.route_nm ?? "").includes(query.trim())),
-    [query, routes]
+    () => routes.filter((route) => String(route.route_nm ?? "").includes(appliedQuery.trim())),
+    [appliedQuery, routes]
   );
   const visibleStops = useMemo(() => {
     const keyword = stopQuery.trim();
@@ -112,50 +101,53 @@ export default function RouteEditPage() {
         (node) => Number.isFinite(node.longitude) && Number.isFinite(node.latitude)
       );
       const missingCoordinateCount = routeNodes.length - validRouteNodes.length;
-      const loadedNodes = validRouteNodes.length ? validRouteNodes : sampleNodes;
-      setNodes(loadedNodes);
-      setSavedNodesSnapshot(JSON.stringify(loadedNodes));
-      if (loadedNodes.length > 0) {
-        setSelectedNodeId(loadedNodes[loadedNodes.length - 1].id);
+      setNodes(validRouteNodes);
+      setSavedNodesSnapshot(JSON.stringify(validRouteNodes));
+      if (validRouteNodes.length > 0) {
+        setSelectedNodeId(validRouteNodes[validRouteNodes.length - 1].id);
+      } else {
+        setSelectedNodeId("");
       }
       setMessage(
         validRouteNodes.length
           ? `노선 [${route.route_nm ?? routeId}] 노드 ${validRouteNodes.length}개를 불러왔습니다.${missingCoordinateCount ? ` 좌표 없는 ${missingCoordinateCount}개는 제외했습니다.` : ""}`
-          : `[${route.route_nm ?? routeId}] 좌표가 등록된 노드가 없어 예시 경로를 표시합니다.`
+          : `[${route.route_nm ?? routeId}] 등록된 유효한 노드가 없습니다.`
       );
     } catch {
-      setNodes(sampleNodes);
-      setSavedNodesSnapshot(JSON.stringify(sampleNodes));
-      if (sampleNodes.length > 0) {
-        setSelectedNodeId(sampleNodes[sampleNodes.length - 1].id);
-      }
-      setMessage(`[${route.route_nm ?? routeId}] 백엔드가 연결되지 않아 예시 경로를 표시합니다.`);
+      setNodes([]);
+      setSavedNodesSnapshot("[]");
+      setSelectedNodeId("");
+      setMessage(`[${route.route_nm ?? routeId}] 노드 목록을 불러오지 못했습니다. 백엔드 연결을 확인해 주세요.`);
     } finally {
       setLoading(false);
     }
   }, []);
 
-  const handleSearch = async () => {
+  const fetchInitialRoutes = async () => {
     setLoading(true);
     try {
-      const response = await getRouteList({ routeName: query.trim() });
-      const loadedRoutes = response.routes?.length ? response.routes : sampleRoutes;
+      const response = await getRouteList({});
+      const loadedRoutes = response.routes?.length ? response.routes : [];
       setRoutes(loadedRoutes);
-      setSelectedRouteId("");
-      setNodes([]);
       setMessage(
         loadedRoutes.length
           ? `노선 ${loadedRoutes.length}건이 조회되었습니다. 편집할 노선을 선택하세요.`
           : "조회된 노선이 없습니다."
       );
     } catch {
-      setRoutes(sampleRoutes);
-      setSelectedRouteId("");
-      setNodes([]);
-      setMessage("백엔드가 연결되지 않아 예시 노선을 표시합니다. 편집할 노선을 선택하세요.");
+      setRoutes([]);
+      setMessage("노선 목록을 불러오지 못했습니다. 백엔드 연결을 확인해 주세요.");
     } finally {
       setLoading(false);
     }
+  };
+
+  useEffect(() => {
+    fetchInitialRoutes();
+  }, []);
+
+  const handleSearch = () => {
+    setAppliedQuery(query.trim());
   };
 
   const requestRouteSelection = (route: RouteRow) => {
@@ -279,7 +271,7 @@ export default function RouteEditPage() {
             value={query}
             onChange={(event) => setQuery(event.target.value)}
             onKeyDown={(event) => {
-              if (event.key === "Enter") void handleSearch();
+              if (event.key === "Enter") handleSearch();
             }}
             placeholder="노선명을 입력하세요"
             className="h-9 flex-1 rounded-lg border border-gray-300 bg-white px-3 text-sm outline-none focus:border-gray-600"

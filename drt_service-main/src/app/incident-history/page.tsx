@@ -45,10 +45,27 @@ export default function IncidentHistoryPage() {
     }
   }, []);
 
+  useEffect(() => {
+    fetchData(defaultIncidentFilters);
+  }, [fetchData]);
+
   const handleSearch = (newFilters: IncidentFilters) => {
     setFilters(newFilters);
-    fetchData(newFilters);
   };
+
+  const rowData = useMemo(() => {
+    return allRows.filter((row) => {
+      const matchDate = filters.occurredDate
+        ? String(row.occurred_dtm ?? "").startsWith(filters.occurredDate)
+        : true;
+      const matchVehicle = filters.vehicleNo
+        ? String(row.vehicle_no ?? "")
+            .toLowerCase()
+            .includes(filters.vehicleNo.trim().toLowerCase())
+        : true;
+      return matchDate && matchVehicle;
+    });
+  }, [allRows, filters]);
 
   // 그리드에서 행 클릭 시 지도에 마커 띄움
   const handleRowClicked = (event: RowClickedEvent<IncidentRow>) => {
@@ -103,7 +120,6 @@ export default function IncidentHistoryPage() {
           fields={incidentFields}
           defaultValues={defaultIncidentFilters}
           values={filters}
-          onChange={setFilters}
           onSearch={handleSearch}
           className="mb-4"
         />
@@ -117,7 +133,7 @@ export default function IncidentHistoryPage() {
               </div>
             )}
             <Grid
-              rowData={allRows}
+              rowData={rowData}
               columnDefs={columnDefs}
               gridRef={gridRef}
               gridOptions={{

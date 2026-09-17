@@ -207,11 +207,11 @@ export function FilterForm<T extends FieldValues>({
           if (!isTwoRows) {
             // 1줄: 중앙 정렬
             if (fields.length === 1) {
-              // 단일 필드: 가다꾸 살리는 520px 밸런스 중앙 정렬
+              // 단일 필드: 유고정보 이력(2필드 규격) 인풋 크기와 일치하도록 360px로 밸런스 조정
               return (
-                <div className="flex justify-center w-full py-1">
+                <div className="flex justify-center w-full">
                   <div
-                    className="grid gap-3 items-end justify-center w-full max-w-[520px]"
+                    className="grid gap-4 items-end justify-center w-full max-w-[360px]"
                     style={{ gridTemplateColumns: `1fr auto` }}>
                     {fields.map(renderField)}
                     <div className="flex items-end justify-start">
