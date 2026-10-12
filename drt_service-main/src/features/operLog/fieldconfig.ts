@@ -1,8 +1,12 @@
 import type { FieldConfig } from "@/types/filterForm";
 import type { OperLogFilters } from "@/types/operLog";
 
+const todayInKorea = new Date(Date.now() + 9 * 60 * 60 * 1000)
+  .toISOString()
+  .slice(0, 10);
+
 export const defaultFilters: OperLogFilters = {
-  operDate: "",
+  operDate: todayInKorea,
   routeNm: "",
   vehicleNo: "",
 };

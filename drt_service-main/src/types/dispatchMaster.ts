@@ -24,11 +24,15 @@ export interface DispatchMasterRow extends Record<string, unknown> {
   dispatch_seq: number;
   device_id: string;
   ext_dispatch_div: string | null;
+  transfer_enabled?: boolean;
+  transfer_minutes?: number;
   algh_dtm: number | string | null;
   remark: string | null;
 }
 
 export interface DispatchMasterStop {
+  transfer_enabled?: boolean;
+  transfer_minutes?: number;
   point_id: string;
   point_nm: string;
   dispatch_seq: number;

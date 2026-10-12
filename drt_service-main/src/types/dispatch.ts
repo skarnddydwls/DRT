@@ -16,6 +16,8 @@ export interface DispatchRow extends Record<string, unknown> {
   device_id?: string | null;
   ext_dispatch_yn?: string | null;
   ext_dispatch_div?: string | null;
+  transfer_enabled?: boolean;
+  transfer_minutes?: number;
 }
 
 export interface DispatchFilters {
@@ -28,8 +30,8 @@ export interface DispatchListResponse {
 }
 
 export interface DispatchListParams {
-  dispatchDate?: string;
   DISPATCH_DT?: string;
+  dispatchDate?: string;
   page?: number;
   pageSize?: number;
 }
@@ -42,6 +44,8 @@ export interface DispatchStopEntry {
   remark: string | null;
   ext_dispatch_yn: string | null;
   ext_dispatch_div: string | null;
+  transfer_enabled?: boolean;
+  transfer_minutes?: number;
 }
 
 export interface DispatchGridRow extends Record<string, unknown> {

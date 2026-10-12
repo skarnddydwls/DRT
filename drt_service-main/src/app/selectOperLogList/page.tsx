@@ -23,7 +23,7 @@ import { defaults } from "ol/control";
 import Overlay from "ol/Overlay";
 import { VWORLD_API_KEY } from "@/config/vworld";
 
-const DEFAULT_MAP_CENTER: [number, number] = [127.748, 34.525];
+const DEFAULT_MAP_CENTER: [number, number] = [127.766968, 34.512524];
 const FIXED_ROUTE_COLOR = "#667eea";
 const RESERVED_ROUTE_COLOR = "#ffd400";
 
@@ -253,7 +253,7 @@ export default function OperLogPage() {
   };
 
   useEffect(() => {
-    fetchLogs({});
+    fetchLogs(defaultFilters);
   }, []);
 
   // 2. 조회 버튼 눌렀을 때 상태만 갱신 (프론트 인메모리 필터링)

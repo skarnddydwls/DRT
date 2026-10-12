@@ -9,6 +9,7 @@ const menuGroups = [
     items: [
       ["/vehicle", "차량관리"],
       ["/stop", "정류장관리"],
+      ["/tourism", "주변 관광지 관리"],
       ["/route", "노선관리"],
       ["/route-edit", "노선편집"],
       ["/notification-send", "알림전송"],

@@ -54,3 +54,10 @@ export async function updateDispatchMasterTime(payload: {
     payload
   );
 }
+
+export async function refreshDispatchMasterSchedule(dispatchId: string) {
+  return post<{ success: boolean; updatedCount: number }>(
+    "/api/dispatch-master/refresh-schedule",
+    { dispatch_id: dispatchId }
+  );
+}

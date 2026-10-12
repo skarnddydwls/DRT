@@ -98,7 +98,7 @@ export default function StopPage() {
       target: "stop-map",
       overlays: [overlay],
       view: new View({
-        center: fromLonLat([127.748, 34.525]),
+        center: fromLonLat([127.766968, 34.512524]),
         zoom: 17,
       }),
     });

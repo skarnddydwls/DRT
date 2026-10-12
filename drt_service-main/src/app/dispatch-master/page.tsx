@@ -3,6 +3,8 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { ColDef, ICellRendererParams } from "ag-grid-community";
 import Grid from "@/components/Grid";
+import { DispatchTransferDialog } from "@/components/DispatchTransferDialog";
+import { DispatchTransferBadge } from "@/components/DispatchTransferBadge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -17,6 +19,7 @@ import { getDetailCodes, type DetailCodeRow } from "@/lib/api/common";
 import {
   getDispatchMasterInfos,
   getDispatchMasterRows,
+  refreshDispatchMasterSchedule,
   saveDispatchMasterInfo,
   updateDispatchMasterReserveRoute,
   updateDispatchMasterTime,
@@ -74,25 +77,25 @@ function MasterTimeline({
         const stopKey = `${data?.route_id}-${stop.point_id}-${stop.dispatch_seq}`;
         const selected = stopKey === selectedStopKey;
         return (
-          <button
-            type="button"
-            data-master-stop="true"
-            key={`${stop.point_id}-${stop.dispatch_seq}`}
-            onClick={(event) => {
-              event.stopPropagation();
-              if (data) onStopClick(data, stop);
-            }}
-            className={`flex w-24 flex-col rounded-lg border bg-white px-3 py-2 text-left shadow-sm transition ${selected ? "border-blue-500 ring-2 ring-blue-300" : "border-black/10 hover:border-blue-400"}`}
-            style={stop.ext_dispatch_div && colors[stop.ext_dispatch_div]
-              ? { backgroundColor: colors[stop.ext_dispatch_div] }
-              : undefined}>
-            <span className="truncate text-xs font-medium text-gray-500">{stop.point_nm || stop.point_id}</span>
-            <span className="text-sm font-bold text-gray-800">
-              {stop.algh_dtm ? formatTimestamp(stop.algh_dtm, "HH:mm") : "-"}
-            </span>
-          </button>
-        )
-      })}
+        <button
+          type="button"
+          data-master-stop="true"
+          key={`${stop.point_id}-${stop.dispatch_seq}`}
+          onClick={(event) => {
+            event.stopPropagation();
+            if (data) onStopClick(data, stop);
+          }}
+          className={`relative flex w-24 flex-col rounded-lg border bg-white px-3 py-2 text-left shadow-sm transition ${selected ? "border-blue-500 ring-2 ring-blue-300" : "border-black/10 hover:border-blue-400"}`}
+          style={stop.ext_dispatch_div && colors[stop.ext_dispatch_div]
+            ? { backgroundColor: colors[stop.ext_dispatch_div] }
+            : undefined}>
+          <span className="truncate text-xs font-medium text-gray-500">{stop.point_nm || stop.point_id}</span>
+          <span className="text-sm font-bold text-gray-800">
+            {stop.algh_dtm ? formatTimestamp(stop.algh_dtm, "HH:mm") : "-"}
+          </span>
+          <DispatchTransferBadge enabled={stop.transfer_enabled} minutes={stop.transfer_minutes} time={stop.algh_dtm} />
+        </button>
+      )})}
     </div>
   );
 }
@@ -115,8 +118,12 @@ export default function DispatchMasterPage() {
   const [reservationGroups, setReservationGroups] = useState<DetailCodeRow[]>([]);
   const [selectedStop, setSelectedStop] = useState<{ row: DispatchMasterGridRow; stop: DispatchMasterStop } | null>(null);
   const [reserveDialogOpen, setReserveDialogOpen] = useState(false);
+  const [transferDialogOpen, setTransferDialogOpen] = useState(false);
   const [selectedReserveDiv, setSelectedReserveDiv] = useState("");
   const [updatingReserve, setUpdatingReserve] = useState(false);
+  const [refreshDialogOpen, setRefreshDialogOpen] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
+  const [detailReloadKey, setDetailReloadKey] = useState(0);
   const [toast, setToast] = useState({ message: "", type: "info" as "success" | "error" | "info", isVisible: false });
 
   const loadMasters = useCallback(async (preferredId?: string) => {
@@ -172,6 +179,8 @@ export default function DispatchMasterPage() {
             device_id: row.device_id,
             algh_dtm: row.algh_dtm,
             ext_dispatch_div: row.ext_dispatch_div,
+            transfer_enabled: row.transfer_enabled ?? false,
+            transfer_minutes: row.transfer_minutes ?? 3,
           });
         });
         grouped.forEach((row) => row.stops.sort((a, b) => a.dispatch_seq - b.dispatch_seq));
@@ -184,7 +193,29 @@ export default function DispatchMasterPage() {
       })
       .finally(() => { if (active) setDetailLoading(false); });
     return () => { active = false; };
-  }, [selected]);
+  }, [selected, detailReloadKey]);
+
+  const refreshSchedule = async () => {
+    if (!selected) return;
+    setRefreshing(true);
+    try {
+      const result = await refreshDispatchMasterSchedule(selected.dispatch_id);
+      if (!result.success) throw new Error("No schedule row refreshed");
+      setRefreshDialogOpen(false);
+      setSelectedStop(null);
+      setDetailReloadKey((value) => value + 1);
+      setToast({
+        message: `노선편집 기준으로 배차표 ${result.updatedCount}건을 갱신했습니다.`,
+        type: "success",
+        isVisible: true,
+      });
+    } catch (error) {
+      console.error(error);
+      setToast({ message: "배차표 갱신에 실패했습니다.", type: "error", isVisible: true });
+    } finally {
+      setRefreshing(false);
+    }
+  };
 
   const columnDefs = useMemo<ColDef<DispatchMasterGridRow>[]>(() => [
     { headerName: "노선명", field: "route_nm", pinned: "left", width: 150, cellClass: "font-semibold" },
@@ -317,6 +348,8 @@ export default function DispatchMasterPage() {
           <p className="mt-1 text-sm text-gray-500">계절과 요일 유형별 기준 배차표를 관리합니다.</p>
         </div>
         <div className="flex gap-2">
+          <Button onClick={() => setRefreshDialogOpen(true)} disabled={!selected || refreshing} className="bg-blue-600 text-white hover:bg-blue-700">배차표 갱신</Button>
+          <Button onClick={() => setTransferDialogOpen(true)} disabled={!selectedStop || !selectedStop.stop.point_id.startsWith('ST')} className="bg-purple-600 text-white hover:bg-purple-700">환승 설정</Button>
           <Button onClick={openReserveDialog} disabled={!selectedStop} className="bg-green-500 text-white hover:bg-green-600">예약구간</Button>
           <Button variant="outline" onClick={openEdit} disabled={!selected}>정보 수정</Button>
         </div>
@@ -445,6 +478,18 @@ export default function DispatchMasterPage() {
           <DialogFooter className="mt-6"><Button variant="outline" onClick={() => setDialogOpen(false)} disabled={saving}>취소</Button><Button onClick={() => void save()} disabled={saving} className="bg-blue-600 text-white hover:bg-blue-700">{saving ? "저장 중..." : "저장"}</Button></DialogFooter>
         </DialogContent>
       </Dialog>
+      <DispatchTransferDialog open={transferDialogOpen} onClose={() => setTransferDialogOpen(false)}
+        target={selected && selectedStop ? {
+          ...selectedStop.stop, dispatch_id: selected.dispatch_id, route_id: selectedStop.row.route_id,
+          label: `${selectedStop.row.route_nm} · ${selectedStop.stop.point_nm} · ${formatTimestamp(selectedStop.stop.algh_dtm ?? 0, "HH:mm")}`,
+        } : null}
+        onSaved={(settings) => {
+          if (!selectedStop) return;
+          const chosen = selectedStop;
+          setDetailRows(rows => rows.map(row => row.route_id !== chosen.row.route_id ? row : { ...row, stops: row.stops.map(stop => stop.point_id === chosen.stop.point_id && stop.dispatch_seq === chosen.stop.dispatch_seq ? { ...stop, ...settings } : stop) }));
+          setSelectedStop({ ...chosen, stop: { ...chosen.stop, ...settings } });
+          setToast({ message: "환승 설정을 저장했습니다.", type: "success", isVisible: true });
+        }} />
       <Dialog open={reserveDialogOpen} onOpenChange={setReserveDialogOpen}>
         <DialogContent className="w-[430px] max-w-[calc(100vw-32px)]">
           <DialogHeader><DialogTitle>예약구간 설정</DialogTitle></DialogHeader>
@@ -463,6 +508,19 @@ export default function DispatchMasterPage() {
             </label>
           </div>
           <DialogFooter className="mt-6"><Button variant="outline" onClick={() => setReserveDialogOpen(false)} disabled={updatingReserve}>취소</Button><Button onClick={() => void saveReserveRoute()} disabled={updatingReserve || !selectedReserveDiv} className="bg-green-500 text-white hover:bg-green-600">{updatingReserve ? "저장 중..." : "확인"}</Button></DialogFooter>
+        </DialogContent>
+      </Dialog>
+      <Dialog open={refreshDialogOpen} onOpenChange={(open) => { if (!refreshing) setRefreshDialogOpen(open); }}>
+        <DialogContent className="w-[460px] max-w-[calc(100vw-32px)]">
+          <DialogHeader><DialogTitle>배차표 갱신</DialogTitle></DialogHeader>
+          <div className="space-y-3 text-sm text-gray-600">
+            <p><strong className="text-gray-900">{selected?.dispatch_nm}</strong> 배차표를 현재 노선편집의 정류장 순서로 갱신합니다.</p>
+            <p className="rounded-lg bg-blue-50 p-3 text-blue-800">같은 정류장의 기존 시간과 예약구간 설정은 유지됩니다. 새로 추가된 정류장은 시간이 없는 상태로 표시됩니다.</p>
+          </div>
+          <DialogFooter className="mt-6">
+            <Button variant="outline" onClick={() => setRefreshDialogOpen(false)} disabled={refreshing}>취소</Button>
+            <Button onClick={() => void refreshSchedule()} disabled={refreshing} className="bg-blue-600 text-white hover:bg-blue-700">{refreshing ? "갱신 중..." : "갱신"}</Button>
+          </DialogFooter>
         </DialogContent>
       </Dialog>
       <Toast {...toast} onClose={() => setToast((value) => ({ ...value, isVisible: false }))} />
