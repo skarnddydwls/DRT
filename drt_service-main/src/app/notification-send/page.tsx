@@ -134,13 +134,12 @@ export default function NotificationSendPage() {
       </div>
 
       <div
-        className="flex flex-col gap-4 rounded-xl border bg-white p-6 shadow-sm"
-        style={{ height: "calc(100vh - 275px)", minHeight: "680px" }}>
+        className="flex flex-col gap-4 rounded-xl border bg-white p-6 shadow-sm min-h-0 h-auto lg:h-[calc(100vh-275px)] lg:min-h-[680px]">
         <form onSubmit={handleSubmit} className="flex flex-1 flex-col justify-between min-h-0 gap-4">
           {/* 좌우 분할 2열 그리드 레이아웃 */}
           <div className="grid grid-cols-1 gap-6 lg:grid-cols-12 flex-1 min-h-0">
             {/* 왼쪽: 알림 유형 및 메시지 작성 영역 */}
-            <div className="flex flex-col lg:col-span-6 h-full min-h-0">
+            <div className="flex flex-col lg:col-span-6 min-h-[460px] lg:min-h-0 lg:h-full">
               <NotificationMessageForm
                 title={formData.title}
                 content={formData.content}
@@ -151,7 +150,7 @@ export default function NotificationSendPage() {
             </div>
 
             {/* 오른쪽: 대상 사용자 선택 영역 (드롭박스: 전체/고객/기사, 검색, 리스트) */}
-            <div className="flex flex-col lg:col-span-6 h-full min-h-0">
+            <div className="flex flex-col lg:col-span-6 min-h-[500px] lg:min-h-0 lg:h-full">
               <NotificationSelectUser
                 selectedUserIds={formData.targetUserIds}
                 onSelectionChange={handleUserSelectionChange}
@@ -167,7 +166,7 @@ export default function NotificationSendPage() {
               {/* 왼쪽: 선택된 수신 대상 레이블 및 태그 칩 목록 */}
               <div className="flex flex-1 flex-col gap-3">
                 <div className="flex items-center gap-2 text-sm text-gray-700">
-                  <Users className="h-4 w-4 text-gray-500 shrink-0" />
+                  {/* <Users className="h-4 w-4 text-gray-500 shrink-0" /> */}
                   <span className="font-bold text-[#222222]">선택된 수신 대상</span>
                   <span className="inline-flex items-center justify-center rounded-full bg-[#222222] px-2.5 py-0.5 text-xs font-bold text-white">
                     {formData.targetUserIds.length}명

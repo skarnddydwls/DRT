@@ -17,9 +17,6 @@ export default function StandbyVehicleList({
     <section className="flex h-full min-h-0 flex-col rounded-xl border border-[#CCCCCC] bg-white p-5 shadow-sm">
       <div className="mb-3 flex items-center justify-between border-b border-gray-100 pb-3">
         <div className="flex items-center gap-2">
-          <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[#222222] text-[11px] font-bold text-white">
-            2
-          </span>
           <h2 className="text-base font-bold text-[#222222]">
             대차 가능 차량 선택 (투입예정)
           </h2>
@@ -34,11 +31,10 @@ export default function StandbyVehicleList({
             <div
               key={v.id}
               onClick={() => onSelect(v)}
-              className={`flex cursor-pointer items-center justify-between rounded-[12px] border p-3.5 transition-all ${
-                isSelected
+              className={`flex cursor-pointer items-center justify-between rounded-[12px] border p-3.5 transition-all ${isSelected
                   ? "border-blue-600 bg-blue-50/60 ring-1 ring-blue-600"
                   : "border-[#CCCCCC] bg-white hover:border-gray-400"
-              }`}
+                }`}
             >
               <div>
                 <div className="flex items-center gap-2">
@@ -50,11 +46,10 @@ export default function StandbyVehicleList({
               </div>
               <button
                 type="button"
-                className={`h-8 rounded-[8px] px-3 text-xs font-bold transition-colors ${
-                  isSelected
+                className={`h-8 rounded-[8px] px-3 text-xs font-bold transition-colors ${isSelected
                     ? "bg-blue-600 text-white"
                     : "border border-[#CCCCCC] text-[#222222] hover:bg-gray-100"
-                }`}
+                  }`}
               >
                 {isSelected ? "선택됨" : "선택"}
               </button>

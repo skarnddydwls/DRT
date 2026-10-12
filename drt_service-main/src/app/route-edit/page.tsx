@@ -31,7 +31,12 @@ export default function RouteEditPage() {
   const [saving, setSaving] = useState(false);
 
   const visibleRoutes = useMemo(
-    () => routes.filter((route) => String(route.route_nm ?? "").includes(appliedQuery.trim())),
+    () =>
+      routes
+        .filter((route) => String(route.route_nm ?? "").includes(appliedQuery.trim()))
+        .sort((a, b) =>
+          String(a.route_nm ?? "").localeCompare(String(b.route_nm ?? ""), "ko", { numeric: true })
+        ),
     [appliedQuery, routes]
   );
   const visibleStops = useMemo(() => {
@@ -414,9 +419,9 @@ export default function RouteEditPage() {
                 onClick={openStopDialog}
                 className="group flex h-9 min-w-[106px] items-center justify-center gap-2 rounded-xl border border-slate-200/80 bg-white px-3 text-xs font-semibold text-slate-700 shadow-xs transition-all duration-200 hover:-translate-y-0.5 hover:border-emerald-300 hover:bg-emerald-50/60 hover:text-emerald-700 active:translate-y-0 active:bg-slate-100"
               >
-                <div className="flex h-5 w-5 items-center justify-center rounded-lg bg-emerald-100 text-emerald-600 transition-colors group-hover:bg-emerald-200">
+                {/* <div className="flex h-5 w-5 items-center justify-center rounded-lg bg-emerald-100 text-emerald-600 transition-colors group-hover:bg-emerald-200">
                   <MapPin className="h-3.5 w-3.5" />
-                </div>
+                </div> */}
                 <span>정류장 추가</span>
               </button>
 
@@ -442,14 +447,14 @@ export default function RouteEditPage() {
               >
                 {addMode === "NODE" ? (
                   <>
-                    <Crosshair className="h-3.5 w-3.5 animate-spin" style={{ animationDuration: "6s" }} />
+                    {/* <Crosshair className="h-3.5 w-3.5 animate-spin" style={{ animationDuration: "6s" }} /> */}
                     <span>추가 종료</span>
                   </>
                 ) : (
                   <>
-                    <div className="flex h-5 w-5 items-center justify-center rounded-lg bg-blue-100 text-blue-600 transition-colors group-hover:bg-blue-200">
+                    {/* <div className="flex h-5 w-5 items-center justify-center rounded-lg bg-blue-100 text-blue-600 transition-colors group-hover:bg-blue-200">
                       <Crosshair className="h-3.5 w-3.5" />
-                    </div>
+                    </div> */}
                     <span>지점 추가</span>
                   </>
                 )}

@@ -115,13 +115,10 @@ export default function ReplacementControlPage() {
       </div>
 
       {/* 다른 페이지들과 동일한 규격의 메인 네모박스 */}
-      <div className="rounded-xl border bg-white p-6 shadow-sm">
-        <div
-          className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch"
-          style={{ height: "calc(100vh - 310px)" }}
-        >
+      <div className="rounded-xl border bg-white p-6 shadow-sm min-h-0 h-auto lg:h-[calc(100vh-310px)] lg:min-h-[680px]">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch h-full">
           {/* 좌측: 사유 및 입력 승인 (5열) */}
-          <div className="lg:col-span-5 flex flex-col h-full min-h-0">
+          <div className="lg:col-span-5 flex flex-col min-h-[480px] lg:min-h-0 lg:h-full">
             <ReplacementActionForm
               originVehicle={selectedOrigin}
               targetVehicle={selectedTarget}
@@ -132,8 +129,8 @@ export default function ReplacementControlPage() {
           </div>
 
           {/* 우측: 상단 운행 중 차량 + 하단 대차 가능 차량 (7열) */}
-          <div className="lg:col-span-7 flex flex-col gap-4 h-full min-h-0">
-            <div className="flex-[1.1] min-h-0">
+          <div className="lg:col-span-7 flex flex-col gap-4 min-h-[600px] lg:min-h-0 lg:h-full">
+            <div className="flex-[1.1] min-h-[280px] lg:min-h-0">
               <ActiveVehicleTable
                 vehicles={activeVehicles}
                 selectedId={selectedOrigin?.id || null}

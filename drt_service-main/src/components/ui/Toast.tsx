@@ -19,14 +19,24 @@ export function Toast({
 
   useEffect(() => {
     if (isVisible) {
-      setIsShowing(true);
-      const timer = setTimeout(() => {
+      // 1. 다음 틱(10ms)으로 한 박자 늦춰서 동기 리렌더링 방지 & 슬라이드 애니메이션 트리거
+      const enterTimer = setTimeout(() => {
+        setIsShowing(true);
+      }, 10);
+
+      // 2. duration 후 닫힘 애니메이션
+      const exitTimer = setTimeout(() => {
         setIsShowing(false);
-        setTimeout(onClose, 300); // 애니메이션 완료 후 제거
+        setTimeout(onClose, 300); // 300ms 페이드아웃 후 부모 언마운트
       }, duration);
-      return () => clearTimeout(timer);
+
+      return () => {
+        clearTimeout(enterTimer);
+        clearTimeout(exitTimer);
+      };
     }
   }, [isVisible, duration, onClose]);
+
 
   if (!isVisible) return null;
 
@@ -40,9 +50,8 @@ export function Toast({
 
   return (
     <div
-      className={`${baseClasses} ${typeClasses[type]} ${
-        isShowing ? "translate-x-0 opacity-100" : "translate-x-full opacity-0"
-      }`}>
+      className={`${baseClasses} ${typeClasses[type]} ${isShowing ? "translate-x-0 opacity-100" : "translate-x-full opacity-0"
+        }`}>
       <div className="flex items-center justify-between">
         <span>{message}</span>
         <button

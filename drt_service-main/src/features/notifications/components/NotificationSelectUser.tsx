@@ -73,7 +73,7 @@ export default function NotificationSelectUser({
       {/* 헤더 타이틀 및 선택 현황 */}
       <div className="mb-4 flex items-center justify-between border-b border-gray-100 pb-3">
         <div className="flex items-center gap-2">
-          <Users className="h-5 w-5 text-[#222222]" />
+          {/* <Users className="h-5 w-5 text-[#222222]" /> */}
           <h2 className="text-sm font-bold text-[#222222]">수신 대상 선택</h2>
         </div>
         <div className="flex items-center gap-2">
@@ -151,15 +151,15 @@ export default function NotificationSelectUser({
       </div>
 
       {/* 사용자 목록 스크롤 영역 (항목 증가 시 내부 스크롤 적용) */}
-      <div className="flex-1 min-h-0 overflow-y-auto rounded-[12px] border border-gray-200 bg-[#FAFAFA]">
+      <div className="flex-1 min-h-[320px] overflow-y-auto rounded-[12px] border border-gray-200 bg-[#FAFAFA]">
         {loading ? (
-          <div className="flex h-48 flex-col items-center justify-center text-center text-gray-400">
+          <div className="flex h-full flex-col items-center justify-center text-center text-gray-400">
             <Loader2 className="mb-2 h-8 w-8 animate-spin text-gray-400" />
             <p className="text-sm font-medium">사용자 목록을 불러오는 중...</p>
           </div>
         ) : filteredUsers.length === 0 ? (
-          <div className="flex h-48 flex-col items-center justify-center text-center text-gray-400">
-            <Users className="mb-2 h-8 w-8 text-gray-300" />
+          <div className="flex h-full flex-col items-center justify-center text-center text-gray-400">
+            {/* <Users className="mb-2 h-8 w-8 text-gray-300" /> */}
             <p className="text-sm font-medium">검색 결과가 없습니다.</p>
             <p className="text-xs">필터 조건을 변경하거나 검색어를 확인해보세요.</p>
           </div>

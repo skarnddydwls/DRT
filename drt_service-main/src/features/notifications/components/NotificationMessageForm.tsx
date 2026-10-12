@@ -21,7 +21,7 @@ export default function NotificationMessageForm({
   return (
     <div className="flex h-full flex-col rounded-xl border border-gray-200 bg-white p-5 shadow-sm min-h-0">
       <div className="mb-4 flex items-center gap-2 border-b border-gray-100 pb-3">
-        <MessageSquare className="h-5 w-5 text-[#222222]" />
+        {/* <MessageSquare className="h-5 w-5 text-[#222222]" /> */}
         <h2 className="text-sm font-bold text-[#222222]">메시지 작성</h2>
       </div>
 

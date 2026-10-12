@@ -44,11 +44,16 @@ export function CustomSelect({ value, onChange, children }: CustomSelectProps) {
   // children을 훑어서 현재 선택된 value의 label 텍스트 추출
   useEffect(() => {
     React.Children.forEach(children, (child) => {
-      if (React.isValidElement(child) && child.props.value === value) {
-        setDisplayLabel(child.props.children as string);
+      // 제네릭으로 props 형태를 알려주면 unknown 에러 즉시 소멸!
+      if (
+        React.isValidElement<{ value?: string; children?: React.ReactNode }>(child) &&
+        child.props.value === value
+      ) {
+        setDisplayLabel(String(child.props.children ?? ""));
       }
     });
   }, [value, children]);
+
 
   const handleSelect = (val: string, label: string) => {
     onChange(val);
@@ -65,17 +70,15 @@ export function CustomSelect({ value, onChange, children }: CustomSelectProps) {
         <button
           type="button"
           onClick={() => setIsOpen(!isOpen)}
-          className={`flex h-[50px] w-full items-center justify-between rounded-[12px] border bg-white px-4 text-sm font-medium text-[#222222] transition-all ${
-            isOpen
+          className={`flex h-[50px] w-full items-center justify-between rounded-[12px] border bg-white px-4 text-sm font-medium text-[#222222] transition-all ${isOpen
               ? "border-black shadow-sm ring-1 ring-black"
               : "border-[#CCCCCC] hover:border-gray-400"
-          }`}
+            }`}
         >
           <span>{displayLabel || "선택하세요"}</span>
           <svg
-            className={`h-4 w-4 text-gray-500 transition-transform duration-200 ${
-              isOpen ? "rotate-180" : ""
-            }`}
+            className={`h-4 w-4 text-gray-500 transition-transform duration-200 ${isOpen ? "rotate-180" : ""
+              }`}
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -117,11 +120,10 @@ export function CustomOption({ value, children }: CustomOptionProps) {
       <button
         type="button"
         onClick={() => context.onSelect(value, String(children))}
-        className={`flex w-full items-center rounded-[8px] px-3 py-2.5 text-left text-sm transition-colors ${
-          isSelected
+        className={`flex w-full items-center rounded-[8px] px-3 py-2.5 text-left text-sm transition-colors ${isSelected
             ? "bg-[#222222] font-semibold text-white"
             : "text-[#222222] hover:bg-gray-100"
-        }`}
+          }`}
       >
         {children}
       </button>

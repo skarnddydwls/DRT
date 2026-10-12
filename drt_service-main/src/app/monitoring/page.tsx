@@ -76,7 +76,6 @@ export default function MonitoringPage() {
       const response = await getActiveRouteNodes();
       const nodes = response.nodes || [];
       const vectorSource = vectorSourceRef.current;
-      console.log(nodes, "1111")
       if (!vectorSource) {
         console.warn("vectorSource is not ready");
         return;

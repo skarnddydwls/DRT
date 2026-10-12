@@ -17,9 +17,6 @@ export default function ActiveVehicleTable({
     <section className="flex h-full min-h-0 flex-col rounded-xl border border-[#CCCCCC] bg-white p-5 shadow-sm">
       <div className="mb-3 flex items-center justify-between border-b border-gray-100 pb-3">
         <div className="flex items-center gap-2">
-          <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[#222222] text-[11px] font-bold text-white">
-            1
-          </span>
           <h2 className="text-base font-bold text-[#222222]">
             운행 중 차량 선택 (원차량)
           </h2>
@@ -47,11 +44,10 @@ export default function ActiveVehicleTable({
                 <tr
                   key={v.id}
                   onClick={() => onSelect(v)}
-                  className={`cursor-pointer transition-colors ${
-                    isSelected
+                  className={`cursor-pointer transition-colors ${isSelected
                       ? "bg-rose-50/70 font-semibold"
                       : "hover:bg-gray-50"
-                  }`}
+                    }`}
                 >
                   <td className="p-3 text-center">
                     <input
