@@ -78,29 +78,30 @@ function MasterTimeline({
         const stopKey = `${data?.route_id}-${stop.point_id}-${stop.dispatch_seq}`;
         const selected = stopKey === selectedStopKey;
         return (
-        <button
-          type="button"
-          data-master-stop="true"
-          key={`${stop.point_id}-${stop.dispatch_seq}`}
-          onClick={(event) => {
-            event.stopPropagation();
-            if (data) onStopClick(data, stop);
-          }}
-          onDoubleClick={(event) => {
-            event.stopPropagation();
-            if (data) onStopDoubleClick(data, stop);
-          }}
-          className={`relative flex w-24 flex-col rounded-lg border bg-white px-3 py-2 text-left shadow-sm transition ${selected ? "border-blue-500 ring-2 ring-blue-300" : "border-black/10 hover:border-blue-400"}`}
-          style={stop.ext_dispatch_div && colors[stop.ext_dispatch_div]
-            ? { backgroundColor: colors[stop.ext_dispatch_div] }
-            : undefined}>
-          <span className="truncate text-xs font-medium text-gray-500">{stop.point_nm || stop.point_id}</span>
-          <span className="text-sm font-bold text-gray-800">
-            {stop.algh_dtm ? formatTimestamp(stop.algh_dtm, "HH:mm") : "-"}
-          </span>
-          <DispatchTransferBadge enabled={stop.transfer_enabled} minutes={stop.transfer_minutes} time={stop.algh_dtm} />
-        </button>
-      )})}
+          <button
+            type="button"
+            data-master-stop="true"
+            key={`${stop.point_id}-${stop.dispatch_seq}`}
+            onClick={(event) => {
+              event.stopPropagation();
+              if (data) onStopClick(data, stop);
+            }}
+            onDoubleClick={(event) => {
+              event.stopPropagation();
+              if (data) onStopDoubleClick(data, stop);
+            }}
+            className={`relative flex w-24 flex-col rounded-lg border bg-white px-3 py-2 text-left shadow-sm transition ${selected ? "border-blue-500 ring-2 ring-blue-300" : "border-black/10 hover:border-blue-400"}`}
+            style={stop.ext_dispatch_div && colors[stop.ext_dispatch_div]
+              ? { backgroundColor: colors[stop.ext_dispatch_div] }
+              : undefined}>
+            <span className="truncate text-xs font-medium text-gray-500">{stop.point_nm || stop.point_id}</span>
+            <span className="text-sm font-bold text-gray-800">
+              {stop.algh_dtm ? formatTimestamp(stop.algh_dtm, "HH:mm") : "-"}
+            </span>
+            <DispatchTransferBadge enabled={stop.transfer_enabled} minutes={stop.transfer_minutes} time={stop.algh_dtm} />
+          </button>
+        )
+      })}
     </div>
   );
 }
@@ -245,7 +246,7 @@ export default function DispatchMasterPage() {
       headerName: "배차표",
       field: "stops",
       flex: 1,
-      minWidth: 1700,
+      minWidth: 3100,
       maxWidth: 9999,
       cellRenderer: MasterTimeline,
       cellRendererParams: {
