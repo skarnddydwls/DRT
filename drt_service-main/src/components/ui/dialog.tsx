@@ -5,6 +5,7 @@ import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { XIcon } from "lucide-react";
 
 import { cn } from "@/lib/utils";
+import { handleDialogEnter } from "@/lib/dialogKeyboard";
 
 function Dialog({
   ...props
@@ -50,6 +51,8 @@ function DialogContent({
   className,
   children,
   showCloseButton = true,
+  onKeyDown,
+  onOpenAutoFocus,
   ...props
 }: React.ComponentProps<typeof DialogPrimitive.Content> & {
   showCloseButton?: boolean;
@@ -63,7 +66,24 @@ function DialogContent({
           "bg-background data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 fixed top-[50%] left-[50%] z-50 -translate-x-1/2 -translate-y-1/2 rounded-lg border p-6 shadow-lg duration-200",
           className
         )}
-        {...props}>
+        {...props}
+        onOpenAutoFocus={(event) => {
+          onOpenAutoFocus?.(event);
+          if (event.defaultPrevented || !(event.target instanceof HTMLElement)) return;
+          const content = event.target;
+          if (content.querySelector('input:not(:disabled):not([type="hidden"]), textarea:not(:disabled), select:not(:disabled), [role="combobox"]:not(:disabled), [contenteditable="true"]')) return;
+          const footer = content.querySelector('[data-slot="dialog-footer"]');
+          const primary = footer ? Array.from(footer.querySelectorAll<HTMLButtonElement>('button')).at(-1) : null;
+          if (primary) {
+            event.preventDefault();
+            if (!primary.disabled) primary.focus();
+            else content.focus();
+          }
+        }}
+        onKeyDown={(event) => {
+          onKeyDown?.(event);
+          handleDialogEnter(event);
+        }}>
         {children}
         {showCloseButton && (
           <DialogPrimitive.Close

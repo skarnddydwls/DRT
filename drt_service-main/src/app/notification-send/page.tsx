@@ -4,9 +4,11 @@ import { useState, useMemo, useEffect } from "react";
 import NotificationMessageForm from "@/features/notifications/components/NotificationMessageForm";
 import NotificationSelectUser from "@/features/notifications/components/NotificationSelectUser";
 import type { NotificationSendFormState, TargetUser } from "@/types/notificationSend";
-import { Send, RotateCcw, AlertCircle, X, Users } from "lucide-react";
+import { Send, RotateCcw, X } from "lucide-react";
 import { getUserList } from "@/lib/api/user";
 import { sendNotification } from "@/lib/api/notification";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
 
 const INITIAL_FORM_STATE: NotificationSendFormState = {
   notificationType: "NOTICE",
@@ -21,6 +23,8 @@ export default function NotificationSendPage() {
   const [formData, setFormData] =
     useState<NotificationSendFormState>(INITIAL_FORM_STATE);
   const [submitting, setSubmitting] = useState(false);
+  const [feedback, setFeedback] = useState("");
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
   const handleChange = (
     field: keyof NotificationSendFormState,
@@ -46,6 +50,7 @@ export default function NotificationSendPage() {
         }
       } catch (error) {
         console.error("사용자 목록 조회 실패:", error);
+        if (isMounted) setFeedback("등록 디바이스 목록을 불러오지 못했습니다. 백엔드 연결을 확인해주세요.");
 
       } finally {
         if (isMounted) {
@@ -91,6 +96,7 @@ export default function NotificationSendPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (submitting) return;
 
     // 유효성 검사
     if (formData.targetUserIds.length === 0) {
@@ -107,17 +113,15 @@ export default function NotificationSendPage() {
     }
 
     setSubmitting(true);
+    setFeedback("");
 
     try {
-      await sendNotification(formData);
-
-      alert(
-        `총 ${formData.targetUserIds.length}명에게 알림이 성공적으로 전송되었습니다.`
-      );
+      const result = await sendNotification(formData);
+      setSuccessMessage(`알림 전송 요청이 완료되었습니다.${result.skippedCount ? ` (푸시 미등록 또는 알림 OFF로 제외된 대상: ${result.skippedCount}건)` : ""}`);
       handleReset();
     } catch (error) {
       console.error("전송 실패:", error);
-      alert("알림 전송에 실패했습니다.");
+      setFeedback(error instanceof Error ? error.message : "알림 전송에 실패했습니다.");
     } finally {
       setSubmitting(false);
     }
@@ -125,13 +129,26 @@ export default function NotificationSendPage() {
 
   return (
     <section>
+      <Dialog open={successMessage !== null} onOpenChange={(open) => { if (!open) setSuccessMessage(null); }}>
+        <DialogContent className="w-[calc(100%_-_2rem)] max-w-sm bg-white">
+          <DialogHeader>
+            <DialogTitle>알림 전송</DialogTitle>
+            <DialogDescription>{successMessage}</DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button type="button" onClick={() => setSuccessMessage(null)}>확인</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
       {/* 상단 헤더 */}
       <div className="mb-6">
         <h1 className="text-[28px] font-bold tracking-tight">알림 전송</h1>
         <p className="mt-1 text-sm text-gray-500">
-          왼쪽에서 메시지를 작성하고, 오른쪽에서 수신할 대상(고객/기사)을 선택하여 실시간 알림을 발송합니다.
+          메시지를 작성하고 등록된 디바이스를 선택하면, APP PUSH가 켜진 휴대폰 앱으로 푸시알림을 발송합니다.
         </p>
       </div>
+
+      {feedback && <p role="status" className="mb-4 rounded-lg border bg-slate-50 px-4 py-3 text-sm">{feedback}</p>}
 
       <div
         className="flex flex-col gap-4 rounded-xl border bg-white p-6 shadow-sm min-h-0 h-auto lg:h-[calc(100vh-275px)] lg:min-h-[680px]">
@@ -210,6 +227,7 @@ export default function NotificationSendPage() {
                 <button
                   type="button"
                   onClick={handleReset}
+                  disabled={submitting}
                   className="flex h-[46px] min-w-[90px] items-center justify-center gap-1.5 rounded-[12px] border border-[#CCCCCC] bg-white px-4 text-sm font-bold text-[#222222] hover:bg-gray-100 transition-colors shadow-sm"
                 >
                   <RotateCcw className="h-4 w-4" />

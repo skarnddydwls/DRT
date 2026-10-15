@@ -1,32 +1,52 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import "ol/ol.css";
 import { FilterForm } from "@/components/ui/FilterForm";
 import Grid from "@/components/Grid";
 import { getStopList } from "@/lib/api/stop";
 import { stopColumnDefs } from "@/features/stop/columnDefs";
 import { defaultFilters, stopFields } from "@/features/stop/fieldconfig";
 import type { StopFilters, StopRow } from "@/types/stop";
-import { Map, View } from "ol";
-import { XYZ } from "ol/source";
-import { Tile } from "ol/layer";
-import { defaults } from "ol/control";
-import { Vector as VectorLayer } from "ol/layer";
-import { Vector as VectorSource } from "ol/source";
-import Feature from "ol/Feature";
-import Point from "ol/geom/Point";
-import { Style, Icon } from "ol/style";
-import { fromLonLat } from "ol/proj";
-import Overlay from "ol/Overlay";
-import { VWORLD_API_KEY } from "@/config/vworld";
+import { Map, View } from "@/lib/maps/kakaoMap";
+import { defaults } from "@/lib/maps/kakaoMap";
+import { VectorLayer } from "@/lib/maps/kakaoMap";
+import { VectorSource } from "@/lib/maps/kakaoMap";
+import { Feature } from "@/lib/maps/kakaoMap";
+import { Point } from "@/lib/maps/kakaoMap";
+import { Style, Icon } from "@/lib/maps/kakaoMap";
+import { fromLonLat } from "@/lib/maps/kakaoMap";
+import { Overlay } from "@/lib/maps/kakaoMap";
 import type { AgGridReact } from "ag-grid-react";
 import type { RowClickedEvent } from "ag-grid-community";
+
+function showStopOverlay(overlay: Overlay, stop: StopRow | null) {
+  const element = overlay.getElement();
+  if (!element) return;
+  const longitude = Number(stop?.gps_x);
+  const latitude = Number(stop?.gps_y);
+  if (!stop || !Number.isFinite(longitude) || !Number.isFinite(latitude) || !longitude || !latitude) {
+    element.style.display = "none";
+    overlay.setPosition(undefined);
+    return;
+  }
+  element.replaceChildren();
+  [stop.stn_nm || "", `방향: ${stop.direction || "-"}`,
+    `경도: ${longitude.toFixed(6)}`, `위도: ${latitude.toFixed(6)}`].forEach((text, index) => {
+    const line = document.createElement("div");
+    line.textContent = text;
+    if (index === 0) line.className = "font-semibold";
+    element.appendChild(line);
+  });
+  element.style.display = "block";
+  overlay.setPosition(fromLonLat([longitude, latitude]));
+}
 
 export default function StopPage() {
   const gridRef = useRef<AgGridReact<Record<string, unknown>> | null>(null);
   const mapRef = useRef<Map | null>(null);
   const vectorSourceRef = useRef<VectorSource | null>(null);
+  const overlayRef = useRef<Overlay | null>(null);
+  const selectedStopRef = useRef<StopRow | null>(null);
 
   const [filters, setFilters] = useState<StopFilters>(defaultFilters);
   const [allRows, setAllRows] = useState<StopRow[]>([]);
@@ -81,18 +101,13 @@ export default function StopPage() {
     const overlay = new Overlay({
       element: tooltipElement,
       positioning: "bottom-center",
-      offset: [0, -10],
+      // 선택 마커 높이(432px × 0.15 ≈ 65px) 위로 여백을 둔다.
+      offset: [0, -75],
     });
 
     const map = new Map({
       controls: defaults({ zoom: true, rotate: false }).extend([]),
       layers: [
-        new Tile({
-          visible: true,
-          source: new XYZ({
-            url: `http://api.vworld.kr/req/wmts/1.0.0/${VWORLD_API_KEY}/Base/{z}/{y}/{x}.png`,
-          }),
-        }),
         vectorLayer,
       ],
       target: "stop-map",
@@ -115,33 +130,28 @@ export default function StopPage() {
         if (hoveredFeature !== feature) {
           hoveredFeature = feature;
 
-          const stnNm = feature.get("stn_nm");
-          const gpsX = feature.get("gps_x");
-          const gpsY = feature.get("gps_y");
-          const direction = feature.get("direction");
-
-          tooltipElement.innerHTML = `
-            <div class="font-semibold">${stnNm || ""}</div>
-            <div>방향: ${direction || ""}</div>
-            <div>경도: ${gpsX ? Number(gpsX).toFixed(6) : ""}</div>
-            <div>위도: ${gpsY ? Number(gpsY).toFixed(6) : ""}</div>
-          `;
-          tooltipElement.style.display = "block";
-          overlay.setPosition(e.coordinate);
+          showStopOverlay(overlay, feature.getProperties() as StopRow);
         }
       } else {
         if (hoveredFeature) {
           hoveredFeature = null;
-          tooltipElement.style.display = "none";
-          overlay.setPosition(undefined);
+          showStopOverlay(overlay, selectedStopRef.current);
         }
       }
     });
 
     mapRef.current = map;
     vectorSourceRef.current = vectorSource;
+    overlayRef.current = overlay;
+    const restoreSelectedOverlay = () => {
+      hoveredFeature = null;
+      showStopOverlay(overlay, selectedStopRef.current);
+    };
+    map.getViewport().addEventListener("pointerleave", restoreSelectedOverlay);
 
     return () => {
+      map.getViewport().removeEventListener("pointerleave", restoreSelectedOverlay);
+      overlayRef.current = null;
       map.setTarget(undefined);
       if (document.body.contains(tooltipElement)) {
         document.body.removeChild(tooltipElement);
@@ -158,6 +168,9 @@ export default function StopPage() {
 
     // 기존 마커 제거
     vectorSource.clear();
+    const selected = rowData.find((stop) => stop.stn_id === selectedStopRef.current?.stn_id) ?? null;
+    selectedStopRef.current = selected;
+    if (overlayRef.current) showStopOverlay(overlayRef.current, selected);
 
     // 모든 정류장 마커 추가
     rowData.forEach((stop) => {
@@ -212,7 +225,7 @@ export default function StopPage() {
         );
       }
     });
-  }, [selectedStopId]);
+  }, [selectedStopId, rowData]);
 
   // 그리드 행 클릭 시 지도 중심 이동 + 하이라이트
   const handleRowClicked = useCallback((event: RowClickedEvent<StopRow>) => {
@@ -220,18 +233,15 @@ export default function StopPage() {
     if (!row) return;
 
     const map = mapRef.current;
+    setSelectedStopId(row.stn_id);
+    selectedStopRef.current = row;
+    event.node?.setSelected(true);
+    if (overlayRef.current) showStopOverlay(overlayRef.current, row);
 
-    if (map && row.gps_x && row.gps_y) {
+    if (map && Number.isFinite(Number(row.gps_x)) && Number.isFinite(Number(row.gps_y)) && Number(row.gps_x) && Number(row.gps_y)) {
       // 선택된 정류장 ID 설정
-      setSelectedStopId(row.stn_id);
-
-      // 그리드에서 해당 행 선택 (시각적 하이라이트)
-      if (event.node) {
-        event.node.setSelected(true);
-      }
-
       // 지도 중심을 클릭한 정류장으로 이동
-      const coord = fromLonLat([row.gps_x, row.gps_y]);
+      const coord = fromLonLat([Number(row.gps_x), Number(row.gps_y)]);
       map.getView().animate({
         center: coord,
         zoom: 18,

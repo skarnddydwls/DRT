@@ -10,18 +10,17 @@ import { operLogColumnDefs } from "@/features/operLog/columnDefs";
 import { defaultFilters, operLogFields } from "@/features/operLog/fieldconfig";
 import type { OperLogFilters, OperLogRow } from "@/types/operLog";
 import { formatTimestamp } from "@/lib/utils";
-import Map from "ol/Map";
-import View from "ol/View";
-import Feature from "ol/Feature";
-import Point from "ol/geom/Point";
-import LineString from "ol/geom/LineString";
-import { Tile as TileLayer, Vector as VectorLayer } from "ol/layer";
-import { XYZ, Vector as VectorSource } from "ol/source";
-import { Icon, Stroke, Style } from "ol/style";
-import { fromLonLat } from "ol/proj";
-import { defaults } from "ol/control";
-import Overlay from "ol/Overlay";
-import { VWORLD_API_KEY } from "@/config/vworld";
+import { Map } from "@/lib/maps/kakaoMap";
+import { View } from "@/lib/maps/kakaoMap";
+import { Feature } from "@/lib/maps/kakaoMap";
+import { Point } from "@/lib/maps/kakaoMap";
+import { LineString } from "@/lib/maps/kakaoMap";
+import { VectorLayer } from "@/lib/maps/kakaoMap";
+import { VectorSource } from "@/lib/maps/kakaoMap";
+import { Icon, Stroke, Style } from "@/lib/maps/kakaoMap";
+import { fromLonLat } from "@/lib/maps/kakaoMap";
+import { defaults } from "@/lib/maps/kakaoMap";
+import { Overlay } from "@/lib/maps/kakaoMap";
 
 const DEFAULT_MAP_CENTER: [number, number] = [127.766968, 34.512524];
 const FIXED_ROUTE_COLOR = "#667eea";
@@ -61,11 +60,6 @@ export default function OperLogPage() {
       controls: defaults({ rotate: false }),
       overlays: [stopOverlay],
       layers: [
-        new TileLayer({
-          source: new XYZ({
-            url: `http://api.vworld.kr/req/wmts/1.0.0/${VWORLD_API_KEY}/Base/{z}/{y}/{x}.png`,
-          }),
-        }),
         new VectorLayer({ source: routeSource }),
         new VectorLayer({ source: routeStopSource }),
         new VectorLayer({ source: markerSource }),

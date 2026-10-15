@@ -18,7 +18,7 @@ export default function ActiveVehicleTable({
       <div className="mb-3 flex items-center justify-between border-b border-gray-100 pb-3">
         <div className="flex items-center gap-2">
           <h2 className="text-base font-bold text-[#222222]">
-            운행 중 차량 선택 (원차량)
+            원차량 선택 (운행 중 · 정상)
           </h2>
         </div>
         <span className="text-xs text-gray-400">교체 대상 차량을 선택하세요</span>
@@ -31,8 +31,6 @@ export default function ActiveVehicleTable({
             <tr>
               <th className="w-12 p-3 text-center">선택</th>
               <th className="p-3">차량번호</th>
-              <th className="p-3">배정 기사</th>
-              <th className="p-3">현재 노선</th>
               <th className="p-3 text-center">탑승</th>
               <th className="p-3 text-center">상태</th>
             </tr>
@@ -59,8 +57,6 @@ export default function ActiveVehicleTable({
                     />
                   </td>
                   <td className="p-3 font-bold text-[#222222]">{v.plate}</td>
-                  <td className="p-3 text-gray-700">{v.driver}</td>
-                  <td className="p-3 text-gray-600 text-xs">{v.route}</td>
                   <td className="p-3 text-center font-medium">{v.passengers}</td>
                   <td className="p-3 text-center">
                     <span className="inline-block rounded bg-emerald-100 px-2 py-0.5 text-[11px] font-bold text-emerald-800">

@@ -122,6 +122,20 @@
   padding-right: 16px !important;
 }
 
+/* 관광지 관리: 좁은 컬럼에서 공통 헤더의 중복 여백과 줄바꿈 방지 */
+.tourism-grid .ag-theme-alpine .ag-header-cell,
+.tourism-grid .ag-theme-alpine .ag-cell {
+  padding-left: 10px !important;
+  padding-right: 10px !important;
+}
+.tourism-grid .ag-theme-alpine .ag-header-cell-label {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+.tourism-grid .ag-header-cell-text {
+  white-space: nowrap;
+}
+
 /* AG Grid 그룹 헤더 중앙정렬 */
 .center-group-header .ag-header-cell-comp-wrapper {
   display: flex !important;

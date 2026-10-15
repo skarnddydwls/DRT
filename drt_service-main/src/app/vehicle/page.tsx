@@ -218,6 +218,11 @@ export default function VehiclePage() {
               rowSelection: "single",
               suppressRowClickSelection: false,
               onRowClicked: handleRowClicked,
+              onRowDoubleClicked: (event) => {
+                if (!event.data) return;
+                setSelectedRow(event.data);
+                setIsEditModalOpen(true);
+              },
               getRowStyle: (params) => {
                 if (
                   selectedRow &&

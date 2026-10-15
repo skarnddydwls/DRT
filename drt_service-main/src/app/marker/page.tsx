@@ -1,24 +1,20 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import "ol/ol.css";
 import Grid from "@/components/Grid";
 import { getMarkerList, getStopList, type StopRow } from "@/lib/api/marker";
 import { markerColumnDefs } from "@/features/marker/columnDefs";
 import { stopSimpleColumnDefs } from "@/features/marker/stopColumnDefs";
 import type { MarkerRow } from "@/types/marker";
-import { Map, View } from "ol";
-import { XYZ } from "ol/source";
-import { Tile } from "ol/layer";
-import { defaults } from "ol/control";
-import { Vector as VectorLayer } from "ol/layer";
-import { Vector as VectorSource } from "ol/source";
-import Feature from "ol/Feature";
-import Point from "ol/geom/Point";
-import { Style, Icon, Circle as CircleStyle, Fill, Stroke } from "ol/style";
-import { fromLonLat } from "ol/proj";
-import Overlay from "ol/Overlay";
-import { VWORLD_API_KEY } from "@/config/vworld";
+import { Map, View } from "@/lib/maps/kakaoMap";
+import { defaults } from "@/lib/maps/kakaoMap";
+import { VectorLayer } from "@/lib/maps/kakaoMap";
+import { VectorSource } from "@/lib/maps/kakaoMap";
+import { Feature } from "@/lib/maps/kakaoMap";
+import { Point } from "@/lib/maps/kakaoMap";
+import { Style, Icon, CircleStyle, Fill, Stroke } from "@/lib/maps/kakaoMap";
+import { fromLonLat } from "@/lib/maps/kakaoMap";
+import { Overlay } from "@/lib/maps/kakaoMap";
 import type { AgGridReact } from "ag-grid-react";
 import type { RowClickedEvent } from "ag-grid-community";
 
@@ -84,12 +80,6 @@ export default function MarkerPage() {
     const map = new Map({
       controls: defaults({ zoom: true, rotate: false }).extend([]),
       layers: [
-        new Tile({
-          visible: true,
-          source: new XYZ({
-            url: `http://api.vworld.kr/req/wmts/1.0.0/${VWORLD_API_KEY}/Base/{z}/{y}/{x}.png`,
-          }),
-        }),
         vectorLayer,
         stopLayer,
       ],

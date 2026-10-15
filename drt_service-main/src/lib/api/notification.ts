@@ -10,6 +10,10 @@ import type { NotificationFilters, NotificationRow } from "@/types/notification"
 export interface SendNotificationResponse {
   result?: unknown;
   success?: boolean;
+  queuedCount?: number;
+  skippedCount?: number;
+  notificationId?: string;
+  status?: string;
 }
 
 /**
@@ -18,7 +22,12 @@ export interface SendNotificationResponse {
 export async function sendNotification(
   payload: NotificationSendFormState
 ): Promise<SendNotificationResponse> {
-  return post<SendNotificationResponse>("/api/notifications/send", payload);
+  const response = await fetch("/api/notifications/send", {
+    method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload),
+  });
+  const data = await response.json();
+  if (!response.ok || data.success !== true) throw new Error(data.error || "알림 전송 요청에 실패했습니다.");
+  return data as SendNotificationResponse;
 }
 
 /**
@@ -39,5 +48,6 @@ export async function getNotificationHistoryList(
     noti_target: String(item.noti_target ?? ""),
     noti_title: String(item.noti_title ?? ""),
     noti_content: String(item.noti_content ?? ""),
+    send_status: String(item.send_status ?? ""),
   }));
 }

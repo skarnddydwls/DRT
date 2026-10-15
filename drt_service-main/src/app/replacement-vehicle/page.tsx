@@ -22,6 +22,7 @@ export default function ReplacementControlPage() {
   const [selectedOrigin, setSelectedOrigin] = useState<ActiveVehicle | null>(null);
   const [selectedTarget, setSelectedTarget] = useState<StandbyVehicle | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  const selectableStandbyVehicles = standbyVehicles.filter(vehicle => vehicle.id !== selectedOrigin?.id);
 
   // 마운트 시 차량 데이터 조회
   useEffect(() => {
@@ -93,7 +94,7 @@ export default function ReplacementControlPage() {
         <div>
           <h1 className="text-[28px] font-bold tracking-tight">대차 관리</h1>
           <p className="mt-1 text-sm text-gray-500">
-            운행 중인 차량을 대체 투입 차량으로 대차 처리합니다.
+            운행 중이거나 차량 상태가 정상인 원차량을 선택해 대차 처리합니다.
           </p>
         </div>
 
@@ -102,13 +103,13 @@ export default function ReplacementControlPage() {
           <div className="flex items-center gap-2 rounded-lg bg-emerald-50 px-3 py-1.5 border border-emerald-200">
             <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
             <span className="text-xs font-semibold text-emerald-800">
-              운행 중 차량 <strong>{loading ? "-" : activeVehicles.length}</strong>대
+              원차량 선택 가능 <strong>{loading ? "-" : activeVehicles.length}</strong>대
             </span>
           </div>
           <div className="flex items-center gap-2 rounded-lg bg-blue-50 px-3 py-1.5 border border-blue-200">
             <span className="h-2 w-2 rounded-full bg-blue-500" />
             <span className="text-xs font-semibold text-blue-800">
-              대차 가능 차량 <strong>{loading ? "-" : standbyVehicles.length}</strong>대
+              대차 가능 차량 <strong>{loading ? "-" : selectableStandbyVehicles.length}</strong>대
             </span>
           </div>
         </div>
@@ -117,8 +118,8 @@ export default function ReplacementControlPage() {
       {/* 다른 페이지들과 동일한 규격의 메인 네모박스 */}
       <div className="rounded-xl border bg-white p-6 shadow-sm min-h-0 h-auto lg:h-[calc(100vh-310px)] lg:min-h-[680px]">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch h-full">
-          {/* 좌측: 사유 및 입력 승인 (5열) */}
-          <div className="lg:col-span-5 flex flex-col min-h-[480px] lg:min-h-0 lg:h-full">
+          {/* 좌측: 사유 및 입력 승인 (6열) */}
+          <div className="lg:col-span-6 flex flex-col min-h-[480px] lg:min-h-0 lg:h-full">
             <ReplacementActionForm
               originVehicle={selectedOrigin}
               targetVehicle={selectedTarget}
@@ -128,18 +129,21 @@ export default function ReplacementControlPage() {
             />
           </div>
 
-          {/* 우측: 상단 운행 중 차량 + 하단 대차 가능 차량 (7열) */}
-          <div className="lg:col-span-7 flex flex-col gap-4 min-h-[600px] lg:min-h-0 lg:h-full">
+          {/* 우측: 상단 원차량 + 하단 대차 가능 차량 (6열) */}
+          <div className="lg:col-span-6 flex flex-col gap-4 min-h-[600px] lg:min-h-0 lg:h-full">
             <div className="flex-[1.1] min-h-[280px] lg:min-h-0">
               <ActiveVehicleTable
                 vehicles={activeVehicles}
                 selectedId={selectedOrigin?.id || null}
-                onSelect={setSelectedOrigin}
+                onSelect={(vehicle) => {
+                  setSelectedOrigin(vehicle);
+                  if (selectedTarget?.id === vehicle.id) setSelectedTarget(null);
+                }}
               />
             </div>
             <div className="flex-1 min-h-0">
               <StandbyVehicleList
-                vehicles={standbyVehicles}
+                vehicles={selectableStandbyVehicles}
                 selectedId={selectedTarget?.id || null}
                 onSelect={setSelectedTarget}
               />

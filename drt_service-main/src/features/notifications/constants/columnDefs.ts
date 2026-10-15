@@ -40,6 +40,12 @@ export const notificationColumnDefs: ColDef[] = [
     cellStyle: { textAlign: "center", color: "#222222" },
   },
   {
+    headerName: "발송상태",
+    field: "send_status",
+    width: 160,
+    valueFormatter: ({ value }) => ({ QUEUED: "발송 대기", ACCEPTED: "푸시 서버 접수", PARTIAL: "일부 접수", FAILED: "발송 실패", UNKNOWN: "결과 미확인" }[String(value)] || String(value || "-")),
+  },
+  {
     headerName: "내용",
     field: "noti_content",
     flex: 1,

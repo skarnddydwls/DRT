@@ -8,7 +8,6 @@ import Grid from '@/components/Grid';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { stopColumnDefs } from '@/features/stop/columnDefs';
 import { FilterForm } from '@/components/ui/FilterForm';
 import { defaultFilters, stopFields } from '@/features/stop/fieldconfig';
 import type { StopFilters } from '@/types/stop';
@@ -44,25 +43,24 @@ export default function TourismPage() {
   const revision = useRef(0);
   const gridRef = useRef<AgGridReact<Record<string, unknown>> | null>(null);
   const stopGridRef = useRef<AgGridReact<Record<string, unknown>> | null>(null);
-  // Use the same column sizing and flex behavior as stop management, not HTML table widths.
-  const stopColumns = useMemo(() => stopColumnDefs.slice(1, 6).filter(column => column.field !== 'direction').map(column => ({
-    ...column,
-    ...(column.field === 'gps_y' || column.field === 'gps_x'
-      ? { valueFormatter: (p: { value: number | string | null | undefined }) => coordinate(p.value) }
-      : {}),
-  })) as ColDef<Stop>[], []);
+  const stopColumns = useMemo<ColDef<Stop>[]>(() => [
+    { field: 'stn_nm', headerName: '정류장명', minWidth: 130, flex: 1.4, sortable: true, tooltipField: 'stn_nm' },
+    { field: 'stn_no', headerName: '정류장번호', minWidth: 165, flex: 1.8, tooltipField: 'stn_no' },
+    { field: 'gps_y', headerName: '위도', minWidth: 100, flex: 1, valueFormatter: p => coordinate(p.value) },
+    { field: 'gps_x', headerName: '경도', minWidth: 105, flex: 1, valueFormatter: p => coordinate(p.value) },
+  ], []);
   const visibleStops = useMemo(() => {
     const keyword = filters.stopName.trim().toLocaleLowerCase();
     return stops.filter(stop => stop.stn_nm.toLocaleLowerCase().includes(keyword));
   }, [filters.stopName, stops]);
   const selectedStop = stops.find(stop => stop.stn_id === station);
   const columns = useMemo<ColDef<Attraction>[]>(() => [
-    { field: 'display_order', headerName: '순서', width: 80, minWidth: 80, flex: 0, cellStyle: { textAlign: 'center' } },
-    { field: 'name', headerName: '장소명', minWidth: 150, maxWidth: 260, tooltipField: 'name' },
-    { field: 'category', headerName: '분류', width: 100, minWidth: 90, flex: 0 },
-    { field: 'address', headerName: '주소', minWidth: 160, maxWidth: 400, tooltipField: 'address' },
-    { field: 'has_image', headerName: '사진', width: 90, minWidth: 80, flex: 0, valueFormatter: p => p.value ? '등록' : '없음', cellStyle: { textAlign: 'center' } },
-    { field: 'enabled', headerName: '앱 표시', width: 100, minWidth: 100, flex: 0, valueFormatter: p => p.value ? '표시' : '숨김', cellStyle: p => ({ textAlign: 'center', color: p.value ? '#16a34a' : '#6b7280' }) },
+    { field: 'display_order', headerName: '순서', width: 60, minWidth: 60, flex: 0, cellStyle: { textAlign: 'center' } },
+    { field: 'name', headerName: '장소명', minWidth: 120, flex: 1.3, tooltipField: 'name' },
+    { field: 'category', headerName: '분류', minWidth: 80, flex: 0.7 },
+    { field: 'address', headerName: '주소', minWidth: 140, flex: 1.8, tooltipField: 'address' },
+    { field: 'has_image', headerName: '사진', width: 65, minWidth: 65, flex: 0, valueFormatter: p => p.value ? '등록' : '없음', cellStyle: { textAlign: 'center' } },
+    { field: 'enabled', headerName: '앱 표시', width: 90, minWidth: 90, flex: 0, valueFormatter: p => p.value ? '표시' : '숨김', cellStyle: p => ({ textAlign: 'center', color: p.value ? '#16a34a' : '#6b7280' }) },
   ], []);
   useEffect(() => {
     const abort = new AbortController();
@@ -144,6 +142,8 @@ export default function TourismPage() {
               gridRef={stopGridRef}
               height={180}
               gridOptions={{
+                headerHeight: 40,
+                defaultColDef: { wrapHeaderText: false },
                 rowSelection: 'single',
                 suppressRowClickSelection: false,
                 suppressCellFocus: false,
@@ -172,7 +172,7 @@ export default function TourismPage() {
             height="clamp(260px, calc(100vh - 550px), 480px)"
             gridOptions={{
               headerHeight: 40,
-              defaultColDef: { wrapHeaderText: true, autoHeaderHeight: true },
+              defaultColDef: { wrapHeaderText: false },
               rowSelection: 'single',
               suppressRowClickSelection: false,
               loading,

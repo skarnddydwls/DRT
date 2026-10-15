@@ -2,20 +2,20 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Grid from "@/components/Grid";
-import VWorldMap from "@/components/VWorldMap";
+import KakaoMap from "@/components/KakaoMap";
 import { FilterForm } from "@/components/ui/FilterForm";
 import { getCallList } from "@/lib/api/call";
 import { callColumnDefs } from "@/features/calls/columnDefs";
 import { defaultFilters, callFields } from "@/features/calls/fieldconfig";
 import type { CallFilters, CallRow } from "@/types/call";
 import type { RowClickedEvent } from "ag-grid-community";
-import type { Map } from "ol";
-import Feature from "ol/Feature";
-import Point from "ol/geom/Point";
-import { Vector as VectorLayer } from "ol/layer";
-import { Vector as VectorSource } from "ol/source";
-import { Circle as CircleStyle, Fill, Stroke, Style } from "ol/style";
-import { fromLonLat } from "ol/proj";
+import type { Map } from "@/lib/maps/kakaoMap";
+import { Feature } from "@/lib/maps/kakaoMap";
+import { Point } from "@/lib/maps/kakaoMap";
+import { VectorLayer } from "@/lib/maps/kakaoMap";
+import { VectorSource } from "@/lib/maps/kakaoMap";
+import { CircleStyle, Fill, Stroke, Style } from "@/lib/maps/kakaoMap";
+import { fromLonLat } from "@/lib/maps/kakaoMap";
 
 const MAP_INITIAL_CENTER: [number, number] = [127.748, 34.525];
 
@@ -151,10 +151,10 @@ export default function CallsPage() {
                 rowSelection: "single",
                 suppressRowClickSelection: false,
                 onRowClicked: handleRowClicked,
-                onGridReady: (params: any) => {
+                onGridReady: (params) => {
                   params.api?.sizeColumnsToFit();
                 },
-                onGridSizeChanged: (params: any) => {
+                onGridSizeChanged: (params) => {
                   params.api?.sizeColumnsToFit();
                 },
               }}
@@ -174,7 +174,7 @@ export default function CallsPage() {
               </span>
             </div>
             <div className="flex-1 min-h-0">
-              <VWorldMap
+              <KakaoMap
                 mapId="calls-map"
                 mapRef={mapRef}
                 center={MAP_INITIAL_CENTER}

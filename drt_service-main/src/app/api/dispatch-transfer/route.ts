@@ -9,7 +9,7 @@ export async function POST(request: NextRequest) {
         DISPATCH_ID: body.dispatch_id, DISPATCH_DT: body.dispatch_dt,
         ROUTE_ID: body.route_id, POINT_ID: body.point_id, DISPATCH_SEQ: body.dispatch_seq,
         DEVICE_ID: body.device_id,
-        TRANSFER_ENABLED: true, TRANSFER_MINUTES: 3,
+        TRANSFER_ENABLED: body.dispatch_id ? body.transfer_enabled !== false : true, TRANSFER_MINUTES: 3,
       }),
     });
     return NextResponse.json(await response.json(), { status: response.status });

@@ -1,20 +1,16 @@
 "use client";
 
 import { useEffect, useRef, useCallback, useMemo, useState } from "react";
-import "ol/ol.css";
-import { Map, View } from "ol";
-import { XYZ } from "ol/source";
-import { Tile } from "ol/layer";
-import { defaults, FullScreen } from "ol/control";
-import { fromLonLat } from "ol/proj";
-import { Vector as VectorLayer } from "ol/layer";
-import { Vector as VectorSource } from "ol/source";
-import Feature from "ol/Feature";
-import Point from "ol/geom/Point";
-import LineString from "ol/geom/LineString";
-import { Style, Stroke, Icon } from "ol/style";
-import Overlay from "ol/Overlay";
-import { VWORLD_API_KEY } from "@/config/vworld";
+import { Map, View } from "@/lib/maps/kakaoMap";
+import { defaults, FullScreen } from "@/lib/maps/kakaoMap";
+import { fromLonLat } from "@/lib/maps/kakaoMap";
+import { VectorLayer } from "@/lib/maps/kakaoMap";
+import { VectorSource } from "@/lib/maps/kakaoMap";
+import { Feature } from "@/lib/maps/kakaoMap";
+import { Point } from "@/lib/maps/kakaoMap";
+import { LineString } from "@/lib/maps/kakaoMap";
+import { Style, Stroke, Icon } from "@/lib/maps/kakaoMap";
+import { Overlay } from "@/lib/maps/kakaoMap";
 import { getActiveRouteNodes, getVehicleMarkers, getBusArrivals } from "@/lib/api/monitoring";
 import type { ActiveRouteNode, VehicleMarker } from "@/types/monitoring";
 import { getStopList, type StopRow } from "@/lib/api/marker";
@@ -37,9 +33,9 @@ export default function MonitoringPage() {
   const overlayRef = useRef<Overlay | null>(null);
   const stopsLoadedRef = useRef(false);
   const activeRouteSignatureRef = useRef("");
+  const routeNamesRef = useRef<Record<string, string>>({});
   const gridRef = useRef(null);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [gridRows, setGridRows] = useState<any[]>([]);
+  const [gridRows, setGridRows] = useState<Record<string, unknown>[]>([]);
 
   // 모니터링 그리드 컬럼 정의 (2:1 우측 배치용)
   const monitoringColumnDefs: ColDef[] = useMemo(
@@ -75,6 +71,7 @@ export default function MonitoringPage() {
     try {
       const response = await getActiveRouteNodes();
       const nodes = response.nodes || [];
+      routeNamesRef.current = Object.fromEntries(nodes.map(node => [node.vehicle_id, node.route_nm ?? node.route_id]));
       const vectorSource = vectorSourceRef.current;
       if (!vectorSource) {
         console.warn("vectorSource is not ready");
@@ -223,6 +220,7 @@ export default function MonitoringPage() {
         }
         return acc;
       }, {} as Record<string, VehicleMarker>);
+      setGridRows(Object.values(latestVehicles).map(vehicle => ({ ...vehicle, route_nm: routeNamesRef.current[vehicle.vehicle_id] ?? "-" })));
 
       const existingFeatures = vehicleSource.getFeatures();
       const existingFeaturesById = Object.fromEntries(
@@ -311,6 +309,8 @@ export default function MonitoringPage() {
 
   // 지도 초기화 (벡터 레이어 포함)
   useEffect(() => {
+    stopsLoadedRef.current = false;
+    activeRouteSignatureRef.current = "";
     const vectorSource = new VectorSource();
     const vectorLayer = new VectorLayer({
       source: vectorSource,
@@ -342,12 +342,6 @@ export default function MonitoringPage() {
     const map = new Map({
       controls: defaults({ zoom: true, rotate: false }).extend([new FullScreen()]),
       layers: [
-        new Tile({
-          visible: true,
-          source: new XYZ({
-            url: `http://api.vworld.kr/req/wmts/1.0.0/${VWORLD_API_KEY}/Base/{z}/{y}/{x}.png`,
-          }),
-        }),
         vectorLayer,
         stopLayer,
         vehicleLayer,

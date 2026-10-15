@@ -47,7 +47,7 @@ export async function getReplacementVehicleHistoryList(
 
 /**
  * 대차 관리 화면 차량 목록 조회
- * - /api/vehicles (/selectVehicleList.do)를 조회하여 운행 차량과 대차 가능(대기) 차량으로 분류 및 정제합니다.
+ * - 원차량은 운행 차량 및 상태가 정상인 차량을 포함합니다. 대차 목록의 기존 분류는 유지합니다.
  */
 export async function getReplacementVehicleData(): Promise<ReplacementVehicleDataResponse> {
   const response = await getVehicleList();
@@ -56,7 +56,7 @@ export async function getReplacementVehicleData(): Promise<ReplacementVehicleDat
   const activeVehicles: ActiveVehicle[] = [];
   const standbyVehicles: StandbyVehicle[] = [];
 
-  rawList.forEach((v: any, index: number) => {
+  rawList.forEach((v: Record<string, unknown>, index: number) => {
     const id = String(v.vehicle_id ?? v.VEHICLE_ID ?? `V-${index + 1}`);
     const plate = String(v.vehicle_no ?? v.VEHICLE_NO ?? "");
     const status = String(v.vehicle_status || v.VEHICLE_STATUS || "대기");
@@ -66,17 +66,21 @@ export async function getReplacementVehicleData(): Promise<ReplacementVehicleDat
     const location = String(v.location ?? v.area ?? v.remark ?? "차고지 대기");
 
 
-    // 상태값이 '운행' 또는 '운행중'인 경우 교체 대상(원차량), 그 외는 대차 가능 차량으로 분류
-    if (status.includes("운행") || status.toUpperCase() === "OPERATING" || status.toUpperCase() === "RUNNING") {
+    const normalizedStatus = status.trim().toUpperCase();
+    const operating = status.includes("운행") || normalizedStatus === "OPERATING" || normalizedStatus === "RUNNING";
+    // VEHICLE_STATUS의 CD001은 정상. 운행 여부와 관계없이 원차량으로 선택할 수 있다.
+    const normal = normalizedStatus === "CD001" || normalizedStatus === "정상";
+    if (operating || normal) {
       activeVehicles.push({
         id,
         plate,
         driver,
         route,
         passengers,
-        status: status || "운행중",
+        status: normal ? "정상" : status,
       });
-    } else {
+    }
+    if (!operating) {
       standbyVehicles.push({
         id,
         plate,

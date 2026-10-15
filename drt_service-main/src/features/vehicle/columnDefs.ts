@@ -19,7 +19,7 @@ export const vehicleColumnDefs = [
     field: "vehicle_no",
     minWidth: 120,
   },
-  { headerName: "권역코드", field: "area", minWidth: 120 },
+  { headerName: "권역코드", field: "area", minWidth: 120, hide: true },
   { headerName: "운수사", field: "chassis_no", minWidth: 120 },
   { headerName: "차량종류", field: "vehicle_type", minWidth: 120 },
   { headerName: "차량상태", field: "vehicle_status", minWidth: 120 },

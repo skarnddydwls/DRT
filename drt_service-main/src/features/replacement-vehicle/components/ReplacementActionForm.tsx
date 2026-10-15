@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { ChevronDown } from "lucide-react";
 import type {
   ActiveVehicle,
   StandbyVehicle,
@@ -28,11 +29,15 @@ export default function ReplacementActionForm({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!originVehicle) {
-      alert("1단계: 운행 중인 원차량을 먼저 선택해주세요.");
+      alert("1단계: 원차량을 먼저 선택해주세요.");
       return;
     }
     if (!targetVehicle) {
       alert("2단계: 대체 투입할 대차차량을 선택해주세요.");
+      return;
+    }
+    if (originVehicle.id === targetVehicle.id) {
+      alert("원차량과 대차차량은 서로 다른 차량을 선택해주세요.");
       return;
     }
     if (!reason) {
@@ -109,10 +114,11 @@ export default function ReplacementActionForm({
             <label className="text-xs font-bold text-[#222222]">
               대차 사유 <span className="text-red-500">*</span>
             </label>
+            <div className="relative">
             <select
               value={reason}
               onChange={(e) => setReason(e.target.value)}
-              className="h-[48px] w-full rounded-[12px] border border-[#CCCCCC] bg-white px-4 text-sm text-[#222222] outline-none focus:border-black cursor-pointer shadow-sm"
+              className="h-[48px] w-full appearance-none rounded-[12px] border border-[#CCCCCC] bg-white pl-4 pr-10 text-sm text-[#222222] outline-none focus:border-black cursor-pointer shadow-sm"
             >
               <option value="">사유를 선택하세요</option>
               <option value="BREAKDOWN">차량 고장 (엔진/조향/제동계통)</option>
@@ -121,6 +127,8 @@ export default function ReplacementActionForm({
               <option value="DRIVER_EMERGENCY">기사 신병 / 응급 상황</option>
               <option value="ETC">기타 사유</option>
             </select>
+            <ChevronDown aria-hidden="true" className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#222222]" />
+            </div>
           </div>
 
           {/* 상세 메모 (남은 높이 채움) */}

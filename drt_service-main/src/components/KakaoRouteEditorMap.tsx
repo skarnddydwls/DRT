@@ -3,6 +3,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { KAKAO_MAP_KEY } from "@/config/kakao";
+import { loadKakaoMaps } from "@/lib/maps/kakaoLoader";
 
 export type KakaoEditorNode = {
   id: string;
@@ -67,11 +68,12 @@ export default function KakaoRouteEditorMap({
     if (!KAKAO_MAP_KEY) {
       return;
     }
+    let disposed = false;
 
     const initialize = () => {
       const kakao = (window as any).kakao;
       kakao.maps.load(() => {
-        if (!containerRef.current || mapRef.current) return;
+        if (disposed || !containerRef.current || mapRef.current) return;
         const map = new kakao.maps.Map(containerRef.current, {
           center: new kakao.maps.LatLng(34.985, 126.12),
           level: 8,
@@ -86,17 +88,10 @@ export default function KakaoRouteEditorMap({
       });
     };
 
-    if ((window as any).kakao?.maps) {
-      initialize();
-      return;
-    }
-
-    const script = document.createElement("script");
-    script.src = `https://dapi.kakao.com/v2/maps/sdk.js?appkey=${KAKAO_MAP_KEY}&autoload=false`;
-    script.async = true;
-    script.onload = initialize;
-    script.onerror = () => setError("카카오맵 SDK를 불러오지 못했습니다. 키와 등록 도메인을 확인해 주세요.");
-    document.head.appendChild(script);
+    void loadKakaoMaps().then(initialize).catch(error => {
+      if (!disposed) setError(error instanceof Error ? error.message : "카카오맵 SDK를 불러오지 못했습니다.");
+    });
+    return () => { disposed = true; };
   }, []);
 
   useEffect(() => {

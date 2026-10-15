@@ -6,6 +6,7 @@ import { getRouteNodesForEdit, saveRouteNodes } from "@/lib/api/routeEdit";
 import { getStopList, type StopRow } from "@/lib/api/marker";
 import KakaoRouteEditorMap, { type KakaoEditorNode } from "@/components/KakaoRouteEditorMap";
 import type { RouteRow } from "@/types/route";
+import { handleDialogEnter } from "@/lib/dialogKeyboard";
 import { MapPin, Crosshair } from "lucide-react";
 
 type EditorNode = KakaoEditorNode;
@@ -470,7 +471,7 @@ export default function RouteEditPage() {
           onMouseDown={(event) => {
             if (event.target === event.currentTarget) setStopDialogOpen(false);
           }}>
-          <div role="dialog" aria-modal="true" aria-labelledby="stop-dialog-title" className="flex max-h-[80vh] w-full max-w-3xl flex-col overflow-hidden rounded-2xl bg-white shadow-2xl">
+          <div role="dialog" aria-modal="true" aria-labelledby="stop-dialog-title" onKeyDown={handleDialogEnter} className="flex max-h-[80vh] w-full max-w-3xl flex-col overflow-hidden rounded-2xl bg-white shadow-2xl">
             <div className="flex items-center justify-between border-b px-6 py-5">
               <div>
                 <h2 id="stop-dialog-title" className="text-xl font-bold">정류장 선택</h2>
@@ -528,7 +529,7 @@ export default function RouteEditPage() {
               </table>
             </div>
 
-            <div className="flex justify-end gap-3 border-t px-6 py-4">
+            <div data-slot="dialog-footer" className="flex justify-end gap-3 border-t px-6 py-4">
               <button onClick={() => setStopDialogOpen(false)} className="rounded-lg border px-5 py-2.5 font-semibold text-gray-700">취소</button>
               <button onClick={addSelectedStop} disabled={!selectedStopId} className="rounded-lg bg-green-600 px-5 py-2.5 font-semibold text-white disabled:cursor-not-allowed disabled:bg-gray-300">확인</button>
             </div>
@@ -538,13 +539,13 @@ export default function RouteEditPage() {
 
       {saveDialogOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/45 p-6">
-          <div role="dialog" aria-modal="true" aria-labelledby="save-dialog-title" className="w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl">
+          <div role="dialog" aria-modal="true" aria-labelledby="save-dialog-title" onKeyDown={handleDialogEnter} className="w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl">
             <h2 id="save-dialog-title" className="text-xl font-bold">노드구성 저장</h2>
             <p className="mt-3 text-gray-600">현재 노드구성을 저장하시겠습니까?</p>
             <p className="mt-2 text-sm text-gray-500">총 {nodes.length}개의 노드가 순서대로 저장됩니다.</p>
-            <div className="mt-7 flex justify-end gap-3">
+            <div data-slot="dialog-footer" className="mt-7 flex justify-end gap-3">
               <button onClick={() => setSaveDialogOpen(false)} disabled={saving} className="rounded-lg border px-5 py-2.5 font-semibold text-gray-700">취소</button>
-              <button onClick={async () => { if (await saveCurrentNodes()) setSaveDialogOpen(false); }} disabled={saving} className="rounded-lg bg-blue-600 px-5 py-2.5 font-semibold text-white disabled:bg-blue-300">{saving ? "저장 중..." : "확인"}</button>
+              <button autoFocus onClick={async () => { if (await saveCurrentNodes()) setSaveDialogOpen(false); }} disabled={saving} className="rounded-lg bg-blue-600 px-5 py-2.5 font-semibold text-white disabled:bg-blue-300">{saving ? "저장 중..." : "확인"}</button>
             </div>
           </div>
         </div>
@@ -552,13 +553,13 @@ export default function RouteEditPage() {
 
       {pendingRoute && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/45 p-6">
-          <div role="dialog" aria-modal="true" aria-labelledby="route-change-dialog-title" className="w-full max-w-lg rounded-2xl bg-white p-6 shadow-2xl">
+          <div role="dialog" aria-modal="true" aria-labelledby="route-change-dialog-title" onKeyDown={handleDialogEnter} className="w-full max-w-lg rounded-2xl bg-white p-6 shadow-2xl">
             <h2 id="route-change-dialog-title" className="text-xl font-bold">변경사항이 있습니다</h2>
             <p className="mt-3 leading-6 text-gray-600">현재 변경한 노드구성을 저장한 후 다른 노선으로 이동하시겠습니까?</p>
-            <div className="mt-7 flex flex-wrap justify-end gap-3">
+            <div data-slot="dialog-footer" className="mt-7 flex flex-wrap justify-end gap-3">
               <button onClick={() => setPendingRoute(null)} disabled={saving} className="rounded-lg border px-4 py-2.5 font-semibold text-gray-700">계속 편집</button>
               <button onClick={() => { const route = pendingRoute; setPendingRoute(null); void loadRoute(route); }} disabled={saving} className="rounded-lg border border-red-300 px-4 py-2.5 font-semibold text-red-600">저장 안 함</button>
-              <button onClick={async () => { const route = pendingRoute; if (await saveCurrentNodes()) { setPendingRoute(null); await loadRoute(route); } }} disabled={saving} className="rounded-lg bg-blue-600 px-4 py-2.5 font-semibold text-white disabled:bg-blue-300">{saving ? "저장 중..." : "저장 후 이동"}</button>
+              <button autoFocus onClick={async () => { const route = pendingRoute; if (await saveCurrentNodes()) { setPendingRoute(null); await loadRoute(route); } }} disabled={saving} className="rounded-lg bg-blue-600 px-4 py-2.5 font-semibold text-white disabled:bg-blue-300">{saving ? "저장 중..." : "저장 후 이동"}</button>
             </div>
           </div>
         </div>

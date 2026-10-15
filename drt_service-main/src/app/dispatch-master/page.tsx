@@ -42,7 +42,6 @@ const seasonOptions: Array<{ code: SeasonDiv; label: string; }> = [
 const dayOptions: Array<{ code: DayDiv; label: string }> = [
   { code: "CD001", label: "평일 배차" },
   { code: "CD002", label: "주말 배차" },
-  { code: "CD003", label: "목요 배차" },
 ];
 
 const emptyForm: DispatchMasterSavePayload = {
@@ -66,10 +65,12 @@ function MasterTimeline({
   colors,
   selectedStopKey,
   onStopClick,
+  onStopDoubleClick,
 }: ICellRendererParams<DispatchMasterGridRow, DispatchMasterStop[]> & {
   colors: Record<string, string>;
   selectedStopKey: string;
   onStopClick: (row: DispatchMasterGridRow, stop: DispatchMasterStop) => void;
+  onStopDoubleClick: (row: DispatchMasterGridRow, stop: DispatchMasterStop) => void;
 }) {
   return (
     <div className="flex w-full flex-wrap gap-3">
@@ -84,6 +85,10 @@ function MasterTimeline({
           onClick={(event) => {
             event.stopPropagation();
             if (data) onStopClick(data, stop);
+          }}
+          onDoubleClick={(event) => {
+            event.stopPropagation();
+            if (data) onStopDoubleClick(data, stop);
           }}
           className={`relative flex w-24 flex-col rounded-lg border bg-white px-3 py-2 text-left shadow-sm transition ${selected ? "border-blue-500 ring-2 ring-blue-300" : "border-black/10 hover:border-blue-400"}`}
           style={stop.ext_dispatch_div && colors[stop.ext_dispatch_div]
@@ -217,6 +222,23 @@ export default function DispatchMasterPage() {
     }
   };
 
+  const openEdit = useCallback((stop: DispatchMasterStop | undefined = selectedStop?.stop) => {
+    if (!selected) return;
+    setEditing(true);
+    setForm({
+      dispatch_id: selected.dispatch_id,
+      dispatch_nm: selected.dispatch_nm,
+      season_div: selected.season_div,
+      day_div: selected.day_div,
+      valid_from: dateText(selected.valid_from),
+      valid_to: dateText(selected.valid_to),
+      use_yn: selected.use_yn,
+      remark: selected.remark ?? "",
+    });
+    setSelectedTime(stop?.algh_dtm ? formatTimestamp(stop.algh_dtm, "HH:mm") : "");
+    setDialogOpen(true);
+  }, [selected, selectedStop]);
+
   const columnDefs = useMemo<ColDef<DispatchMasterGridRow>[]>(() => [
     { headerName: "노선명", field: "route_nm", pinned: "left", width: 150, cellClass: "font-semibold" },
     {
@@ -230,9 +252,13 @@ export default function DispatchMasterPage() {
         colors,
         selectedStopKey: selectedStop ? `${selectedStop.row.route_id}-${selectedStop.stop.point_id}-${selectedStop.stop.dispatch_seq}` : "",
         onStopClick: (row: DispatchMasterGridRow, stop: DispatchMasterStop) => setSelectedStop({ row, stop }),
+        onStopDoubleClick: (row: DispatchMasterGridRow, stop: DispatchMasterStop) => {
+          setSelectedStop({ row, stop });
+          openEdit(stop);
+        },
       },
     },
-  ], [colors, selectedStop]);
+  ], [colors, selectedStop, openEdit]);
 
   const openReserveDialog = () => {
     if (!selectedStop) return;
@@ -273,27 +299,6 @@ export default function DispatchMasterPage() {
     } finally {
       setUpdatingReserve(false);
     }
-  };
-
-  const openEdit = () => {
-    if (!selected) return;
-    setEditing(true);
-    setForm({
-      dispatch_id: selected.dispatch_id,
-      dispatch_nm: selected.dispatch_nm,
-      season_div: selected.season_div,
-      day_div: selected.day_div,
-      valid_from: dateText(selected.valid_from),
-      valid_to: dateText(selected.valid_to),
-      use_yn: selected.use_yn,
-      remark: selected.remark ?? "",
-    });
-    setSelectedTime(
-      selectedStop?.stop.algh_dtm
-        ? formatTimestamp(selectedStop.stop.algh_dtm, "HH:mm")
-        : ""
-    );
-    setDialogOpen(true);
   };
 
   const save = async () => {
@@ -351,7 +356,7 @@ export default function DispatchMasterPage() {
           <Button onClick={() => setRefreshDialogOpen(true)} disabled={!selected || refreshing} className="bg-blue-600 text-white hover:bg-blue-700">배차표 갱신</Button>
           <Button onClick={() => setTransferDialogOpen(true)} disabled={!selectedStop || !selectedStop.stop.point_id.startsWith('ST')} className="bg-purple-600 text-white hover:bg-purple-700">환승 설정</Button>
           <Button onClick={openReserveDialog} disabled={!selectedStop} className="bg-green-500 text-white hover:bg-green-600">예약구간</Button>
-          <Button variant="outline" onClick={openEdit} disabled={!selected}>정보 수정</Button>
+          <Button variant="outline" onClick={() => openEdit()} disabled={!selected}>정보 수정</Button>
         </div>
       </div>
 
@@ -453,7 +458,7 @@ export default function DispatchMasterPage() {
             <label className="space-y-2 text-sm font-semibold">배차 ID<Input value={form.dispatch_id} disabled={editing} maxLength={10} onChange={(e) => setForm({ ...form, dispatch_id: e.target.value })} placeholder="예: DM00000001" /></label>
             <label className="space-y-2 text-sm font-semibold">배차명<Input value={form.dispatch_nm} maxLength={30} onChange={(e) => setForm({ ...form, dispatch_nm: e.target.value })} placeholder="예: 2026 하계 평일" /></label>
             <label className="space-y-2 text-sm font-semibold">계절 구분<select className="h-9 w-full rounded-md border bg-white px-3 font-normal" value={form.season_div} onChange={(e) => setForm({ ...form, season_div: e.target.value as SeasonDiv })}><option value="CD001">하계</option><option value="CD002">동계</option></select></label>
-            <label className="space-y-2 text-sm font-semibold">요일 구분<select className="h-9 w-full rounded-md border bg-white px-3 font-normal" value={form.day_div} onChange={(e) => setForm({ ...form, day_div: e.target.value as DayDiv })}><option value="CD001">평일</option><option value="CD002">주말</option><option value="CD003">목요일</option></select></label>
+            <label className="space-y-2 text-sm font-semibold">요일 구분<select className="h-9 w-full rounded-md border bg-white px-3 font-normal" value={form.day_div} onChange={(e) => setForm({ ...form, day_div: e.target.value as DayDiv })}><option value="CD001">평일</option><option value="CD002">주말</option></select></label>
             <label className="space-y-2 text-sm font-semibold">적용 시작일<Input type="date" value={form.valid_from} onChange={(e) => setForm({ ...form, valid_from: e.target.value })} /></label>
             <label className="space-y-2 text-sm font-semibold">적용 종료일<Input type="date" value={form.valid_to} onChange={(e) => setForm({ ...form, valid_to: e.target.value })} /></label>
             <label className="space-y-2 text-sm font-semibold">사용 여부<select className="h-9 w-full rounded-md border bg-white px-3 font-normal" value={form.use_yn} onChange={(e) => setForm({ ...form, use_yn: e.target.value as "Y" | "N" })}><option value="Y">사용</option><option value="N">미사용</option></select></label>
@@ -488,7 +493,7 @@ export default function DispatchMasterPage() {
           const chosen = selectedStop;
           setDetailRows(rows => rows.map(row => row.route_id !== chosen.row.route_id ? row : { ...row, stops: row.stops.map(stop => stop.point_id === chosen.stop.point_id && stop.dispatch_seq === chosen.stop.dispatch_seq ? { ...stop, ...settings } : stop) }));
           setSelectedStop({ ...chosen, stop: { ...chosen.stop, ...settings } });
-          setToast({ message: "환승 설정을 저장했습니다.", type: "success", isVisible: true });
+          setToast({ message: settings.transfer_enabled ? "환승 설정을 저장했습니다." : "환승 설정을 해제했습니다.", type: "success", isVisible: true });
         }} />
       <Dialog open={reserveDialogOpen} onOpenChange={setReserveDialogOpen}>
         <DialogContent className="w-[430px] max-w-[calc(100vw-32px)]">

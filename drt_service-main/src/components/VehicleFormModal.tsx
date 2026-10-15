@@ -12,6 +12,16 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import type { VehicleFormData, VehicleRow } from "@/types/vehicle";
+import { getDetailCodes, type DetailCodeRow } from "@/lib/api/common";
+
+const vehicleCodeFields = ["CHASSIS_NO", "VEHICLE_TYPE", "VEHICLE_STATUS"] as const;
+type VehicleCodeField = typeof vehicleCodeFields[number];
+const vehicleCodeLabels: Record<VehicleCodeField, string> = {
+  CHASSIS_NO: "운수사", VEHICLE_TYPE: "차량종류", VEHICLE_STATUS: "차량상태",
+};
+function optionValue(code: DetailCodeRow) {
+  return code.value || code.detail_code.trim();
+}
 
 interface VehicleFormModalProps {
   open: boolean;
@@ -64,6 +74,11 @@ export function VehicleFormModal({
   onSubmit,
 }: VehicleFormModalProps) {
   const [saving, setSaving] = useState(false);
+  const [codesLoading, setCodesLoading] = useState(false);
+  const [codesError, setCodesError] = useState("");
+  const [codes, setCodes] = useState<Record<VehicleCodeField, DetailCodeRow[]>>({
+    CHASSIS_NO: [], VEHICLE_TYPE: [], VEHICLE_STATUS: [],
+  });
   const [formData, setFormData] = useState<VehicleFormData>({
     VEHICLE_ID: "",
     VEHICLE_NO: "",
@@ -108,6 +123,34 @@ export function VehicleFormModal({
     }
   }, [open, mode, initialData]);
 
+  useEffect(() => {
+    if (!open) return;
+    let active = true;
+    setCodesLoading(true);
+    setCodesError("");
+    Promise.all(vehicleCodeFields.map((field) => getDetailCodes(field)))
+      .then((results) => {
+        if (!active) return;
+        const next = Object.fromEntries(vehicleCodeFields.map((field, index) => [
+          field, results[index].codes.slice().sort((a, b) => a.detail_code.localeCompare(b.detail_code)),
+        ])) as Record<VehicleCodeField, DetailCodeRow[]>;
+        setCodes(next);
+        if (vehicleCodeFields.some((field) => !next[field].length)) {
+          setCodesError("운수사·차량종류·차량상태 공통코드를 등록해주세요.");
+        }
+        if (mode === "add") {
+          setFormData((current) => ({ ...current,
+            CHASSIS_NO: next.CHASSIS_NO[0] ? optionValue(next.CHASSIS_NO[0]) : "",
+            VEHICLE_TYPE: next.VEHICLE_TYPE[0] ? optionValue(next.VEHICLE_TYPE[0]) : "",
+            VEHICLE_STATUS: next.VEHICLE_STATUS[0] ? optionValue(next.VEHICLE_STATUS[0]) : "",
+          }));
+        }
+      })
+      .catch(() => { if (active) setCodesError("차량 공통코드를 불러오지 못했습니다. 팝업을 다시 열어주세요."); })
+      .finally(() => { if (active) setCodesLoading(false); });
+    return () => { active = false; };
+  }, [open, mode]);
+
   const handleChange = (
     field: keyof VehicleFormData,
     value: string | number
@@ -119,6 +162,7 @@ export function VehicleFormModal({
   };
 
   const handleSubmit = async () => {
+    if (codesLoading || codesError || vehicleCodeFields.some((field) => !formData[field])) return;
     setSaving(true);
     try {
       // 추가 모드에서는 VEHICLE_ID를 빈 문자열로 전송
@@ -178,53 +222,21 @@ export function VehicleFormModal({
             />
           </div>
 
-          {/* 권역 */}
-          <div className="space-y-2">
-            <Label htmlFor="area">권역</Label>
-            <Input
-              id="area"
-              type="text"
-              value={formData.AREA}
-              onChange={(e) => handleChange("AREA", e.target.value)}
-              maxLength={10}
-            />
-          </div>
-
-          {/* 운수사 */}
-          <div className="space-y-2">
-            <Label htmlFor="chassis_no">운수사</Label>
-            <Input
-              id="chassis_no"
-              type="text"
-              value={formData.CHASSIS_NO}
-              onChange={(e) => handleChange("CHASSIS_NO", e.target.value)}
-              maxLength={20}
-            />
-          </div>
-
-          {/* 차량종류 */}
-          <div className="space-y-2">
-            <Label htmlFor="vehicle_type">차량종류</Label>
-            <Input
-              id="vehicle_type"
-              type="text"
-              value={formData.VEHICLE_TYPE}
-              onChange={(e) => handleChange("VEHICLE_TYPE", e.target.value)}
-              maxLength={5}
-            />
-          </div>
-
-          {/* 차량상태 */}
-          <div className="space-y-2">
-            <Label htmlFor="vehicle_status">차량상태</Label>
-            <Input
-              id="vehicle_status"
-              type="text"
-              value={formData.VEHICLE_STATUS}
-              onChange={(e) => handleChange("VEHICLE_STATUS", e.target.value)}
-              maxLength={10}
-            />
-          </div>
+          {vehicleCodeFields.map((field) => (
+            <div key={field} className="space-y-2">
+              <Label htmlFor={field.toLowerCase()}>{vehicleCodeLabels[field]}</Label>
+              <select id={field.toLowerCase()} value={formData[field]}
+                onChange={(event) => handleChange(field, event.target.value)}
+                disabled={saving || codesLoading || Boolean(codesError)}
+                className="h-9 w-full rounded-md border bg-white px-3 text-sm disabled:opacity-50">
+                <option value="" disabled>{codesLoading ? "불러오는 중..." : "선택하세요"}</option>
+                {mode === "edit" && formData[field] && !codes[field].some((code) => optionValue(code) === formData[field]) && (
+                  <option value={formData[field]}>{formData[field]} (기존 값)</option>
+                )}
+                {codes[field].map((code) => <option key={code.detail_code} value={optionValue(code)}>{code.label || optionValue(code)}</option>)}
+              </select>
+            </div>
+          ))}
 
           {/* 제조사 */}
           <div className="space-y-2">
@@ -325,11 +337,12 @@ export function VehicleFormModal({
           </div>
         </div>
 
+        {codesError && <p role="alert" className="text-sm text-red-600">{codesError}</p>}
         <DialogFooter>
           <Button variant="outline" onClick={onClose} disabled={saving}>
             취소
           </Button>
-          <Button onClick={handleSubmit} disabled={saving}>
+          <Button onClick={handleSubmit} disabled={saving || codesLoading || Boolean(codesError) || vehicleCodeFields.some((field) => !formData[field])}>
             {saving ? "저장 중..." : "완료"}
           </Button>
         </DialogFooter>
