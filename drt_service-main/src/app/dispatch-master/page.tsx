@@ -59,6 +59,17 @@ function dateText(value: number | string | null) {
   return value ? formatTimestamp(value, "YYYY-MM-DD") || String(value).slice(0, 10) : "";
 }
 
+function formatMasterTime(value: number | string | null | undefined): string {
+  if (!value) return "-";
+  if (typeof value === "string") {
+    const trimmed = value.trim();
+    if (trimmed.includes(":")) {
+      return trimmed.slice(0, 5);
+    }
+  }
+  return formatTimestamp(value, "HH:mm") || "-";
+}
+
 function MasterTimeline({
   value,
   data,
@@ -77,6 +88,7 @@ function MasterTimeline({
       {(value ?? []).map((stop) => {
         const stopKey = `${data?.route_id}-${stop.point_id}-${stop.dispatch_seq}`;
         const selected = stopKey === selectedStopKey;
+
         return (
           <button
             type="button"
@@ -96,7 +108,7 @@ function MasterTimeline({
               : undefined}>
             <span className="truncate text-xs font-medium text-gray-500">{stop.point_nm || stop.point_id}</span>
             <span className="text-sm font-bold text-gray-800">
-              {stop.algh_dtm ? formatTimestamp(stop.algh_dtm, "HH:mm") : "-"}
+              {formatMasterTime(stop.algh_dtm)}
             </span>
             <DispatchTransferBadge enabled={stop.transfer_enabled} minutes={stop.transfer_minutes} time={stop.algh_dtm} />
           </button>
@@ -236,7 +248,8 @@ export default function DispatchMasterPage() {
       use_yn: selected.use_yn,
       remark: selected.remark ?? "",
     });
-    setSelectedTime(stop?.algh_dtm ? formatTimestamp(stop.algh_dtm, "HH:mm") : "");
+    const rawTime = formatMasterTime(stop?.algh_dtm);
+    setSelectedTime(rawTime === "-" ? "" : rawTime);
     setDialogOpen(true);
   }, [selected, selectedStop]);
 
@@ -328,7 +341,7 @@ export default function DispatchMasterPage() {
         setDetailRows((rows) => rows.map((row) => row.route_id !== selectedStop.row.route_id ? row : {
           ...row,
           stops: row.stops.map((stop) => stop.point_id === selectedStop.stop.point_id && stop.dispatch_seq === selectedStop.stop.dispatch_seq
-            ? { ...stop, algh_dtm: `${String(stop.algh_dtm ?? "").slice(0, 10)} ${selectedTime}` }
+            ? { ...stop, algh_dtm: selectedTime.length === 5 ? `${selectedTime}:00` : selectedTime }
             : stop),
         }));
       }
@@ -487,7 +500,7 @@ export default function DispatchMasterPage() {
       <DispatchTransferDialog open={transferDialogOpen} onClose={() => setTransferDialogOpen(false)}
         target={selected && selectedStop ? {
           ...selectedStop.stop, dispatch_id: selected.dispatch_id, route_id: selectedStop.row.route_id,
-          label: `${selectedStop.row.route_nm} · ${selectedStop.stop.point_nm} · ${formatTimestamp(selectedStop.stop.algh_dtm ?? 0, "HH:mm")}`,
+          label: `${selectedStop.row.route_nm} · ${selectedStop.stop.point_nm} · ${formatMasterTime(selectedStop.stop.algh_dtm)}`,
         } : null}
         onSaved={(settings) => {
           if (!selectedStop) return;
@@ -504,7 +517,7 @@ export default function DispatchMasterPage() {
               <p className="text-xs font-semibold text-gray-700">선택한 배차시간</p>
               <div className="mt-2 flex items-end justify-between gap-4">
                 <div><p className="text-sm text-gray-500">정류장</p><p className="mt-1 text-lg font-bold">{selectedStop?.stop.point_nm || "-"}</p></div>
-                <div className="text-right"><p className="text-sm text-gray-500">도착시각</p><p className="mt-1 text-2xl font-bold">{selectedStop?.stop.algh_dtm ? formatTimestamp(selectedStop.stop.algh_dtm, "HH:mm") : "-"}</p></div>
+                <div className="text-right"><p className="text-sm text-gray-500">도착시각</p><p className="mt-1 text-2xl font-bold">{formatMasterTime(selectedStop?.stop.algh_dtm)}</p></div>
               </div>
             </div>
             <label className="block space-y-2 text-sm font-semibold">예약구간
