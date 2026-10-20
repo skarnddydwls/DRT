@@ -4,9 +4,16 @@ import type { IncidentFilters } from "@/types/incident";
 export const defaultIncidentFilters: IncidentFilters = {
   occurredDate: "",
   vehicleNo: "",
+  incidentType: "",
 };
 
 export const incidentFields: FieldConfig[] = [
+  {
+    name: "incidentType",
+    label: "유고 종류",
+    type: "text",
+    placeholder: "종류 검색",
+  },
   {
     name: "occurredDate",
     label: "발생일",

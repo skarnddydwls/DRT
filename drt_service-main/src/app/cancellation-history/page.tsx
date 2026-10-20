@@ -14,71 +14,35 @@ import type {
 } from "@/types/cancellation";
 import { getCancellationHistoryList } from "@/lib/api/cancellation";
 
-const DUMMY_CANCELLATIONS: CancellationRow[] = [
-  {
-    cancel_dtm: "2026-09-11 08:30:00",
-    plan_dtm: "2026-09-11 09:00:00",
-    ship_nm: "금오페리 1호",
-    start_port_nm: "여천항",
-    end_port_nm: "신기항",
-    cancel_reason: "풍랑주의보 및 기상 악화",
-  },
-  {
-    cancel_dtm: "2026-09-11 10:15:00",
-    plan_dtm: "2026-09-11 11:00:00",
-    ship_nm: "한려카페리호",
-    start_port_nm: "신기항",
-    end_port_nm: "여천항",
-    cancel_reason: "기관 점검 및 긴급 정비",
-  },
-  {
-    cancel_dtm: "2026-09-10 14:00:00",
-    plan_dtm: "2026-09-10 14:30:00",
-    ship_nm: "금오고속훼리",
-    start_port_nm: "여수항",
-    end_port_nm: "직포항",
-    cancel_reason: "해상 짙은 안개 (저시정 경보)",
-  },
-  {
-    cancel_dtm: "2026-09-09 16:20:00",
-    plan_dtm: "2026-09-09 17:00:00",
-    ship_nm: "금오페리 2호",
-    start_port_nm: "여천항",
-    end_port_nm: "신기항",
-    cancel_reason: "너울성 파도 및 강풍",
-  },
-  {
-    cancel_dtm: "2026-09-08 07:45:00",
-    plan_dtm: "2026-09-08 08:30:00",
-    ship_nm: "남면아일랜드호",
-    start_port_nm: "직포항",
-    end_port_nm: "여천항",
-    cancel_reason: "선박 정기 안전검사",
-  },
-];
-
 export default function CancellationHistoryPage() {
   const gridRef = useRef(null);
 
   const [filters, setFilters] = useState<CancellationFilters>(
     defaultCancellationFilters
   );
-  const [allRows, setAllRows] = useState<CancellationRow[]>(DUMMY_CANCELLATIONS);
+  const [allRows, setAllRows] = useState<CancellationRow[]>([]);
+  const [errorMessage, setErrorMessage] = useState("");
+  const requestRef = useRef(0);
   const [loading, setLoading] = useState(false);
 
   const columnDefs = useMemo(() => cancellationColumnDefs, []);
 
   // 결항 정보 fetch 함수
   const fetchData = useCallback(async (searchFilters: CancellationFilters) => {
+    const requestId = ++requestRef.current;
     setLoading(true);
+    setErrorMessage("");
 
     try {
       const rows = await getCancellationHistoryList(searchFilters);
-      setAllRows(rows);
+      if (requestId === requestRef.current) setAllRows(rows);
     } catch (error) {
-      console.error("Error fetching ferry cancellation data:", error);
+      if (requestId === requestRef.current) {
+        setAllRows([]);
+        setErrorMessage(error instanceof Error ? error.message : "결항정보 이력을 조회하지 못했습니다.");
+      }
     } finally {
-      setLoading(false);
+      if (requestId === requestRef.current) setLoading(false);
     }
   }, []);
 
@@ -88,6 +52,7 @@ export default function CancellationHistoryPage() {
 
   const handleSearch = (newFilters: CancellationFilters) => {
     setFilters(newFilters);
+    void fetchData(newFilters);
   };
 
   const rowData = useMemo(() => {
@@ -103,7 +68,7 @@ export default function CancellationHistoryPage() {
     <section>
       <div className="mb-6">
         <h1 className="text-[28px] font-bold tracking-tight">결항정보 이력</h1>
-        <p className="mt-1 text-sm text-gray-500">결항정보 이력을 조회합니다.</p>
+        <p className="mt-1 text-sm text-gray-500">10분마다 MTIS Python 조회에서 확인한 여수 비운·통제 이력입니다. 최초 확인시각은 실제 결항 발생시각과 다를 수 있습니다. 최신 1,000건까지 조회합니다.</p>
       </div>
 
       <div className="rounded-xl border bg-white p-6 shadow-sm">
@@ -115,6 +80,8 @@ export default function CancellationHistoryPage() {
           className="mb-4"
         />
 
+        {errorMessage && <p role="alert" className="mb-4 text-sm text-red-700">{errorMessage}</p>}
+        {!loading && !errorMessage && rowData.length === 0 && <p className="mb-4 text-sm text-gray-500">조회된 결항정보 이력이 없습니다.</p>}
         <div className="relative" style={{ height: "calc(100vh - 400px)" }}>
           {loading && (
             <div className="absolute inset-0 z-10 flex flex-col items-center justify-center rounded-xl bg-white/75 backdrop-blur-[1px]">
@@ -127,10 +94,10 @@ export default function CancellationHistoryPage() {
             columnDefs={columnDefs}
             gridRef={gridRef}
             gridOptions={{
-              onGridReady: (params: any) => {
+              onGridReady: (params) => {
                 params.api?.sizeColumnsToFit();
               },
-              onGridSizeChanged: (params: any) => {
+              onGridSizeChanged: (params) => {
                 params.api?.sizeColumnsToFit();
               },
             }}

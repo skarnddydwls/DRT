@@ -18,11 +18,13 @@ export async function getIncidentHistoryList(
   });
 
   return (data.incidents ?? []).map((item) => ({
+    incident_id: String(item.incident_id ?? ""),
+    vehicle_id: String(item.vehicle_id ?? ""),
     occurred_dtm: String(item.occurred_dtm ?? item.occurredDate ?? ""),
     vehicle_no: String(item.vehicle_no ?? item.vehicleNo ?? ""),
     incident_type: String(item.incident_type ?? item.incidentType ?? ""),
-    latitude: Number(item.latitude ?? item.lat ?? 0),
-    longitude: Number(item.longitude ?? item.lng ?? 0),
+    latitude: Number(item.gps_y ?? item.latitude ?? item.lat ?? NaN),
+    longitude: Number(item.gps_x ?? item.longitude ?? item.lng ?? NaN),
     description: String(item.description ?? item.details ?? ""),
   }));
 }

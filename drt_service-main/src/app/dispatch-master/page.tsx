@@ -98,7 +98,7 @@ function MasterTimeline({
           <span className="text-sm font-bold text-gray-800">
             {stop.algh_dtm ? formatTimestamp(stop.algh_dtm, "HH:mm") : "-"}
           </span>
-          <DispatchTransferBadge enabled={stop.transfer_enabled} minutes={stop.transfer_minutes} time={stop.algh_dtm} />
+          <DispatchTransferBadge enabled={stop.transfer_enabled} code={stop.transfer_code} side={stop.transfer_side} />
         </button>
       )})}
     </div>
@@ -185,11 +185,15 @@ export default function DispatchMasterPage() {
             algh_dtm: row.algh_dtm,
             ext_dispatch_div: row.ext_dispatch_div,
             transfer_enabled: row.transfer_enabled ?? false,
-            transfer_minutes: row.transfer_minutes ?? 3,
+            transfer_minutes: 0,
+            transfer_code: row.transfer_code as string | null, transfer_side: row.transfer_side as string | null,
           });
         });
         grouped.forEach((row) => row.stops.sort((a, b) => a.dispatch_seq - b.dispatch_seq));
-        setDetailRows(Array.from(grouped.values()));
+        setDetailRows(Array.from(grouped.values()).sort((a, b) =>
+          a.route_nm.localeCompare(b.route_nm, "ko", { numeric: true }) ||
+          a.route_id.localeCompare(b.route_id, "ko", { numeric: true })
+        ));
         setSelectedStop(null);
       })
       .catch((error) => {

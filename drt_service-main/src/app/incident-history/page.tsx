@@ -23,34 +23,45 @@ export default function IncidentHistoryPage() {
   const gridRef = useRef(null);
   const mapRef = useRef<Map | null>(null);
   const markerSourceRef = useRef<VectorSource | null>(null);
+  const requestRef = useRef(0);
 
   const [filters, setFilters] = useState<IncidentFilters>(defaultIncidentFilters);
   const [allRows, setAllRows] = useState<IncidentRow[]>([]);
   const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const [selectedIncident, setSelectedIncident] = useState<IncidentRow | null>(null);
 
   const columnDefs = useMemo(() => incidentColumnDefs, []);
 
   // api 데이터 호출
   const fetchData = useCallback(async (searchFilters: IncidentFilters) => {
+    const requestId = ++requestRef.current;
     setLoading(true);
+    setErrorMessage("");
+    setSelectedIncident(null);
+    markerSourceRef.current?.clear();
 
     try {
       const rows = await getIncidentHistoryList(searchFilters);
-      setAllRows(rows);
+      if (requestId === requestRef.current) setAllRows(rows);
     } catch (error) {
-      console.error("Error fetching incident data:", error);
+      if (requestId === requestRef.current) {
+        setAllRows([]);
+        setErrorMessage(error instanceof Error ? error.message : "유고정보 이력을 조회하지 못했습니다.");
+      }
     } finally {
-      setLoading(false);
+      if (requestId === requestRef.current) setLoading(false);
     }
   }, []);
 
   useEffect(() => {
-    fetchData(defaultIncidentFilters);
+    void fetchData(defaultIncidentFilters);
+    return () => { ++requestRef.current; };
   }, [fetchData]);
 
   const handleSearch = (newFilters: IncidentFilters) => {
     setFilters(newFilters);
+    void fetchData(newFilters);
   };
 
   const rowData = useMemo(() => {
@@ -63,7 +74,9 @@ export default function IncidentHistoryPage() {
             .toLowerCase()
             .includes(filters.vehicleNo.trim().toLowerCase())
         : true;
-      return matchDate && matchVehicle;
+      const matchType = filters.incidentType
+        ? row.incident_type.toLowerCase().includes(filters.incidentType.trim().toLowerCase()) : true;
+      return matchDate && matchVehicle && matchType;
     });
   }, [allRows, filters]);
 
@@ -75,7 +88,8 @@ export default function IncidentHistoryPage() {
 
     const lon = Number(row.longitude);
     const lat = Number(row.latitude);
-    if (!lon || !lat || isNaN(lon) || isNaN(lat)) return;
+    markerSourceRef.current?.clear();
+    if (!Number.isFinite(lon) || !Number.isFinite(lat) || Math.abs(lon) > 180 || Math.abs(lat) > 90) return;
 
     if (mapRef.current) {
       if (!markerSourceRef.current) {
@@ -112,7 +126,7 @@ export default function IncidentHistoryPage() {
     <section>
       <div className="mb-6">
         <h1 className="text-[28px] font-bold tracking-tight">유고정보 이력</h1>
-        <p className="mt-1 text-sm text-gray-500">유고정보 이력을 조회합니다.</p>
+        <p className="mt-1 text-sm text-gray-500">유고 종류·발생일·차량번호로 조회하고, 목록을 선택하면 카카오지도에 발생 위치를 표시합니다. 최신 1,000건까지 조회합니다.</p>
       </div>
 
       <div className="rounded-xl border bg-white p-6 shadow-sm">
@@ -123,6 +137,8 @@ export default function IncidentHistoryPage() {
           onSearch={handleSearch}
           className="mb-4"
         />
+        {errorMessage && <p role="alert" className="mb-4 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">{errorMessage}</p>}
+        {!loading && !errorMessage && rowData.length === 0 && <p role="status" className="mb-4 text-sm text-gray-500">조회 조건에 맞는 유고정보 이력이 없습니다.</p>}
 
         <div className="flex gap-4" style={{ height: "calc(100vh - 400px)" }}>
           <div className="relative flex-[2] min-w-0 flex flex-col">
@@ -138,6 +154,7 @@ export default function IncidentHistoryPage() {
               gridRef={gridRef}
               gridOptions={{
                 rowSelection: "single",
+                getRowId: (params) => String(params.data.incident_id),
                 suppressRowClickSelection: false,
                 onRowClicked: handleRowClicked,
                 onGridReady: (params) => {

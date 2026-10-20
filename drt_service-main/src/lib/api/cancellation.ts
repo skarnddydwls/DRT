@@ -27,6 +27,7 @@ export async function getCancellationHistoryList(
   });
 
   return (data.cancellations ?? []).map((item) => ({
+    operation_div_nm: String(item.operation_div_nm ?? ""),
     cancel_dtm: String(item.cancel_dtm ?? item.operation_date ?? ""),
     plan_dtm: String(item.plan_dtm ?? item.scheduled_time ?? ""),
     ship_nm: String(item.ship_nm ?? ""),

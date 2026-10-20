@@ -6,6 +6,7 @@
 import { post } from "@/lib/api/client";
 import type { NotificationSendFormState } from "@/types/notificationSend";
 import type { NotificationFilters, NotificationRow } from "@/types/notification";
+import { formatNotificationTime } from "@/features/notifications/formatNotificationTime";
 
 export interface SendNotificationResponse {
   result?: unknown;
@@ -43,7 +44,7 @@ export async function getNotificationHistoryList(
   });
 
   return (data.notifications ?? []).map((item) => ({
-    noti_dtm: String(item.noti_dtm ?? ""),
+    noti_dtm: formatNotificationTime(item.noti_dtm),
     noti_type: String(item.noti_type ?? ""),
     noti_target: String(item.noti_target ?? ""),
     noti_title: String(item.noti_title ?? ""),

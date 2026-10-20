@@ -31,6 +31,8 @@ export interface DispatchMasterRow extends Record<string, unknown> {
 }
 
 export interface DispatchMasterStop {
+  transfer_code?: string | null;
+  transfer_side?: string | null;
   transfer_enabled?: boolean;
   transfer_minutes?: number;
   point_id: string;

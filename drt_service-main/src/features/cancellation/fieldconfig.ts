@@ -8,7 +8,7 @@ export const defaultCancellationFilters: CancellationFilters = {
 export const cancellationFields: FieldConfig[] = [
   {
     name: "cancellationDate",
-    label: "결항일시",
+    label: "최초 확인일",
     type: "date",
     placeholder: "연도-월-일",
   },

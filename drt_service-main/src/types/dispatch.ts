@@ -18,6 +18,8 @@ export interface DispatchRow extends Record<string, unknown> {
   ext_dispatch_div?: string | null;
   transfer_enabled?: boolean;
   transfer_minutes?: number;
+  transfer_code?: string | null;
+  transfer_side?: string | null;
 }
 
 export interface DispatchFilters {
@@ -46,6 +48,8 @@ export interface DispatchStopEntry {
   ext_dispatch_div: string | null;
   transfer_enabled?: boolean;
   transfer_minutes?: number;
+  transfer_code?: string | null;
+  transfer_side?: string | null;
 }
 
 export interface DispatchGridRow extends Record<string, unknown> {

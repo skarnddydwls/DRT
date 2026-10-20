@@ -99,7 +99,7 @@ function StopTimelineCell({
           <p className="text-sm font-semibold text-gray-800">
             {stop.algh_dtm ? formatTimestamp(stop.algh_dtm, "HH:mm") : "-"}
           </p>
-          <DispatchTransferBadge enabled={stop.transfer_enabled} minutes={stop.transfer_minutes} time={stop.algh_dtm} />
+          <DispatchTransferBadge enabled={stop.transfer_enabled} code={stop.transfer_code} side={stop.transfer_side} />
         </button>
       )})}
     </div>
@@ -247,7 +247,9 @@ export default function DispatchPage() {
         return dispatchCompare;
       }
 
-      const routeCompare = a.route_id.localeCompare(b.route_id);
+      const routeCompare = (a.route_nm || a.route_id).localeCompare(
+        b.route_nm || b.route_id, "ko", { numeric: true }
+      ) || a.route_id.localeCompare(b.route_id, "ko", { numeric: true });
       if (routeCompare !== 0) {
         return routeCompare;
       }
@@ -284,7 +286,8 @@ export default function DispatchPage() {
           ext_dispatch_yn: row.ext_dispatch_yn ?? null,
           ext_dispatch_div: row.ext_dispatch_div ?? null,
           transfer_enabled: row.transfer_enabled ?? false,
-          transfer_minutes: row.transfer_minutes ?? 3,
+          transfer_minutes: 0,
+          transfer_code: row.transfer_code as string | null, transfer_side: row.transfer_side as string | null,
         });
       }
     });

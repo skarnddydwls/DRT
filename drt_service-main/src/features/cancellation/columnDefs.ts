@@ -11,7 +11,7 @@ export const cancellationColumnDefs: ColDef[] = [
     cellStyle: { textAlign: "center", color: "#222222" },
   },
   {
-    headerName: "결항시각",
+    headerName: "최초 확인시각",
     field: "cancel_dtm",
     width: 170,
     maxWidth: 190,
@@ -44,6 +44,11 @@ export const cancellationColumnDefs: ColDef[] = [
     width: 130,
     maxWidth: 150,
     cellStyle: { textAlign: "center", color: "#222222" },
+  },
+  {
+    headerName: "운항구분",
+    field: "operation_div_nm",
+    width: 110,
   },
   {
     headerName: "결항사유",
