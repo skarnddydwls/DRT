@@ -4,6 +4,7 @@ import { useEffect, useRef, useCallback, useMemo, useState } from "react";
 import { Map, View } from "@/lib/maps/kakaoMap";
 import { defaults, FullScreen } from "@/lib/maps/kakaoMap";
 import { fromLonLat } from "@/lib/maps/kakaoMap";
+import { vehicleCoordinates } from "@/lib/maps/vehicleCoordinates";
 import { VectorLayer } from "@/lib/maps/kakaoMap";
 import { VectorSource } from "@/lib/maps/kakaoMap";
 import { Feature } from "@/lib/maps/kakaoMap";
@@ -230,9 +231,10 @@ export default function MonitoringPage() {
 
       // 기존 마커는 제거하지 않고 위치와 방향만 갱신
       Object.values(latestVehicles).forEach((vehicle) => {
+        const location = vehicleCoordinates(vehicle);
+        if (!location) return;
         currentVehicleIds.add(vehicle.vehicle_id);
-        // 주의: 응답에서 gps_x가 위도, gps_y가 경도로 보이므로 순서 조정
-        const coord = fromLonLat([vehicle.gps_y, vehicle.gps_x]);
+        const coord = fromLonLat(location);
         const feature = existingFeaturesById[vehicle.vehicle_id] ?? new Feature();
         const previousGeometry = feature.getGeometry();
         const previousCoord = previousGeometry instanceof Point
@@ -596,6 +598,15 @@ export default function MonitoringPage() {
               columnDefs={monitoringColumnDefs}
               gridRef={gridRef}
               gridOptions={{
+                onRowClicked: ({ data }) => {
+                  if (!data) return;
+                  const location = vehicleCoordinates(data);
+                  if (!location) return;
+                  mapRef.current?.getView().animate({
+                    center: fromLonLat(location),
+                    duration: 450,
+                  });
+                },
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 onGridReady: (params: any) => {
                   params.api?.sizeColumnsToFit();

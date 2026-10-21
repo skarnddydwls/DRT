@@ -19,6 +19,7 @@ import { VectorLayer } from "@/lib/maps/kakaoMap";
 import { VectorSource } from "@/lib/maps/kakaoMap";
 import { Icon, Stroke, Style } from "@/lib/maps/kakaoMap";
 import { fromLonLat } from "@/lib/maps/kakaoMap";
+import { vehicleCoordinates } from "@/lib/maps/vehicleCoordinates";
 import { defaults } from "@/lib/maps/kakaoMap";
 import { Overlay } from "@/lib/maps/kakaoMap";
 
@@ -112,11 +113,9 @@ export default function OperLogPage() {
   }, []);
 
   const showLogOnMap = async (row: OperLogRow) => {
-    const latitude = Number(row.gps_x);
-    const longitude = Number(row.gps_y);
-    if (!Number.isFinite(latitude) || !Number.isFinite(longitude)) return;
-
-    const coordinate = fromLonLat([longitude, latitude]);
+    const location = vehicleCoordinates(row);
+    if (!location) return;
+    const coordinate = fromLonLat(location);
     const markerSource = markerSourceRef.current;
     const map = mapRef.current;
     if (!markerSource || !map) return;
