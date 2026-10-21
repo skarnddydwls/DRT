@@ -59,9 +59,15 @@ function dateText(value: number | string | null) {
   return value ? formatTimestamp(value, "YYYY-MM-DD") || String(value).slice(0, 10) : "";
 }
 
-function masterTimeText(value: number | string | null | undefined) {
-  if (typeof value === "string" && /^(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?$/.test(value)) return value.slice(0, 5);
-  return formatTimestamp(value, "HH:mm");
+function formatMasterTime(value: number | string | null | undefined): string {
+  if (!value) return "-";
+  if (typeof value === "string") {
+    const trimmed = value.trim();
+    if (trimmed.includes(":")) {
+      return trimmed.slice(0, 5);
+    }
+  }
+  return formatTimestamp(value, "HH:mm") || "-";
 }
 
 function MasterTimeline({
@@ -82,30 +88,32 @@ function MasterTimeline({
       {(value ?? []).map((stop) => {
         const stopKey = `${data?.route_id}-${stop.point_id}-${stop.dispatch_seq}`;
         const selected = stopKey === selectedStopKey;
+
         return (
-        <button
-          type="button"
-          data-master-stop="true"
-          key={`${stop.point_id}-${stop.dispatch_seq}`}
-          onClick={(event) => {
-            event.stopPropagation();
-            if (data) onStopClick(data, stop);
-          }}
-          onDoubleClick={(event) => {
-            event.stopPropagation();
-            if (data) onStopDoubleClick(data, stop);
-          }}
-          className={`relative flex w-24 flex-col rounded-lg border bg-white px-3 py-2 text-left shadow-sm transition ${selected ? "border-blue-500 ring-2 ring-blue-300" : "border-black/10 hover:border-blue-400"}`}
-          style={stop.ext_dispatch_div && colors[stop.ext_dispatch_div]
-            ? { backgroundColor: colors[stop.ext_dispatch_div] }
-            : undefined}>
-          <span className="truncate text-xs font-medium text-gray-500">{stop.point_nm || stop.point_id}</span>
-          <span className="text-sm font-bold text-gray-800">
-            {masterTimeText(stop.algh_dtm) || "-"}
-          </span>
-          <DispatchTransferBadge enabled={stop.transfer_enabled} code={stop.transfer_code} side={stop.transfer_side} />
-        </button>
-      )})}
+          <button
+            type="button"
+            data-master-stop="true"
+            key={`${stop.point_id}-${stop.dispatch_seq}`}
+            onClick={(event) => {
+              event.stopPropagation();
+              if (data) onStopClick(data, stop);
+            }}
+            onDoubleClick={(event) => {
+              event.stopPropagation();
+              if (data) onStopDoubleClick(data, stop);
+            }}
+            className={`relative flex w-24 flex-col rounded-lg border bg-white px-3 py-2 text-left shadow-sm transition ${selected ? "border-blue-500 ring-2 ring-blue-300" : "border-black/10 hover:border-blue-400"}`}
+            style={stop.ext_dispatch_div && colors[stop.ext_dispatch_div]
+              ? { backgroundColor: colors[stop.ext_dispatch_div] }
+              : undefined}>
+            <span className="truncate text-xs font-medium text-gray-500">{stop.point_nm || stop.point_id}</span>
+            <span className="text-sm font-bold text-gray-800">
+              {formatMasterTime(stop.algh_dtm)}
+            </span>
+            <DispatchTransferBadge enabled={stop.transfer_enabled} minutes={stop.transfer_minutes} time={stop.algh_dtm} />
+          </button>
+        )
+      })}
     </div>
   );
 }
@@ -190,15 +198,11 @@ export default function DispatchMasterPage() {
             algh_dtm: row.algh_dtm,
             ext_dispatch_div: row.ext_dispatch_div,
             transfer_enabled: row.transfer_enabled ?? false,
-            transfer_minutes: 0,
-            transfer_code: row.transfer_code as string | null, transfer_side: row.transfer_side as string | null,
+            transfer_minutes: row.transfer_minutes ?? 3,
           });
         });
         grouped.forEach((row) => row.stops.sort((a, b) => a.dispatch_seq - b.dispatch_seq));
-        setDetailRows(Array.from(grouped.values()).sort((a, b) =>
-          a.route_nm.localeCompare(b.route_nm, "ko", { numeric: true }) ||
-          a.route_id.localeCompare(b.route_id, "ko", { numeric: true })
-        ));
+        setDetailRows(Array.from(grouped.values()));
         setSelectedStop(null);
       })
       .catch((error) => {
@@ -244,7 +248,8 @@ export default function DispatchMasterPage() {
       use_yn: selected.use_yn,
       remark: selected.remark ?? "",
     });
-    setSelectedTime(masterTimeText(stop?.algh_dtm));
+    const rawTime = formatMasterTime(stop?.algh_dtm);
+    setSelectedTime(rawTime === "-" ? "" : rawTime);
     setDialogOpen(true);
   }, [selected, selectedStop]);
 
@@ -254,7 +259,7 @@ export default function DispatchMasterPage() {
       headerName: "배차표",
       field: "stops",
       flex: 1,
-      minWidth: 1700,
+      minWidth: 3100,
       maxWidth: 9999,
       cellRenderer: MasterTimeline,
       cellRendererParams: {
@@ -336,7 +341,7 @@ export default function DispatchMasterPage() {
         setDetailRows((rows) => rows.map((row) => row.route_id !== selectedStop.row.route_id ? row : {
           ...row,
           stops: row.stops.map((stop) => stop.point_id === selectedStop.stop.point_id && stop.dispatch_seq === selectedStop.stop.dispatch_seq
-            ? { ...stop, algh_dtm: `${selectedTime}:00` }
+            ? { ...stop, algh_dtm: selectedTime.length === 5 ? `${selectedTime}:00` : selectedTime }
             : stop),
         }));
       }
@@ -495,7 +500,7 @@ export default function DispatchMasterPage() {
       <DispatchTransferDialog open={transferDialogOpen} onClose={() => setTransferDialogOpen(false)}
         target={selected && selectedStop ? {
           ...selectedStop.stop, dispatch_id: selected.dispatch_id, route_id: selectedStop.row.route_id,
-          label: `${selectedStop.row.route_nm} · ${selectedStop.stop.point_nm} · ${masterTimeText(selectedStop.stop.algh_dtm)}`,
+          label: `${selectedStop.row.route_nm} · ${selectedStop.stop.point_nm} · ${formatMasterTime(selectedStop.stop.algh_dtm)}`,
         } : null}
         onSaved={(settings) => {
           if (!selectedStop) return;
@@ -512,7 +517,7 @@ export default function DispatchMasterPage() {
               <p className="text-xs font-semibold text-gray-700">선택한 배차시간</p>
               <div className="mt-2 flex items-end justify-between gap-4">
                 <div><p className="text-sm text-gray-500">정류장</p><p className="mt-1 text-lg font-bold">{selectedStop?.stop.point_nm || "-"}</p></div>
-                <div className="text-right"><p className="text-sm text-gray-500">도착시각</p><p className="mt-1 text-2xl font-bold">{masterTimeText(selectedStop?.stop.algh_dtm) || "-"}</p></div>
+                <div className="text-right"><p className="text-sm text-gray-500">도착시각</p><p className="mt-1 text-2xl font-bold">{formatMasterTime(selectedStop?.stop.algh_dtm)}</p></div>
               </div>
             </div>
             <label className="block space-y-2 text-sm font-semibold">예약구간

@@ -79,29 +79,29 @@ function StopTimelineCell({
           ? reservationGroupColors[stop.ext_dispatch_div]
           : undefined;
         return (
-        <button
-          type="button"
-          data-dispatch-stop="true"
-          key={`${stop.point_id}-${stop.dispatch_seq}-${stop.algh_dtm ?? "na"}`}
-          onClick={(event) => {
-            event.stopPropagation();
-            if (data) onStopClick(data, stop);
-          }}
-          style={groupColor ? { backgroundColor: groupColor } : undefined}
-          className={`relative flex w-24 flex-col rounded-lg border px-3 py-2 text-left shadow-sm transition-colors ${
-            selected
+          <button
+            type="button"
+            data-dispatch-stop="true"
+            key={`${stop.point_id}-${stop.dispatch_seq}-${stop.algh_dtm ?? "na"}`}
+            onClick={(event) => {
+              event.stopPropagation();
+              if (data) onStopClick(data, stop);
+            }}
+            style={groupColor ? { backgroundColor: groupColor } : undefined}
+            className={`relative flex w-24 flex-col rounded-lg border px-3 py-2 text-left shadow-sm transition-colors ${selected
               ? "border-blue-500 ring-2 ring-blue-300"
               : groupColor
                 ? "border-black/10 hover:border-blue-400"
                 : "border-gray-200 bg-white hover:border-blue-300 hover:bg-blue-50"
-          }`}>
-          <p className="text-xs font-medium text-gray-500">{stop.stn_nm}</p>
-          <p className="text-sm font-semibold text-gray-800">
-            {stop.algh_dtm ? formatTimestamp(stop.algh_dtm, "HH:mm") : "-"}
-          </p>
-          <DispatchTransferBadge enabled={stop.transfer_enabled} code={stop.transfer_code} side={stop.transfer_side} />
-        </button>
-      )})}
+              }`}>
+            <p className="text-xs font-medium text-gray-500">{stop.stn_nm}</p>
+            <p className="text-sm font-semibold text-gray-800">
+              {stop.algh_dtm ? formatTimestamp(stop.algh_dtm, "HH:mm") : "-"}
+            </p>
+            <DispatchTransferBadge enabled={stop.transfer_enabled} minutes={stop.transfer_minutes} time={stop.algh_dtm} />
+          </button>
+        )
+      })}
     </div>
   );
 }
@@ -236,9 +236,9 @@ export default function DispatchPage() {
     const selectedDate = filters.dispatchDate?.trim();
     const filtered = selectedDate
       ? allRows.filter((row) => {
-          const formatted = formatTimestamp(row.dispatch_dt, "YYYY-MM-DD");
-          return formatted === selectedDate;
-        })
+        const formatted = formatTimestamp(row.dispatch_dt, "YYYY-MM-DD");
+        return formatted === selectedDate;
+      })
       : allRows;
 
     return [...filtered].sort((a, b) => {
@@ -247,9 +247,7 @@ export default function DispatchPage() {
         return dispatchCompare;
       }
 
-      const routeCompare = (a.route_nm || a.route_id).localeCompare(
-        b.route_nm || b.route_id, "ko", { numeric: true }
-      ) || a.route_id.localeCompare(b.route_id, "ko", { numeric: true });
+      const routeCompare = a.route_id.localeCompare(b.route_id);
       if (routeCompare !== 0) {
         return routeCompare;
       }
@@ -286,8 +284,7 @@ export default function DispatchPage() {
           ext_dispatch_yn: row.ext_dispatch_yn ?? null,
           ext_dispatch_div: row.ext_dispatch_div ?? null,
           transfer_enabled: row.transfer_enabled ?? false,
-          transfer_minutes: 0,
-          transfer_code: row.transfer_code as string | null, transfer_side: row.transfer_side as string | null,
+          transfer_minutes: row.transfer_minutes ?? 3,
         });
       }
     });
@@ -321,7 +318,7 @@ export default function DispatchPage() {
         headerName: "배차표",
         field: "stops",
         flex: 1,
-        minWidth: 2000,
+        minWidth: 3100,
         maxWidth: 9999,
         cellRenderer: StopTimelineCell,
         cellRendererParams: {
@@ -540,19 +537,19 @@ export default function DispatchPage() {
         />
 
         <DispatchTransferDialog open={transferDialogOpen} onClose={() => setTransferDialogOpen(false)}
-        target={selectedStop ? {
-          ...selectedStop.stop, route_id: selectedStop.row.route_id,
-          dispatch_dt: formatTimestamp(selectedStop.row.dispatch_dt, "YYYY-MM-DD"),
-          label: `${selectedStop.row.route_nm} · ${selectedStop.stop.stn_nm} · ${formatTimestamp(selectedStop.stop.algh_dtm ?? 0, "HH:mm")}`,
-        } : null}
-        onSaved={(settings) => {
-          if (!selectedStop) return;
-          const chosen = selectedStop;
-          setAllRows(rows => rows.map(row => row.dispatch_dt === chosen.row.dispatch_dt && row.route_id === chosen.row.route_id && row.point_id === chosen.stop.point_id && row.dispatch_seq === chosen.stop.dispatch_seq ? { ...row, ...settings } : row));
-          setSelectedStop({ ...chosen, stop: { ...chosen.stop, ...settings } });
-          setToast({ message: "환승 설정을 저장했습니다.", type: "success", isVisible: true });
-        }} />
-      <Dialog open={reserveDialogOpen} onOpenChange={setReserveDialogOpen}>
+          target={selectedStop ? {
+            ...selectedStop.stop, route_id: selectedStop.row.route_id,
+            dispatch_dt: formatTimestamp(selectedStop.row.dispatch_dt, "YYYY-MM-DD"),
+            label: `${selectedStop.row.route_nm} · ${selectedStop.stop.stn_nm} · ${formatTimestamp(selectedStop.stop.algh_dtm ?? 0, "HH:mm")}`,
+          } : null}
+          onSaved={(settings) => {
+            if (!selectedStop) return;
+            const chosen = selectedStop;
+            setAllRows(rows => rows.map(row => row.dispatch_dt === chosen.row.dispatch_dt && row.route_id === chosen.row.route_id && row.point_id === chosen.stop.point_id && row.dispatch_seq === chosen.stop.dispatch_seq ? { ...row, ...settings } : row));
+            setSelectedStop({ ...chosen, stop: { ...chosen.stop, ...settings } });
+            setToast({ message: "환승 설정을 저장했습니다.", type: "success", isVisible: true });
+          }} />
+        <Dialog open={reserveDialogOpen} onOpenChange={setReserveDialogOpen}>
           <DialogContent className="sm:max-w-[430px]">
             <DialogHeader>
               <DialogTitle>예약구간 설정</DialogTitle>
