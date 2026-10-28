@@ -2,6 +2,7 @@
 
 import { useMemo, useRef, useState, useCallback, useEffect } from "react";
 import Grid from "@/components/Grid";
+import GridCsvButton from "@/components/GridCsvButton";
 import { FilterForm } from "@/components/ui/FilterForm";
 import { notificationColumnDefs } from "@/features/notifications/constants/columnDefs";
 import {
@@ -66,6 +67,7 @@ export default function NotificationHistoryPage() {
       </div>
 
       <div className="rounded-xl border bg-white p-6 shadow-sm">
+        <GridCsvButton gridRef={gridRef} fileName="알림전송이력" disabled={loading || rowData.length === 0} />
         <FilterForm<NotificationFilters>
           fields={notificationFields}
           defaultValues={defaultNotificationFields}

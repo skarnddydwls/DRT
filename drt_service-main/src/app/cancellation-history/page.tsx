@@ -2,6 +2,7 @@
 
 import { useMemo, useRef, useState, useCallback, useEffect } from "react";
 import Grid from "@/components/Grid";
+import GridCsvButton from "@/components/GridCsvButton";
 import { FilterForm } from "@/components/ui/FilterForm";
 import { cancellationColumnDefs } from "@/features/cancellation/columnDefs";
 import {
@@ -72,6 +73,7 @@ export default function CancellationHistoryPage() {
       </div>
 
       <div className="rounded-xl border bg-white p-6 shadow-sm">
+        <GridCsvButton gridRef={gridRef} fileName="결항정보이력" disabled={loading || rowData.length === 0} />
         <FilterForm<CancellationFilters>
           fields={cancellationFields}
           defaultValues={defaultCancellationFilters}

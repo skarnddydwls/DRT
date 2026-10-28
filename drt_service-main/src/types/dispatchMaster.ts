@@ -17,6 +17,7 @@ export interface DispatchMasterInfo extends Record<string, unknown> {
 
 export interface DispatchMasterRow extends Record<string, unknown> {
   dispatch_id: string;
+  vehicle_id?: string | null;
   route_id: string;
   route_nm: string | null;
   point_id: string;

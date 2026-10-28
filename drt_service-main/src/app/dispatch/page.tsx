@@ -37,6 +37,7 @@ import {
 } from "@/lib/api/dispatch";
 import { getDispatchMasterInfos } from "@/lib/api/dispatchMaster";
 import { getDetailCodes, type DetailCodeRow } from "@/lib/api/common";
+import { post } from "@/lib/api/client";
 import { formatTimestamp } from "@/lib/utils";
 import type {
   DispatchFilters,
@@ -422,14 +423,15 @@ export default function DispatchPage() {
     }
   };
 
-  const openImportDialog = () => {
-    const date = new Date(`${filters.dispatchDate}T00:00:00`);
-    if (!Number.isNaN(date.getTime())) {
-      const month = date.getMonth() + 1;
-      setImportSeason(month >= 6 && month <= 9 ? "CD001" : "CD002");
-      setImportDay(date.getDay() === 0 || date.getDay() === 6 ? "CD002" : "CD001");
+  const openImportDialog = async () => {
+    try {
+      const calendar = await post<{ season_div: SeasonDiv; day_div: DayDiv }>("/api/dispatch-calendar", { DISPATCH_DT: filters.dispatchDate });
+      setImportSeason(calendar.season_div);
+      setImportDay(calendar.day_div);
+      setImportDialogOpen(true);
+    } catch {
+      setToast({ message: "계절 구분을 불러오지 못했습니다. 공통코드 설정을 확인해주세요.", type: "error", isVisible: true });
     }
-    setImportDialogOpen(true);
   };
 
   const handleImportMaster = async () => {

@@ -1,0 +1,25 @@
+.page { min-width: 0; }
+.page input, .page select { min-width: 0; height: 36px; font-size: 13px; }
+.page input[type='time'] { width: 140px; min-width: 140px; padding: 5px 8px; font-variant-numeric: tabular-nums; }
+.page input[type='checkbox'] { width: 16px; height: 16px; accent-color: #22a447; }
+.page label { display: block; min-width: 0; color: #475569; font-size: 13px; }
+.page label > input, .page label > select { display: block; margin-top: 6px; }
+.editorLayout { display: grid; grid-template-columns: 260px minmax(0,1fr); gap: 20px; align-items: start; }
+.ruleGridPanel { overflow: hidden; border: 1px solid #e2e8f0; border-radius: 10px; background: white; }
+.ruleGridHeader { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 12px 14px; border-bottom: 1px solid #e2e8f0; }
+.ruleGridPanel :global(.ag-row).selectedRule { background-color: #ecfdf0 !important; font-weight: 600; }
+.basicFields { display: grid; grid-template-columns: minmax(160px,1fr) 160px 120px; gap: 12px; }
+.conditionRow { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 10px 0; border-top: 1px solid #f1f5f9; }
+.conditionRow > input:not([type='time']) { flex: 0 0 110px; width: 110px; }
+.conditionRow > select { flex: 0 0 110px; width: 110px; }
+.conditionRow > button { padding: 0 8px; color: #94a3b8; }
+.page table { border-collapse: separate; border-spacing: 0; }
+.page th { font-size: 12px; height: 40px; }
+.page td { vertical-align: middle; }
+.page td input[type='time'] { width: 140px; }
+.page tbody tr:hover { background: #f8fafc; }
+@media (max-width: 1050px) { .editorLayout { grid-template-columns: 210px minmax(0,1fr); } .basicFields { grid-template-columns: minmax(0,1fr); } }
+@media (max-width: 720px) {
+  .editorLayout { grid-template-columns: minmax(0,1fr); }
+  .basicFields { grid-template-columns: minmax(0,1fr); }
+}

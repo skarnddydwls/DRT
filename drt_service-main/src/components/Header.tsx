@@ -16,6 +16,7 @@ const menuGroups = [
       ["/replacement-vehicle", "대차관리"],
       ["/dispatch-master", "배차마스터"],
       ["/dispatch", "일배차관리"],
+      ["/cancellation-dispatch", "결항 대응 배차 설정"],
     ],
   },
   {

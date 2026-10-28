@@ -2,6 +2,7 @@
 
 import { useMemo, useRef, useState, useCallback, useEffect } from "react";
 import Grid from "@/components/Grid";
+import GridCsvButton from "@/components/GridCsvButton";
 import KakaoMap from "@/components/KakaoMap";
 import { FilterForm } from "@/components/ui/FilterForm";
 import { incidentColumnDefs } from "@/features/incident/columnDefs";
@@ -130,6 +131,7 @@ export default function IncidentHistoryPage() {
       </div>
 
       <div className="rounded-xl border bg-white p-6 shadow-sm">
+        <GridCsvButton gridRef={gridRef} fileName="유고정보이력" disabled={loading || rowData.length === 0} />
         <FilterForm<IncidentFilters>
           fields={incidentFields}
           defaultValues={defaultIncidentFilters}

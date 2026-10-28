@@ -2,6 +2,7 @@
 
 import { useMemo, useRef, useState, useCallback, useEffect } from "react";
 import Grid from "@/components/Grid";
+import GridCsvButton from "@/components/GridCsvButton";
 import { FilterForm } from "@/components/ui/FilterForm";
 import { replacementVehicleColumnDefs } from "@/features/replacement-vehicle-history/columnDefs";
 import {
@@ -66,6 +67,7 @@ export default function ReplacementHistoryPage() {
       </div>
 
       <div className="rounded-xl border bg-white p-6 shadow-sm">
+        <GridCsvButton gridRef={gridRef} fileName="대차이력" disabled={loading || rowData.length === 0} />
         <FilterForm<ReplacementVehicleFilters>
           fields={replacementVehicleFields}
           defaultValues={defaultReplacementFields}

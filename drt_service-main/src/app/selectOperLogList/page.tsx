@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import Grid from "@/components/Grid";
+import GridCsvButton from "@/components/GridCsvButton";
 import { FilterForm } from "@/components/ui/FilterForm";
 import { getOperLogList } from "@/lib/api/operLog";
 import { getRouteNodes } from "@/lib/api/monitoring";
@@ -278,6 +279,7 @@ export default function OperLogPage() {
       </div>
 
       <div className="rounded-xl border bg-white p-6 shadow-sm">
+        <GridCsvButton gridRef={gridRef} fileName="운행기록" disabled={loading || rowData.length === 0} />
         <FilterForm<OperLogFilters>
           fields={operLogFields}
           defaultValues={defaultFilters}

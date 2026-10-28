@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Grid from "@/components/Grid";
+import GridCsvButton from "@/components/GridCsvButton";
 import KakaoMap from "@/components/KakaoMap";
 import { FilterForm } from "@/components/ui/FilterForm";
 import { getCallList } from "@/lib/api/call";
@@ -126,6 +127,7 @@ export default function CallsPage() {
       </div>
 
       <div className="rounded-xl border bg-white p-6 shadow-sm">
+        <GridCsvButton gridRef={gridRef} fileName="호출기록" disabled={loading || rowData.length === 0} />
         <FilterForm<CallFilters>
           fields={callFields}
           defaultValues={defaultFilters}
