@@ -8,6 +8,8 @@ export async function POST(request: NextRequest) {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
+      cache: "no-store",
+      signal: AbortSignal.timeout(15000),
     });
 
     if (!response.ok) {
@@ -18,11 +20,13 @@ export async function POST(request: NextRequest) {
     }
 
     const text = await response.text();
-    if (!text) return NextResponse.json({ success: true });
+    if (!text) return NextResponse.json({ success: false, message: "저장 결과를 확인할 수 없습니다." }, { status: 502 });
     try {
-      return NextResponse.json(JSON.parse(text));
+      const data = JSON.parse(text);
+      if (data?.success !== true) return NextResponse.json({ success: false, message: "노선 저장 결과를 확인할 수 없습니다." }, { status: 502 });
+      return NextResponse.json(data);
     } catch {
-      return NextResponse.json({ success: true, message: text });
+      return NextResponse.json({ success: false, message: "노선 저장 서버 응답을 확인할 수 없습니다." }, { status: 502 });
     }
   } catch (error) {
     console.error("Route node save API error:", error);

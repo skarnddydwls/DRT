@@ -139,7 +139,7 @@ export default function OperLogPage() {
     const dispatchDate = formatTimestamp(row.dispatch_dt || row.oper_dtm, "YYYY-MM-DD");
     try {
       const [routeData, dispatchData] = await Promise.all([
-        getRouteNodes({ ROUTE_ID: row.route_id }),
+        getRouteNodes({ ROUTE_ID: row.route_id, DISPATCH_DT: dispatchDate }),
         getDispatchList({ DISPATCH_DT: dispatchDate }),
       ]);
       if (requestId !== routeRequestRef.current) return;

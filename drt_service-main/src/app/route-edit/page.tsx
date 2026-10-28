@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { getRouteList } from "@/lib/api/route";
 import { getRouteNodesForEdit, saveRouteNodes } from "@/lib/api/routeEdit";
 import { getStopList, type StopRow } from "@/lib/api/marker";
@@ -9,7 +9,9 @@ import type { RouteRow } from "@/types/route";
 import { handleDialogEnter } from "@/lib/dialogKeyboard";
 import { MapPin, Crosshair } from "lucide-react";
 
-type EditorNode = KakaoEditorNode;
+type EditorNode = KakaoEditorNode & { requiredMin?: number };
+type Division = "CD001" | "CD002";
+type RouteSelection = { route: RouteRow | null; season: Division; day: Division };
 
 export default function RouteEditPage() {
   const [routes, setRoutes] = useState<RouteRow[]>([]);
@@ -28,7 +30,11 @@ export default function RouteEditPage() {
   const [stopsLoading, setStopsLoading] = useState(false);
   const [savedNodesSnapshot, setSavedNodesSnapshot] = useState("[]");
   const [saveDialogOpen, setSaveDialogOpen] = useState(false);
-  const [pendingRoute, setPendingRoute] = useState<RouteRow | null>(null);
+  const [pendingRoute, setPendingRoute] = useState<RouteSelection | null>(null);
+  const [season, setSeason] = useState<Division>("CD001");
+  const [day, setDay] = useState<Division>("CD001");
+  const loadRequestRef = useRef(0);
+  const [loadFailed, setLoadFailed] = useState(false);
   const [saving, setSaving] = useState(false);
 
   const visibleRoutes = useMemo(
@@ -61,7 +67,7 @@ export default function RouteEditPage() {
   }, [addMode]);
 
   const handleMapClick = useCallback((longitude: number, latitude: number) => {
-    if (!addMode) return;
+    if (!addMode || loading || saving || loadFailed) return;
     const nextNumber = nodes.length + 1;
     const newNode: EditorNode = {
       id: `draft-${Date.now()}`,
@@ -83,15 +89,23 @@ export default function RouteEditPage() {
     });
     setSelectedNodeId(newNode.id);
     setMessage(`${addMode === "STN" ? "정류장" : "지점"}을 추가했습니다.`);
-  }, [addMode, nodes.length, selectedNodeId]);
+  }, [addMode, nodes.length, selectedNodeId, loading, saving, loadFailed]);
 
-  const loadRoute = useCallback(async (route: RouteRow) => {
+  const loadRoute = useCallback(async (route: RouteRow, targetSeason: Division, targetDay: Division) => {
+    const requestId = ++loadRequestRef.current;
     const routeId = String(route.route_id);
+    setSeason(targetSeason);
+    setDay(targetDay);
+    setAddMode(null);
+    setNodes([]);
+    setSavedNodesSnapshot("[]");
+    setLoadFailed(false);
     setSelectedRouteId(routeId);
     setSelectedNodeId("");
     setLoading(true);
     try {
-      const response = await getRouteNodesForEdit({ ROUTE_ID: routeId });
+      const response = await getRouteNodesForEdit({ ROUTE_ID: routeId, SEASON_DIV: targetSeason, DAY_DIV: targetDay });
+      if (requestId !== loadRequestRef.current) return;
       const routeNodes = response.nodes
         .filter((node) => String(node.route_id) === routeId)
         .sort((a, b) => a.point_seq - b.point_seq)
@@ -102,6 +116,7 @@ export default function RouteEditPage() {
           type: node.point_type,
           longitude: Number(node.gps_x),
           latitude: Number(node.gps_y),
+          requiredMin: Number(node.required_min) || 0,
         }));
       const validRouteNodes = routeNodes.filter(
         (node) => Number.isFinite(node.longitude) && Number.isFinite(node.latitude)
@@ -120,12 +135,14 @@ export default function RouteEditPage() {
           : `[${route.route_nm ?? routeId}] 등록된 유효한 노드가 없습니다.`
       );
     } catch {
+      if (requestId !== loadRequestRef.current) return;
+      setLoadFailed(true);
       setNodes([]);
       setSavedNodesSnapshot("[]");
       setSelectedNodeId("");
       setMessage(`[${route.route_nm ?? routeId}] 노드 목록을 불러오지 못했습니다. 백엔드 연결을 확인해 주세요.`);
     } finally {
-      setLoading(false);
+      if (requestId === loadRequestRef.current) setLoading(false);
     }
   }, []);
 
@@ -157,12 +174,24 @@ export default function RouteEditPage() {
   };
 
   const requestRouteSelection = (route: RouteRow) => {
+    if (loading || saving) return;
     if (String(route.route_id) === selectedRouteId) return;
     if (isDirty) {
-      setPendingRoute(route);
+      setPendingRoute({ route, season, day });
       return;
     }
-    void loadRoute(route);
+    void loadRoute(route, season, day);
+  };
+
+  const applySelection = (target: RouteSelection) => {
+    if (target.route) return loadRoute(target.route, target.season, target.day);
+    setSeason(target.season); setDay(target.day); setAddMode(null);
+  };
+  const requestDivision = (nextSeason: Division, nextDay: Division) => {
+    if (loading || saving || (nextSeason === season && nextDay === day)) return;
+    const target = { route: routes.find((route) => String(route.route_id) === selectedRouteId) ?? null, season: nextSeason, day: nextDay };
+    if (isDirty) setPendingRoute(target);
+    else void applySelection(target);
   };
 
   const moveNode = (direction: -1 | 1) => {
@@ -228,6 +257,7 @@ export default function RouteEditPage() {
   };
 
   const saveCurrentNodes = async () => {
+    if (loading || saving || loadFailed) return false;
     if (!selectedRouteId) {
       setMessage("먼저 노선을 선택해 주세요.");
       return false;
@@ -236,12 +266,14 @@ export default function RouteEditPage() {
     try {
       await saveRouteNodes({
         ROUTE_ID: selectedRouteId,
+        SEASON_DIV: season,
+        DAY_DIV: day,
         NODE_LIST: nodes.map((node, index) => ({
           POINT_ID: node.pointId ?? null,
           POINT_NM: node.name,
           POINT_SEQ: index + 1,
           POINT_TYPE: node.type,
-          REQUIRED_MIN: 0,
+          REQUIRED_MIN: node.requiredMin ?? 0,
           GPS_X: node.longitude,
           GPS_Y: node.latitude,
         })),
@@ -270,6 +302,11 @@ export default function RouteEditPage() {
       </div>
 
       <div className="rounded-xl border bg-white p-6 shadow-sm">
+        <div className="mb-4 flex flex-wrap items-center gap-4">
+          <label className="flex items-center gap-2 text-sm font-semibold">계절<select aria-label="계절" value={season} disabled={loading || saving} onChange={(event) => requestDivision(event.target.value as Division, day)} className="rounded-lg border bg-white px-4 py-2"><option value="CD001">하계</option><option value="CD002">동계</option></select></label>
+          <label className="flex items-center gap-2 text-sm font-semibold">요일<select aria-label="요일 구분" value={day} disabled={loading || saving} onChange={(event) => requestDivision(season, event.target.value as Division)} className="rounded-lg border bg-white px-4 py-2"><option value="CD001">평일</option><option value="CD002">주말</option></select></label>
+          <span className="text-sm text-blue-700">현재 편집: {season === "CD001" ? "하계" : "동계"} / {day === "CD001" ? "평일" : "주말"} · 선택한 구분만 저장됩니다.</span>
+        </div>
         <div className="mb-4 flex items-center gap-4 rounded-xl border border-[#D9D9D9] bg-[#E9E9E9] p-4 px-6">
           <label htmlFor="route-query" className="shrink-0 text-sm font-medium text-gray-700">노선명</label>
           <input
@@ -292,7 +329,7 @@ export default function RouteEditPage() {
           <button
             type="button"
             onClick={() => selectedRouteId ? setSaveDialogOpen(true) : setMessage("먼저 노선을 선택해 주세요.")}
-            disabled={!selectedRouteId || saving}
+            disabled={!selectedRouteId || saving || loading || loadFailed}
             className="h-9 rounded-lg bg-blue-600 px-6 text-sm font-semibold text-white hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-blue-300 transition-colors"
           >
             저장
@@ -407,7 +444,7 @@ export default function RouteEditPage() {
             <KakaoRouteEditorMap
               nodes={nodes}
               selectedNodeId={selectedNodeId}
-              fitRouteId={selectedRouteId}
+              fitRouteId={`${selectedRouteId}-${season}-${day}`}
               onMapClick={handleMapClick}
               cursorMode={addMode}
             />
@@ -541,7 +578,7 @@ export default function RouteEditPage() {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/45 p-6">
           <div role="dialog" aria-modal="true" aria-labelledby="save-dialog-title" onKeyDown={handleDialogEnter} className="w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl">
             <h2 id="save-dialog-title" className="text-xl font-bold">노드구성 저장</h2>
-            <p className="mt-3 text-gray-600">현재 노드구성을 저장하시겠습니까?</p>
+            <p className="mt-3 text-gray-600">{season === "CD001" ? "하계" : "동계"} / {day === "CD001" ? "평일" : "주말"} 노드구성을 저장하시겠습니까?</p>
             <p className="mt-2 text-sm text-gray-500">총 {nodes.length}개의 노드가 순서대로 저장됩니다.</p>
             <div data-slot="dialog-footer" className="mt-7 flex justify-end gap-3">
               <button onClick={() => setSaveDialogOpen(false)} disabled={saving} className="rounded-lg border px-5 py-2.5 font-semibold text-gray-700">취소</button>
@@ -555,11 +592,11 @@ export default function RouteEditPage() {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/45 p-6">
           <div role="dialog" aria-modal="true" aria-labelledby="route-change-dialog-title" onKeyDown={handleDialogEnter} className="w-full max-w-lg rounded-2xl bg-white p-6 shadow-2xl">
             <h2 id="route-change-dialog-title" className="text-xl font-bold">변경사항이 있습니다</h2>
-            <p className="mt-3 leading-6 text-gray-600">현재 변경한 노드구성을 저장한 후 다른 노선으로 이동하시겠습니까?</p>
+            <p className="mt-3 leading-6 text-gray-600">현재 변경한 노드구성을 저장한 후 선택한 노선 또는 계절·요일 구분으로 이동하시겠습니까?</p>
             <div data-slot="dialog-footer" className="mt-7 flex flex-wrap justify-end gap-3">
               <button onClick={() => setPendingRoute(null)} disabled={saving} className="rounded-lg border px-4 py-2.5 font-semibold text-gray-700">계속 편집</button>
-              <button onClick={() => { const route = pendingRoute; setPendingRoute(null); void loadRoute(route); }} disabled={saving} className="rounded-lg border border-red-300 px-4 py-2.5 font-semibold text-red-600">저장 안 함</button>
-              <button autoFocus onClick={async () => { const route = pendingRoute; if (await saveCurrentNodes()) { setPendingRoute(null); await loadRoute(route); } }} disabled={saving} className="rounded-lg bg-blue-600 px-4 py-2.5 font-semibold text-white disabled:bg-blue-300">{saving ? "저장 중..." : "저장 후 이동"}</button>
+              <button onClick={() => { const target = pendingRoute; setPendingRoute(null); void applySelection(target); }} disabled={saving} className="rounded-lg border border-red-300 px-4 py-2.5 font-semibold text-red-600">저장 안 함</button>
+              <button autoFocus onClick={async () => { const target = pendingRoute; if (await saveCurrentNodes()) { setPendingRoute(null); await applySelection(target); } }} disabled={saving} className="rounded-lg bg-blue-600 px-4 py-2.5 font-semibold text-white disabled:bg-blue-300">{saving ? "저장 중..." : "저장 후 이동"}</button>
             </div>
           </div>
         </div>

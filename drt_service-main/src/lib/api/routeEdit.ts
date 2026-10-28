@@ -3,6 +3,8 @@ import type { RouteNodeResponse } from "@/types/monitoring";
 
 export async function getRouteNodesForEdit(params: {
   ROUTE_ID: string;
+  SEASON_DIV: "CD001" | "CD002";
+  DAY_DIV: "CD001" | "CD002";
 }): Promise<RouteNodeResponse> {
   return post<RouteNodeResponse>("/api/route-nodes", params);
 }
@@ -19,6 +21,8 @@ export interface SaveRouteNodeItem {
 
 export interface SaveRouteNodesParams {
   ROUTE_ID: string;
+  SEASON_DIV: "CD001" | "CD002";
+  DAY_DIV: "CD001" | "CD002";
   NODE_LIST: SaveRouteNodeItem[];
 }
 
