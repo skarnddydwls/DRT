@@ -9,16 +9,18 @@ import type { IncidentFilters, IncidentRow } from "@/types/incident";
  * 사고 이력 목록 조회 API
  */
 export async function getIncidentHistoryList(
-  filters: IncidentFilters
+  filters: IncidentFilters,
+  kind: "incident" | "breakdown" = "incident"
 ): Promise<IncidentRow[]> {
   const data = await post<{
     incidents?: Array<Record<string, unknown>>;
-  }>("/api/incident/history", {
+  }>(kind === "breakdown" ? "/api/breakdown/history" : "/api/incident/history", {
     filters,
   });
 
   return (data.incidents ?? []).map((item) => ({
     incident_id: String(item.incident_id ?? ""),
+    incident_type_code: String(item.incident_type_code ?? ""),
     vehicle_id: String(item.vehicle_id ?? ""),
     occurred_dtm: String(item.occurred_dtm ?? item.occurredDate ?? ""),
     vehicle_no: String(item.vehicle_no ?? item.vehicleNo ?? ""),

@@ -3,43 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-const menuGroups = [
-  {
-    label: "운영관리",
-    items: [
-      ["/vehicle", "차량관리"],
-      ["/stop", "정류장관리"],
-      ["/tourism", "주변 관광지 관리"],
-      ["/route", "노선관리"],
-      ["/route-edit", "노선편집"],
-      ["/notification-send", "알림전송"],
-      ["/replacement-vehicle", "대차관리"],
-      ["/dispatch-master", "배차마스터"],
-      ["/dispatch", "일배차관리"],
-      ["/cancellation-dispatch", "결항 대응 배차 설정"],
-    ],
-  },
-  {
-    label: "실시간 관제",
-    items: [["/monitoring", "모니터링"]],
-  },
-  {
-    label: "이력·통계",
-    items: [
-      ["/calls", "호출기록"],
-      ["/selectOperLogList", "운행기록"],
-      ["/incident-history", "유고정보 이력"],
-      ["/notification-history", "알림전송 이력"],
-      ["/replacement-vehicle-history", "대차이력"],
-      ["/cancellation-history", "결항정보 이력"],
-      ["/stats", "호출통계"],
-    ],
-  },
-  {
-    label: "환경설정",
-    items: [["/common-code", "공통코드 관리"]],
-  },
-] as const;
+import { menuGroups } from "@/lib/navigation";
 
 export default function Header() {
   const pathname = usePathname();

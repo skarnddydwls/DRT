@@ -31,12 +31,14 @@ export const incidentColumnDefs = [
   {
     headerName: "GPS_X",
     field: "longitude",
+    valueFormatter: ({ value }: { value: unknown }) => typeof value === "number" && Number.isFinite(value) ? String(value) : "-",
     width: 140,
     cellStyle: { textAlign: "center", color: "#222222" },
   },
   {
     headerName: "GPS_Y",
     field: "latitude",
+    valueFormatter: ({ value }: { value: unknown }) => typeof value === "number" && Number.isFinite(value) ? String(value) : "-",
     width: 140,
     cellStyle: { textAlign: "center", color: "#222222" },
   },

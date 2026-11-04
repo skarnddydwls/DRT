@@ -51,6 +51,7 @@ export default function SideBar() {
           className="flex items-center w-full px-3 py-2 text-sm rounded-full text-[#363636] hover:bg-[#E6E6E6] transition-colors duration-200">
           운행로그
         </Link>
+        <Link href="/breakdown-history" className="flex items-center w-full px-3 py-2 text-sm rounded-full text-[#363636] hover:bg-[#E6E6E6] transition-colors duration-200">고장 이력</Link>
         <Link
           href="/stats"
           className="flex items-center w-full px-3 py-2 text-sm rounded-full text-[#363636] hover:bg-[#E6E6E6] transition-colors duration-200">

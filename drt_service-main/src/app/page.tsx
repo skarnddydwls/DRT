@@ -1,71 +1,44 @@
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
+import { menuGroups } from "@/lib/navigation";
+
 export default function Home() {
   return (
-    <section className="flex flex-col gap-8">
-      <div className="rounded-lg border p-8 bg-white">
-        <h2 className="text-2xl font-bold mb-2">전라남도 도서지역 특화 DRT</h2>
-        <p className="text-muted-foreground">
-          차량관리, 노선관리, 정류장관리, 일배차관리, 모니터링, 호출기록, 호출통계
-          기능을 제공하는 버스 모니터링/운영 서비스입니다.
-        </p>
+    <div className="flex flex-col gap-6">
+      <section className="flex flex-wrap items-center justify-between gap-6 rounded-2xl border border-slate-200 bg-white px-7 py-6">
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight">DRT 운영센터</h1>
+        </div>
+        <div className="flex flex-wrap gap-2">
+          <Link href="/monitoring" className="inline-flex items-center gap-2 rounded-lg bg-green-600 px-4 py-2 text-sm font-semibold text-white hover:bg-green-700">
+            모니터링 열기 <ArrowRight aria-hidden="true" size={16} />
+          </Link>
+          <Link href="/dispatch" className="inline-flex items-center gap-2 rounded-lg border border-slate-300 px-4 py-2 text-sm font-semibold hover:bg-slate-50">
+            일배차관리 열기 <ArrowRight aria-hidden="true" size={16} />
+          </Link>
+        </div>
+      </section>
+      <div className="grid grid-cols-1 items-start gap-6 lg:grid-cols-2">
+      {[menuGroups[0], menuGroups[2], menuGroups[1], menuGroups[3]].map((group) => (
+        <section key={group.label} className="rounded-2xl border border-slate-200 bg-white p-5 sm:p-6" aria-labelledby={`home-${group.items[0][0].slice(1)}`}>
+          <div className="mb-5 border-b border-slate-100 pb-4">
+            <h2 id={`home-${group.items[0][0].slice(1)}`} className="text-lg font-bold">{group.label}</h2>
+            <p className="mt-1.5 text-sm leading-6 text-slate-500">{group.description}</p>
+          </div>
+          <div className={`grid grid-cols-1 gap-3 ${group.items.length > 1 ? "sm:grid-cols-2" : ""}`}>
+            {group.items.map(([href, label, description]) => (
+              <Link key={href} href={href} className="group rounded-xl border border-slate-200 bg-slate-50/40 p-4 transition-colors hover:border-green-500 hover:bg-green-50/40 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600">
+                <div className="flex items-center justify-between gap-3">
+                  <h3 className="text-sm font-semibold text-slate-900">{label}</h3>
+                  <ArrowRight aria-hidden="true" size={16} className="shrink-0 text-slate-400 group-hover:text-green-700" />
+                </div>
+                <p className="mt-2 text-xs leading-5 text-slate-500">{description}</p>
+              </Link>
+            ))}
+          </div>
+        </section>
+      ))}
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        <a
-          href="/vehicle"
-          className="block rounded-lg border p-6 bg-white hover:shadow">
-          <h3 className="font-semibold mb-1">차량관리</h3>
-          <p className="text-sm text-muted-foreground">
-            차량 기본 정보 및 상태 관리 (ag-Grid)
-          </p>
-        </a>
-        <a
-          href="/route"
-          className="block rounded-lg border p-6 bg-white hover:shadow">
-          <h3 className="font-semibold mb-1">노선관리</h3>
-          <p className="text-sm text-muted-foreground">
-            노선 정보/구간 관리 (ag-Grid)
-          </p>
-        </a>
-        <a
-          href="/stop"
-          className="block rounded-lg border p-6 bg-white hover:shadow">
-          <h3 className="font-semibold mb-1">정류장관리</h3>
-          <p className="text-sm text-muted-foreground">
-            정류장 정보 관리 (ag-Grid)
-          </p>
-        </a>
-        <a
-          href="/dispatch"
-          className="block rounded-lg border p-6 bg-white hover:shadow">
-          <h3 className="font-semibold mb-1">일배차관리</h3>
-          <p className="text-sm text-muted-foreground">
-            배차 계획/이력 관리 (ag-Grid)
-          </p>
-        </a>
-        <a
-          href="/monitoring"
-          className="block rounded-lg border p-6 bg-white hover:shadow">
-          <h3 className="font-semibold mb-1">모니터링</h3>
-          <p className="text-sm text-muted-foreground">
-            지도에서 버스 이동경로 실시간 표출
-          </p>
-        </a>
-        <a
-          href="/calls"
-          className="block rounded-lg border p-6 bg-white hover:shadow">
-          <h3 className="font-semibold mb-1">호출기록</h3>
-          <p className="text-sm text-muted-foreground">
-            호출 이력 조회 (ag-Grid)
-          </p>
-        </a>
-        <a
-          href="/stats"
-          className="block rounded-lg border p-6 bg-white hover:shadow">
-          <h3 className="font-semibold mb-1">호출통계</h3>
-          <p className="text-sm text-muted-foreground">
-            차트 기반 호출 통계 시각화
-          </p>
-        </a>
-      </div>
-    </section>
+    </div>
   );
 }
