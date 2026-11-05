@@ -40,6 +40,7 @@ export default function OperLogPage() {
   const [filters, setFilters] = useState<OperLogFilters>(defaultFilters);
   const [rows, setRows] = useState<OperLogRow[]>([]);
   const [loading, setLoading] = useState(false);
+  const [searchError, setSearchError] = useState("");
   const [selectedLog, setSelectedLog] = useState<OperLogRow | null>(null);
 
   useEffect(() => {
@@ -250,8 +251,12 @@ export default function OperLogPage() {
     fetchLogs(defaultFilters);
   }, []);
 
-  // 2. 조회 버튼 눌렀을 때 상태만 갱신 (프론트 인메모리 필터링)
   const handleSearch = (newFilters: OperLogFilters) => {
+    if (newFilters.startTime && newFilters.endTime && newFilters.startTime > newFilters.endTime) {
+      setSearchError("시작 시간은 종료 시간보다 늦을 수 없습니다.");
+      return;
+    }
+    setSearchError("");
     setFilters(newFilters);
   };
 
@@ -259,13 +264,16 @@ export default function OperLogPage() {
     return rows.filter((row) => {
       const formattedDate = formatTimestamp(row.oper_dtm || row.dispatch_dt, "YYYY-MM-DD");
       const matchDate = filters.operDate ? formattedDate === filters.operDate : true;
+      const time = formatTimestamp(row.oper_dtm, "HH:mm");
+      const matchTime = (!filters.startTime || time >= filters.startTime)
+        && (!filters.endTime || time <= filters.endTime);
       const matchRoute = filters.routeNm
         ? String(row.route_nm ?? "").toLowerCase().includes(filters.routeNm.trim().toLowerCase())
         : true;
       const matchVehicle = filters.vehicleNo
         ? String(row.vehicle_no ?? "").toLowerCase().includes(filters.vehicleNo.trim().toLowerCase())
         : true;
-      return matchDate && matchRoute && matchVehicle;
+      return matchDate && matchTime && matchRoute && matchVehicle;
     });
   }, [rows, filters]);
 
@@ -288,6 +296,7 @@ export default function OperLogPage() {
           className="mb-4"
         />
 
+        {searchError && <p role="alert" className="mb-4 text-sm text-red-600">{searchError}</p>}
         <div className="grid grid-cols-[minmax(0,1.15fr)_minmax(420px,0.85fr)] gap-4">
           <div className="relative" style={{ height: "calc(100vh - 400px)" }}>
             {loading && (

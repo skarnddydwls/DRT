@@ -110,7 +110,7 @@ function MasterTimeline({
             <span className="text-sm font-bold text-gray-800">
               {formatMasterTime(stop.algh_dtm)}
             </span>
-            <DispatchTransferBadge enabled={stop.transfer_enabled} minutes={stop.transfer_minutes} time={stop.algh_dtm} />
+            <DispatchTransferBadge enabled={stop.transfer_enabled} code={stop.transfer_code} side={stop.transfer_side} />
           </button>
         )
       })}

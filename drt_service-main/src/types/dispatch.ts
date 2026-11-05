@@ -3,6 +3,7 @@
  */
 
 export interface DispatchRow extends Record<string, unknown> {
+  deadhead_yn?: 'Y' | 'N';
   dispatch_seq: number;
   point_id: string;
   stn_nm: string;
@@ -39,6 +40,7 @@ export interface DispatchListParams {
 }
 
 export interface DispatchStopEntry {
+  deadhead_yn?: 'Y' | 'N';
   point_id: string;
   stn_nm: string;
   algh_dtm: number | null;

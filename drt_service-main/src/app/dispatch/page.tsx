@@ -95,11 +95,11 @@ function StopTimelineCell({
                 ? "border-black/10 hover:border-blue-400"
                 : "border-gray-200 bg-white hover:border-blue-300 hover:bg-blue-50"
               }`}>
-            <p className="text-xs font-medium text-gray-500">{stop.stn_nm}</p>
+            <p className="text-xs font-medium text-gray-500">{stop.stn_nm}{stop.deadhead_yn === 'Y' && <span className="ml-1 text-amber-700">공차회송</span>}</p>
             <p className="text-sm font-semibold text-gray-800">
               {stop.algh_dtm ? formatTimestamp(stop.algh_dtm, "HH:mm") : "-"}
             </p>
-            <DispatchTransferBadge enabled={stop.transfer_enabled} minutes={stop.transfer_minutes} time={stop.algh_dtm} />
+            <DispatchTransferBadge enabled={stop.transfer_enabled} code={stop.transfer_code} side={stop.transfer_side} />
           </button>
         )
       })}
@@ -279,6 +279,7 @@ export default function DispatchPage() {
         routeRow.stops.push({
           point_id: row.point_id,
           stn_nm: row.stn_nm ?? "",
+          deadhead_yn: row.deadhead_yn,
           algh_dtm: row.algh_dtm,
           dispatch_seq: row.dispatch_seq,
           remark: row.remark,

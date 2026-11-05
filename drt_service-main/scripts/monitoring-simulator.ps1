@@ -40,7 +40,7 @@ try {
   $routeSql = @"
 COPY (
   SELECT M.POINT_SEQ, COALESCE(S.GPS_X, N.GPS_X), COALESCE(S.GPS_Y, N.GPS_Y)
-  FROM DRT.CMM_ROUTE_NODE_MAP M
+  FROM DRT.fn_route_nodes_for_date((CURRENT_TIMESTAMP AT TIME ZONE 'Asia/Seoul')::date) M
   LEFT JOIN DRT.CMM_STATION_INFO S ON M.POINT_ID = S.STN_ID
   LEFT JOIN DRT.CMM_NODE_INFO N ON M.POINT_ID = N.NODE_ID
   WHERE M.ROUTE_ID = '$RouteId'
@@ -85,7 +85,7 @@ COPY (
     $deltaLat = [double]$next.lat - [double]$current.lat
     $heading = ([Math]::Atan2($deltaLon, $deltaLat) * 180 / [Math]::PI + 360) % 360
     $today = Get-Date -Format "yyyy-MM-dd"
-    $insertSql = "INSERT INTO DRT.DRT_OPER_LOG (OPER_DTM, VEHICLE_ID, ROUTE_ID, DISPATCH_DT, GPS_X, GPS_Y, HEADING, SPEED) VALUES (CURRENT_TIMESTAMP, '$VehicleId', '$RouteId', TO_DATE('$today','YYYY-MM-DD'), $($current.lat), $($current.lon), $([Math]::Round($heading)), 8.3);"
+    $insertSql = "INSERT INTO DRT.DRT_OPER_LOG (OPER_DTM, VEHICLE_ID, ROUTE_ID, DISPATCH_DT, GPS_X, GPS_Y, HEADING, SPEED) VALUES (CURRENT_TIMESTAMP, '$VehicleId', '$RouteId', TO_DATE('$today','YYYY-MM-DD'), $($current.lon), $($current.lat), $([Math]::Round($heading)), 8.3);"
     & $psql --host=$dbHost --port=$dbPort --username=$dbUser --dbname=$dbName --no-psqlrc --quiet --command=$insertSql | Out-Null
     if ($LASTEXITCODE -ne 0) { throw "Operation log insert failed." }
 

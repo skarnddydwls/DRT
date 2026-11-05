@@ -85,13 +85,13 @@ export default function CancellationDispatchPage() {
     const parsed = ruleSchema.safeParse({ ...form, matchMode: 'ANY' });
     if (!parsed.success) {
       const issue = parsed.error.issues[0];
-      const labels: Record<string, string> = { name: '규칙명', season: '계절', day: '요일', conditions: '결항 조건', alternatives: '대체 운항', rounds: '변경 회차', vehicleId: '차량', roundNo: '회차', routeName: '노선명', stops: '정류장', stationId: '정류장 선택', time: '시각', fromPort: '출발항', toPort: '도착항', departureTime: '출항 시각', arrivalTime: '입항 시각' };
+      const labels: Record<string, string> = { name: '규칙명', season: '계절', day: '요일', conditions: '결항 조건', alternatives: '대체 운항', rounds: '변경 회차', vehicleId: '차량', roundNo: '회차', sourceRouteId: '원본 회차', routeName: '노선명', stops: '정류장', stationId: '정류장 선택', time: '시각', fromPort: '출발항', toPort: '도착항', departureTime: '출항 시각', arrivalTime: '입항 시각' };
       setError(`${issue.path.map(p => typeof p === 'number' ? `${p + 1}번` : labels[String(p)] || String(p)).join(' · ')}: ${issue.message}`); return;
     }
     setBusy(true); setError('');
     try {
       const saved = await request<{ id: string; version: number }>('/api/cancellation-dispatch', { action: 'save', ...record, rule: parsed.data });
-      setRecord(saved); setDirty(false); await list(); setMessage('DB에 저장했습니다. 실제 일배차에는 아직 적용되지 않습니다.');
+      setRecord(saved); setDirty(false); await list(); setMessage('저장했습니다. 결항 조건이 충족되면 해당 날짜의 일배차에 자동 적용됩니다.');
     } catch (e) { setError(e instanceof Error ? e.message : '저장에 실패했습니다.'); } finally { setBusy(false); }
   };
   const remove = async () => {
@@ -132,7 +132,11 @@ export default function CancellationDispatchPage() {
       <div><h1 className="text-[28px] font-bold tracking-tight">결항 대응 배차 설정</h1><p className="mt-1 text-sm text-gray-500">결항 조건과 차량·회차별 대체 시간표를 관리합니다.</p></div>
       <div className="flex gap-2"><Button variant="outline" onClick={() => selectRule()} disabled={busy}>신규 등록</Button><Button onClick={save} disabled={busy || loading} className="bg-green-500 text-white hover:bg-green-600">{busy ? '처리 중…' : '저장'}</Button></div>
     </div>
-    <div className="mb-4 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">설정 등록 단계입니다. 저장된 규칙은 DB에 보관되며, 결항 감지에 따른 일배차 자동 변경은 아직 실행되지 않습니다.</div>
+    <div className="mb-4 rounded-lg border border-blue-200 bg-blue-50 px-4 py-3 text-sm text-blue-900">여객선 정보 갱신 후 결항 조건을 확인하여 해당 날짜의 일배차를 자동 변경합니다. 추가 회차는 별도 노선으로 생성하며, 이미 적용된 규칙은 중복 적용하지 않습니다. 운행 중이거나 유효한 예약이 남은 회차는 적용을 보류합니다.</div>
+    {records.find(r => r.id === record?.id)?.application && (() => {
+      const application = records.find(r => r.id === record?.id)!.application!;
+      return <div role="status" className={`mb-4 rounded-lg border px-4 py-3 text-sm ${application.status === 'APPLIED' ? 'border-green-200 bg-green-50 text-green-800' : 'border-amber-200 bg-amber-50 text-amber-900'}`}><strong>{application.status === 'APPLIED' ? '오늘 적용 완료' : application.status === 'BLOCKED' ? '오늘 적용 보류' : '오늘 적용 오류'}</strong><span className="ml-3">{application.message}</span><span className="ml-3 text-xs">{application.attemptedAt} · 새로고침으로 갱신</span></div>;
+    })()}
     {error && <div role="alert" className="mb-4 rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700">{error}</div>}
     {message && <div role="status" className="mb-4 rounded-lg border border-green-200 bg-green-50 p-3 text-sm text-green-800">{message}</div>}
     <div className={styles.editorLayout}>
@@ -158,7 +162,7 @@ export default function CancellationDispatchPage() {
             <label className="mt-3 block space-y-1 text-sm">비고<Input value={form.note} maxLength={2000} onChange={e => update({ ...form, note: e.target.value })} placeholder="원래 여객선 경유 항로, 적용 조건 등" /></label>
           </div>
           <div className="rounded-xl border border-slate-200 bg-white p-5">
-            <div className="mb-3 flex flex-wrap items-center justify-between gap-2"><div><h2 className={heading}>결항 조건</h2><p className="mt-1 text-xs text-slate-500">등록한 조건 중 하나라도 결항이면 해당 규칙을 만족합니다.</p></div><Button size="sm" variant="outline" onClick={() => update({ ...form, conditions: [...form.conditions, { fromPort: '', toPort: '', time: '', basis: 'DEPARTURE' }] })}>조건 추가</Button></div>
+            <div className="mb-3 flex flex-wrap items-center justify-between gap-2"><div><h2 className={heading}>결항 조건</h2><p className="mt-1 text-xs text-slate-500">등록한 조건 중 하나라도 결항이면 해당 규칙을 만족합니다.</p><p className="mt-1 text-xs text-slate-500">입항 기준은 수집 데이터에 입항 예정시각이 제공되는 경우에만 판정합니다. 현재 MTIS 원본은 출항 시각을 제공합니다.</p></div><Button size="sm" variant="outline" onClick={() => update({ ...form, conditions: [...form.conditions, { fromPort: '', toPort: '', time: '', basis: 'DEPARTURE' }] })}>조건 추가</Button></div>
             <div className="space-y-2">{form.conditions.map((c, i) => <div key={i} className={styles.conditionRow}>
               <Input aria-label={`결항 조건 ${i + 1} 출발항`} placeholder="출발항" value={c.fromPort} onChange={e => update({ ...form, conditions: form.conditions.map((x, n) => n === i ? { ...x, fromPort: e.target.value } : x) })} />
               <Input aria-label={`결항 조건 ${i + 1} 도착항`} placeholder="도착항" value={c.toPort} onChange={e => update({ ...form, conditions: form.conditions.map((x, n) => n === i ? { ...x, toPort: e.target.value } : x) })} />

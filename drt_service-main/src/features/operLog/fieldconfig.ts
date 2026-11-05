@@ -7,6 +7,8 @@ const todayInKorea = new Date(Date.now() + 9 * 60 * 60 * 1000)
 
 export const defaultFilters: OperLogFilters = {
   operDate: todayInKorea,
+  startTime: "00:00",
+  endTime: "23:59",
   routeNm: "",
   vehicleNo: "",
 };
@@ -17,6 +19,16 @@ export const operLogFields: FieldConfig[] = [
     label: "운행일",
     type: "date",
     placeholder: "YYYY-MM-DD",
+  },
+  {
+    name: "startTime",
+    label: "시작 시간",
+    type: "time",
+  },
+  {
+    name: "endTime",
+    label: "종료 시간",
+    type: "time",
   },
   {
     name: "routeNm",

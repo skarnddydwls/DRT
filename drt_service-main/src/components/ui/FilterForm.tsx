@@ -148,7 +148,7 @@ export function FilterForm<T extends FieldValues>({
                         />
                       </FormControl>
                     ) : (
-                      ["text", "date", "select"].includes(f.type) && (
+                      ["text", "date", "time", "select"].includes(f.type) && (
                         <FormControl>
                           {f.type === "text" ? (
                             <Input
@@ -157,9 +157,9 @@ export function FilterForm<T extends FieldValues>({
                               disabled={f.disabled}
                               className={cn("w-full", f.className)}
                             />
-                          ) : f.type === "date" ? (
+                          ) : f.type === "date" || f.type === "time" ? (
                             <Input
-                              type="date"
+                              type={f.type}
                               {...field}
                               disabled={f.disabled}
                               className={cn("w-full", f.className)}

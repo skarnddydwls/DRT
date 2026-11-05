@@ -9,7 +9,7 @@ export const ruleSchema = z.object({
   alternatives: z.array(z.object({ fromPort: text(50), toPort: text(50), departureTime: time, arrivalTime: time })).max(30),
   rounds: z.array(z.object({
     key: text(50), vehicleId: text(30), roundNo: z.number().int().min(1).max(99),
-    sourceRouteId: z.string().max(30), routeName: text(100), note: z.string().max(2000),
+    sourceRouteId: text(30), routeName: text(100), note: z.string().max(2000),
     ferryInfo: z.string().max(200),
     stops: z.array(z.object({ stationId: text(30), time, reservationDiv: z.string().max(20), deadhead: z.boolean(), remark: z.string().max(500) })).min(2).max(200),
   })).min(1).max(30),
@@ -23,8 +23,19 @@ export const ruleSchema = z.object({
       if (s && stop.time < round.stops[s - 1].time) ctx.addIssue({ code: 'custom', path: ['rounds', r, 'stops', s, 'time'], message: '정류장 시각은 운행 순서대로 입력해주세요.' });
     });
   });
+  rule.rounds.forEach((round, r) => {
+    const first = round.stops[0]?.time;
+    const last = round.stops.at(-1)?.time;
+    rule.rounds.slice(0, r).forEach(previous => {
+      const otherFirst = previous.stops[0]?.time;
+      const otherLast = previous.stops.at(-1)?.time;
+      if (round.vehicleId === previous.vehicleId && first && last && otherFirst && otherLast && first < otherLast && otherFirst < last) {
+        ctx.addIssue({ code: 'custom', path: ['rounds', r, 'stops'], message: '같은 차량의 다른 변경 회차와 운행시간이 겹칩니다.' });
+      }
+    });
+  });
 });
 export type CancellationRule = z.infer<typeof ruleSchema>;
-export type RuleRecord = { id: string; version: number; updatedAt: string; rule: CancellationRule };
+export type RuleRecord = { id: string; version: number; updatedAt: string; rule: CancellationRule; application?: { status: 'APPLIED' | 'BLOCKED' | 'ERROR'; message: string; attemptedAt: string; insertedCount: number } | null };
 export const newRule = (): CancellationRule => ({ name: '', season: 'ALL', day: 'ALL', matchMode: 'ANY', note: '', conditions: [{ fromPort: '', toPort: '', time: '', basis: 'DEPARTURE' }], alternatives: [], rounds: [] });
 export const newRound = (): CancellationRule['rounds'][number] => ({ key: crypto.randomUUID(), vehicleId: '', roundNo: 1, sourceRouteId: '', routeName: '', note: '', ferryInfo: '', stops: [] });

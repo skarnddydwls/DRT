@@ -6,7 +6,7 @@ const ts = require('typescript');
 const moduleValue = { exports: {} };
 vm.runInNewContext(ts.transpileModule(fs.readFileSync('src/features/cancellation-dispatch/model.ts', 'utf8'), { compilerOptions: { module: ts.ModuleKind.CommonJS } }).outputText, { module: moduleValue, exports: moduleValue.exports, require });
 const { ruleSchema, newRule } = moduleValue.exports;
-const make = () => ({ name: '오전편 결항 대응', season: 'ALL', day: 'ALL', matchMode: 'ANY', note: '', conditions: [{ fromPort: '여수', toPort: '여천', time: '06:20', basis: 'DEPARTURE' }], alternatives: [{ fromPort: '신기', toPort: '여천', departureTime: '07:45', arrivalTime: '08:10' }], rounds: [{ key: 'one', vehicleId: 'VH1', roundNo: 1, sourceRouteId: '', routeName: '1호차_1', note: '', ferryInfo: '여천 출항 08:20', stops: [{ stationId: 'ST1', time: '07:18', reservationDiv: '', deadhead: true, remark: '공차회송' }, { stationId: 'ST2', time: '07:58', reservationDiv: 'CD001', deadhead: false, remark: '' }] }] });
+const make = () => ({ name: '오전편 결항 대응', season: 'ALL', day: 'ALL', matchMode: 'ANY', note: '', conditions: [{ fromPort: '여수', toPort: '여천', time: '06:20', basis: 'DEPARTURE' }], alternatives: [{ fromPort: '신기', toPort: '여천', departureTime: '07:45', arrivalTime: '08:10' }], rounds: [{ key: 'one', vehicleId: 'VH1', roundNo: 1, sourceRouteId: 'RT1', routeName: '1호차_1', note: '', ferryInfo: '여천 출항 08:20', stops: [{ stationId: 'ST1', time: '07:18', reservationDiv: '', deadhead: true, remark: '공차회송' }, { stationId: 'ST2', time: '07:58', reservationDiv: 'CD001', deadhead: false, remark: '' }] }] });
 test('결항·대체항로·반복 정류장·공차회송·예약구간 설정을 보존한다', () => {
   const rule = make(); rule.rounds[0].stops.push({ ...rule.rounds[0].stops[0], time: '08:00' });
   const result = ruleSchema.parse(rule);
@@ -31,4 +31,13 @@ test('같은 차량·회차 중복, 잘못된 시각·누락 정류장 ID를 거
   assert.equal(ruleSchema.safeParse(duplicate).success, false);
   const invalid = make(); invalid.conditions[0].time = '24:00'; assert.equal(ruleSchema.safeParse(invalid).success, false);
   const missing = make(); missing.rounds[0].stops[0].stationId = ''; assert.equal(ruleSchema.safeParse(missing).success, false);
+});
+
+test('자동 적용할 원본 회차 누락과 같은 차량 시간 중첩을 거부한다', () => {
+  const missing = make(); missing.rounds[0].sourceRouteId = '';
+  assert.equal(ruleSchema.safeParse(missing).success, false);
+  const overlap = make(); overlap.rounds.push({ ...overlap.rounds[0], key: 'other', roundNo: 2 });
+  assert.equal(ruleSchema.safeParse(overlap).success, false);
+  overlap.rounds[1].vehicleId = 'VH2';
+  assert.equal(ruleSchema.safeParse(overlap).success, true);
 });
