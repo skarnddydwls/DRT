@@ -125,6 +125,14 @@ export default function DispatchMasterPage() {
   const [masters, setMasters] = useState<DispatchMasterInfo[]>([]);
   const [selected, setSelected] = useState<DispatchMasterInfo | null>(null);
   const [detailRows, setDetailRows] = useState<DispatchMasterGridRow[]>([]);
+  const sortedDetailRows = useMemo(() => [...detailRows].sort((a, b) => {
+    const firstTime = (row: DispatchMasterGridRow) => {
+      const value = row.stops[0]?.algh_dtm;
+      const clock = typeof value === "string" ? value.trim().match(/^\d{2}:\d{2}(?::\d{2})?/)?.[0] : undefined;
+      return (clock?.padEnd(8, ":00") || formatTimestamp(value, "HH:mm:ss")) || "99:99:99";
+    };
+    return firstTime(a).localeCompare(firstTime(b)) || a.route_id.localeCompare(b.route_id);
+  }), [detailRows]);
   const [loading, setLoading] = useState(false);
   const [detailLoading, setDetailLoading] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -199,6 +207,8 @@ export default function DispatchMasterPage() {
             ext_dispatch_div: row.ext_dispatch_div,
             transfer_enabled: row.transfer_enabled ?? false,
             transfer_minutes: row.transfer_minutes ?? 3,
+            transfer_code: row.transfer_code,
+            transfer_side: row.transfer_side,
           });
         });
         grouped.forEach((row) => row.stops.sort((a, b) => a.dispatch_seq - b.dispatch_seq));
@@ -460,7 +470,7 @@ export default function DispatchMasterPage() {
                 <p className="text-sm font-semibold text-gray-700">배차표 조회 중...</p>
               </div>
             )}
-            <Grid rowData={detailRows} columnDefs={columnDefs} gridRef={gridRef} height="100%" rowHeight={64} gridOptions={{ getRowId: (params) => params.data.route_id }} />
+            <Grid rowData={sortedDetailRows} columnDefs={columnDefs} gridRef={gridRef} height="100%" rowHeight={64} gridOptions={{ getRowId: (params) => params.data.route_id }} />
           </div>
         </div>
       </div>

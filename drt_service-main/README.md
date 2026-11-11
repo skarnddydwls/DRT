@@ -162,7 +162,7 @@ npm run lint
 
 | 변수명 | 용도 | 비고 |
 |--------|------|------|
-| `BACKEND_API_BASE_URL` | 백엔드 API 베이스 URL | `backend.ts` 주석에 “설정 시 사용” 형태로 언급됨. **현재 활성 코드는 상수 하드코딩**이므로, 배포 전 실제 동작 값을 코드와 대조할 것. |
+| `BACKEND_API_BASE_URL` | Next.js 서버가 호출하는 백엔드 기본 주소 | 미설정 시 `http://localhost:8081/drt` |
 | `VWORLD_API_KEY` | 브이월드 API 키 | 미설정 시 `src/config/vworld.ts`의 **기본 키 문자열**이 사용됨. 운영에서는 반드시 환경 변수로 교체하고, 키 로테이션 정책을 정할 것. |
 
 예시 `.env.local`:
@@ -172,7 +172,7 @@ BACKEND_API_BASE_URL=http://your-backend-host:port/drt
 VWORLD_API_KEY=your-vworld-key
 ```
 
-> `backend.ts`를 환경 변수 우선으로 바꾸려면, `export const BACKEND_BASE_URL = process.env.BACKEND_API_BASE_URL ?? "fallback"` 형태로 정리하고 배포 파이프라인에 변수를 주입하면 됩니다.
+Git에 포함되는 `.env.production`에 같은 서버의 백엔드 주소 `http://127.0.0.1:8386/drt`와 공개 카카오 지도 JavaScript 키를 설정했습니다. 서버별 주소 변경은 `.env.production.local`에서 지정하고 센터를 재시작합니다. 기존 비공개 설정을 담은 `.env`와 `.env.local`은 별도로 서버에 보관합니다.
 
 ---
 
@@ -184,15 +184,22 @@ VWORLD_API_KEY=your-vworld-key
 | `npm run build` | 프로덕션 빌드 |
 | `npm run start` | 빌드 결과 실행 (`build` 후) |
 | `npm run lint` | ESLint |
+| `npm run build:server` | 운영 전용 `.next-production` 폴더에 빌드 |
+| `npm run start:server` | 운영 빌드를 `127.0.0.1:3000`으로 실행 |
 
-프로덕션 예시:
+Windows 서버에는 Node.js 20.9 이상이 필요합니다. pull 후 `센터_운영빌드.cmd`를 실행하면 잠금 파일 기준 의존성 설치와 운영 빌드가 진행됩니다. 완료 후 `센터_운영실행.cmd`를 실행합니다. 갱신할 때는 운영 실행을 종료한 상태에서 다시 빌드합니다.
+
+명령으로 실행할 경우:
 
 ```bash
-npm run build
-npm run start
+npm ci
+npm run build:server
+npm run start:server
 ```
 
 기본 포트는 **3000**입니다. 변경 시 `next start -p <port>` 또는 플랫폼별 PORT 환경 변수를 사용합니다.
+
+운영 명령의 바인딩 주소는 `CENTER_HOST`, 포트는 `PORT`로 변경할 수 있습니다. 기본값 `127.0.0.1:3000`은 같은 서버의 IIS/Nginx 프록시에서 접속하는 구성입니다. 공인 IP 접속에는 서버의 프록시·인증·HTTPS·포트포워딩 설정이 이어져야 합니다. 카카오 지도 개발자 콘솔에도 실제 외부 접속 주소를 등록합니다.
 
 ---
 

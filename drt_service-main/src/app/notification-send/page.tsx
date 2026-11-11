@@ -6,7 +6,7 @@ import NotificationSelectUser from "@/features/notifications/components/Notifica
 import type { NotificationSendFormState, TargetUser } from "@/types/notificationSend";
 import { Send, RotateCcw, X } from "lucide-react";
 import { getUserList } from "@/lib/api/user";
-import { sendNotification } from "@/lib/api/notification";
+import { getNotificationFerrySailings, sendNotification, type FerrySailing } from "@/lib/api/notification";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 
@@ -25,6 +25,31 @@ export default function NotificationSendPage() {
   const [submitting, setSubmitting] = useState(false);
   const [feedback, setFeedback] = useState("");
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [sailingDate, setSailingDate] = useState(() => new Intl.DateTimeFormat("sv-SE", { timeZone: "Asia/Seoul" }).format(new Date()));
+  const [sailings, setSailings] = useState<FerrySailing[]>([]);
+  const [sailingId, setSailingId] = useState("");
+  const [loadingSailings, setLoadingSailings] = useState(false);
+  const ferryCancel = formData.notificationType === "FERRY_CANCEL";
+  const sailing = sailings.find((item) => item.schedule_id === sailingId);
+  const sailingLabel = (item: FerrySailing) => {
+    const time = item.departure.padStart(4, "0");
+    return `${time.slice(0, 2)}:${time.slice(2)} · ${item.origin} → ${item.destination} · ${item.ship}`;
+  };
+  const loadSailings = async () => {
+    setLoadingSailings(true);
+    setFeedback("");
+    setSailingId("");
+    setSailings([]);
+    try {
+      const items = await getNotificationFerrySailings(sailingDate);
+      setSailings(items);
+      if (!items.length) setFeedback("해당 운항일에 수집된 운항편이 없습니다.");
+    } catch (error) {
+      setFeedback(error instanceof Error ? error.message : "운항편 조회에 실패했습니다.");
+    } finally {
+      setLoadingSailings(false);
+    }
+  };
 
   const handleChange = (
     field: keyof NotificationSendFormState,
@@ -83,6 +108,8 @@ export default function NotificationSendPage() {
 
   const handleReset = () => {
     setFormData(INITIAL_FORM_STATE);
+    setSailingId("");
+    setSailings([]);
   };
 
   // 선택된 유저 상세 정보 매핑
@@ -99,7 +126,11 @@ export default function NotificationSendPage() {
     if (submitting) return;
 
     // 유효성 검사
-    if (formData.targetUserIds.length === 0) {
+    if (ferryCancel && (!sailing || sailing.booking_count < 1)) {
+      setFeedback("취소 대상 예약이 있는 운항편을 선택해주세요.");
+      return;
+    }
+    if (!ferryCancel && formData.targetUserIds.length === 0) {
       alert("오른쪽 목록에서 수신할 사용자를 최소 1명 이상 선택해주세요.");
       return;
     }
@@ -112,12 +143,20 @@ export default function NotificationSendPage() {
       return;
     }
 
+    if (ferryCancel && sailing && !window.confirm(
+      `${sailingDate} ${sailingLabel(sailing)}\n연계 버스 예약 ${sailing.booking_count}건을 취소하고 알림을 전송할까요?`
+    )) return;
     setSubmitting(true);
     setFeedback("");
 
     try {
-      const result = await sendNotification(formData);
-      setSuccessMessage(`알림 전송 요청이 완료되었습니다.${result.skippedCount ? ` (푸시 미등록 또는 알림 OFF로 제외된 대상: ${result.skippedCount}건)` : ""}`);
+      const result = await sendNotification(ferryCancel && sailing ? {
+        ...formData, sailingDate, ferryScheduleId: sailing.schedule_id,
+        expectedBookingCount: sailing.booking_count,
+      } : formData);
+      setSuccessMessage(ferryCancel
+        ? `연계 버스 예약 ${result.cancelledCount}건을 취소하고 알림을 등록했습니다.`
+        : `알림 전송 요청이 완료되었습니다.${result.skippedCount ? ` (푸시 미등록 또는 알림 OFF로 제외된 대상: ${result.skippedCount}건)` : ""}`);
       handleReset();
     } catch (error) {
       console.error("전송 실패:", error);
@@ -168,12 +207,30 @@ export default function NotificationSendPage() {
 
             {/* 오른쪽: 대상 사용자 선택 영역 (드롭박스: 전체/고객/기사, 검색, 리스트) */}
             <div className="flex flex-col lg:col-span-6 min-h-[500px] lg:min-h-0 lg:h-full">
-              <NotificationSelectUser
+              {ferryCancel ? <div className="space-y-4 rounded-xl border p-5">
+                <label className="block text-sm font-semibold">운항일
+                  <input className="mt-1 block rounded-lg border p-2" type="date" value={sailingDate} disabled={submitting || loadingSailings}
+                    onChange={(event) => { setSailingDate(event.target.value); setSailingId(""); setSailings([]); }} />
+                </label>
+                <Button type="button" variant="outline" disabled={!sailingDate || loadingSailings || submitting} onClick={loadSailings}>
+                  {loadingSailings ? "조회 중…" : "운항편 조회"}
+                </Button>
+                <label className="block text-sm font-semibold">결항 운항편
+                  <select className="mt-1 block w-full rounded-lg border p-2" value={sailingId} disabled={submitting || loadingSailings}
+                    onChange={(event) => setSailingId(event.target.value)}>
+                    <option value="">운항편을 선택하세요</option>
+                    {sailings.map((item) => <option key={item.schedule_id} value={item.schedule_id}>
+                      {sailingLabel(item)} · 연계 예약 {item.booking_count}건
+                    </option>)}
+                  </select>
+                </label>
+                {sailing && <p className="text-sm">취소 대상 연계 버스 예약 {sailing.booking_count}건</p>}
+              </div> : <NotificationSelectUser
                 selectedUserIds={formData.targetUserIds}
                 onSelectionChange={handleUserSelectionChange}
                 userList={userList}
                 loading={loadingUser}
-              />
+              />}
             </div>
           </div>
 
@@ -181,7 +238,7 @@ export default function NotificationSendPage() {
           <div className="flex flex-col gap-4 rounded-xl border border-gray-200 bg-[#FAFAFA] p-5 shadow-sm shrink-0">
             <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
               {/* 왼쪽: 선택된 수신 대상 레이블 및 태그 칩 목록 */}
-              <div className="flex flex-1 flex-col gap-3">
+              {!ferryCancel && <div className="flex flex-1 flex-col gap-3">
                 <div className="flex items-center gap-2 text-sm text-gray-700">
                   {/* <Users className="h-4 w-4 text-gray-500 shrink-0" /> */}
                   <span className="font-bold text-[#222222]">선택된 수신 대상</span>
@@ -220,7 +277,7 @@ export default function NotificationSendPage() {
                     ))}
                   </div>
                 )}
-              </div>
+              </div>}
 
               {/* 오른쪽: 액션 버튼들 */}
               <div className="flex items-center justify-end gap-3 shrink-0 pt-1 md:pt-0">
@@ -239,7 +296,7 @@ export default function NotificationSendPage() {
                   className="flex h-[46px] min-w-[130px] items-center justify-center gap-2 rounded-[12px] bg-[#222222] px-6 text-sm font-bold text-white hover:bg-black transition-colors disabled:bg-gray-400 shadow-sm"
                 >
                   <Send className="h-4 w-4" />
-                  {submitting ? "전송 중..." : "알림 발송"}
+                  {submitting ? "전송 중..." : ferryCancel ? "예약 취소 및 알림 발송" : "알림 발송"}
                 </button>
               </div>
             </div>

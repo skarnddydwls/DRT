@@ -2,10 +2,15 @@
   "name": "web",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": ">=20.9.0"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "build:server": "node scripts/center-production.cjs build",
+    "start:server": "node scripts/center-production.cjs start",
     "lint": "eslint"
   },
   "dependencies": {

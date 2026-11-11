@@ -10,7 +10,7 @@ export async function POST(request: NextRequest) {
     const body = await request.json().catch(() => ({}));
 
     const response = await fetch(
-      `${BACKEND_BASE_URL}/sendNotification.do`,
+      `${BACKEND_BASE_URL}/${body.action === "listFerrySailings" ? "selectCenterFerrySailings.do" : "sendNotification.do"}`,
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },

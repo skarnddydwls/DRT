@@ -38,6 +38,7 @@ export default function NotificationMessageForm({
             >
               <CustomOption value="NOTICE">일반 공지</CustomOption>
               <CustomOption value="DELAY_CANCEL">지연 / 결항 안내</CustomOption>
+              <CustomOption value="FERRY_CANCEL">여객선 결항 · 연계 예약 취소</CustomOption>
               <CustomOption value="URGENT">사고 / 긴급 재난</CustomOption>
               <CustomOption value="ROUTE_CHANGE">노선 우회 안내</CustomOption>
             </CustomSelect>

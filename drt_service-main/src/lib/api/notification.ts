@@ -15,13 +15,30 @@ export interface SendNotificationResponse {
   skippedCount?: number;
   notificationId?: string;
   status?: string;
+  cancelledCount?: number;
+}
+
+export interface FerrySailing {
+  schedule_id: string;
+  ship: string;
+  departure: string;
+  origin: string;
+  destination: string;
+  booking_count: number;
+}
+
+export async function getNotificationFerrySailings(sailingDate: string): Promise<FerrySailing[]> {
+  const data = await post<{ sailings: FerrySailing[] }>("/api/notifications/send", {
+    action: "listFerrySailings", sailingDate,
+  });
+  return data.sailings;
 }
 
 /**
  * 알림 발송 API
  */
 export async function sendNotification(
-  payload: NotificationSendFormState
+  payload: NotificationSendFormState & { sailingDate?: string; ferryScheduleId?: string; expectedBookingCount?: number }
 ): Promise<SendNotificationResponse> {
   const response = await fetch("/api/notifications/send", {
     method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload),

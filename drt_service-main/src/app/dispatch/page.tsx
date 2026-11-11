@@ -287,6 +287,8 @@ export default function DispatchPage() {
           ext_dispatch_div: row.ext_dispatch_div ?? null,
           transfer_enabled: row.transfer_enabled ?? false,
           transfer_minutes: row.transfer_minutes ?? 3,
+          transfer_code: row.transfer_code,
+          transfer_side: row.transfer_side,
         });
       }
     });
@@ -295,7 +297,13 @@ export default function DispatchPage() {
       routeRow.stops.sort((a, b) => a.dispatch_seq - b.dispatch_seq);
     });
 
-    return Array.from(routeMap.values());
+    return Array.from(routeMap.values()).sort((a, b) => {
+      const firstTime = (row: DispatchGridRow) => {
+        const time = Number(row.stops[0]?.algh_dtm);
+        return Number.isFinite(time) && time > 0 ? time : Number.MAX_SAFE_INTEGER;
+      };
+      return b.dispatch_dt - a.dispatch_dt || firstTime(a) - firstTime(b) || a.route_id.localeCompare(b.route_id);
+    });
   }, [filteredRows]);
 
   const columnDefs = useMemo<ColDef<DispatchGridRow>[]>(() => {

@@ -27,6 +27,8 @@ export interface DispatchMasterRow extends Record<string, unknown> {
   ext_dispatch_div: string | null;
   transfer_enabled?: boolean;
   transfer_minutes?: number;
+  transfer_code?: string | null;
+  transfer_side?: string | null;
   algh_dtm: number | string | null;
   remark: string | null;
 }
