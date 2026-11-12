@@ -95,13 +95,14 @@ class Database:
           FROM drt.drt_dispatch_day d JOIN drt.cmm_route_info r USING(route_id)
           LEFT JOIN drt.cmm_station_info s ON s.stn_id=d.point_id
           WHERE d.dispatch_dt={literal(day)}::date AND d.vehicle_id={literal(vehicle)}
+            AND d.algh_dtm IS NOT NULL
             {('AND d.route_id=' + literal(route)) if route else ''}
           ORDER BY d.route_id,d.dispatch_seq
         """)
 
     def nodes(self, day):
         return self.rows(f"""
-          SELECT n.route_id,n.point_id,n.point_seq,n.point_type,
+          SELECT n.route_id,n.point_id,n.point_seq,n.point_type,s.stn_nm,
                  COALESCE(s.gps_x,p.gps_x) AS gps_x,COALESCE(s.gps_y,p.gps_y) AS gps_y
           FROM drt.fn_route_nodes_for_date({literal(day)}::date) n
           LEFT JOIN drt.cmm_station_info s ON s.stn_id=n.point_id
@@ -164,6 +165,30 @@ class Network:
                 length = distance(x, y)
                 self.edges.setdefault(x, {})[y] = length
                 self.edges.setdefault(y, {})[x] = length
+
+    def validate_dispatch(self, journey):
+        nodes = self.routes.get(journey.route, [])
+        sequences = {}
+        for node in nodes:
+            sequences.setdefault(node['point_id'], []).append(int(node['point_seq']))
+        missing, shifted = [], []
+        for stop in journey.stops:
+            name = stop.get('stn_nm') or stop['point_id']
+            actual = sequences.get(stop['point_id'], [])
+            if not actual:
+                same_name = [node for node in nodes if stop.get('stn_nm') and node.get('stn_nm') == stop['stn_nm']]
+                registered = ', '.join(f"{node['point_id']} (seq {node['point_seq']})" for node in same_name)
+                missing.append(f"{name} ({stop['point_id']})" + (f"; same-name route stop: {registered}" if registered else ''))
+            elif int(stop['dispatch_seq']) not in actual:
+                shifted.append(f"{name}: dispatch {stop['dispatch_seq']} / route {','.join(map(str, actual))}")
+        if missing or shifted:
+            details = []
+            if missing:
+                details.append('Unmatched route-edit station IDs: ' + '; '.join(missing))
+            if shifted:
+                details.append('Sequence mismatch: ' + '; '.join(shifted))
+            raise ValueError(f"{journey.name} ({journey.route}): daily dispatch does not match today's route-edit data. "
+                             + ' '.join(details) + '. Verify this round in route-edit and regenerate its daily dispatch.')
 
     def between(self, route, start, end, blocked):
         nodes = self.routes.get(route, [])
@@ -329,6 +354,7 @@ class VehicleSession:
         self.deadheads = {}
         previous_active = previous_journey = None
         for journey in self.journeys:
+            network.validate_dispatch(journey)
             active, _, _ = journey.plan(self.bookings, args.reserve == "always")
             print(f"[{vehicle}] {journey.name} ({journey.route}) {journey.start:%H:%M}~{journey.end:%H:%M}: "
                   f"{len(active)} stops, {len(journey.stops)-len(active)} skipped", flush=True)

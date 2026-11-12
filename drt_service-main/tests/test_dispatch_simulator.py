@@ -32,6 +32,26 @@ def network(stops):
 
 
 class ScheduleTests(unittest.TestCase):
+    def test_dispatch_validation_identifies_missing_stops_before_publication(self):
+        stops = [stop(1, A, 0), stop(2, B, 5), stop(3, C, 10)]
+        net = network([stops[0], stops[2]])
+        journey = sim.Journey(stops, net, 25)
+        with self.assertRaisesRegex(ValueError, r'Unmatched route-edit station IDs: S2'):
+            net.validate_dispatch(journey)
+
+    def test_same_name_station_with_different_id_is_reported_without_substitution(self):
+        stops = [stop(1, A, 0), dict(stop(2, B, 5), stn_nm='서고지'), stop(3, C, 10)]
+        net = network([stops[0], dict(stops[1], point_id='OTHER_DIRECTION'), stops[2]])
+        with self.assertRaisesRegex(ValueError, r'same-name route stop: OTHER_DIRECTION'):
+            net.validate_dispatch(sim.Journey(stops, net, 25))
+
+    def test_dispatch_validation_reports_shifted_sequence_without_remapping_repeated_stops(self):
+        stops = [stop(1, A, 0), stop(2, B, 5), stop(3, C, 10)]
+        net = network(stops)
+        changed = [dict(s, dispatch_seq=s['dispatch_seq'] + 10) for s in stops]
+        with self.assertRaisesRegex(ValueError, r'S1: dispatch 11 / route 1'):
+            net.validate_dispatch(sim.Journey(changed, net, 25))
+
     def setUp(self):
         self.stops = [stop(1,A,0), stop(2,B,5,"CD001"), stop(3,C,10)]
         self.net = network(self.stops)

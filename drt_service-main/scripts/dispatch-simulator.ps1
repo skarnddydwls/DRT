@@ -53,4 +53,8 @@ if ($StartTime) { $simArgs += @('--start', $StartTime) }
 if ($Check) { $simArgs += '--check' }
 $env:PYTHONUTF8 = '1'
 & $pythonExe @simArgs
-if ($LASTEXITCODE -ne 0) { throw 'Simulation failed. Check the message above.' }
+$simulationExitCode = $LASTEXITCODE
+if ($simulationExitCode -ne 0) {
+  Write-Host 'Simulation stopped. See the ERROR / NOT STARTED / STOPPED message above for the affected vehicle and cause.' -ForegroundColor Red
+}
+exit $simulationExitCode
