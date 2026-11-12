@@ -21,6 +21,7 @@ export const notificationColumnDefs: ColDef[] = [
   {
     headerName: "알림유형",
     field: "noti_type",
+    valueFormatter: ({ value }) => ({ FERRY_CANCELLATION_NOTICE: "자동 결항 안내", FERRY_RESERVATION_CANCELLED: "결항 예약 취소" }[String(value)] || String(value || "-")),
     width: 200,
     maxWidth: 200, // 유형 적정 폭 유지
     cellStyle: { textAlign: "center", color: "#222222" },
@@ -43,7 +44,7 @@ export const notificationColumnDefs: ColDef[] = [
     headerName: "발송상태",
     field: "send_status",
     width: 160,
-    valueFormatter: ({ value }) => ({ QUEUED: "발송 대기", ACCEPTED: "푸시 서버 접수", PARTIAL: "일부 접수", FAILED: "발송 실패", UNKNOWN: "결과 미확인" }[String(value)] || String(value || "-")),
+    valueFormatter: ({ value }) => ({ REGISTERED: "앱 알림 등록", SKIPPED: "푸시 발송 제외", QUEUED: "발송 대기", ACCEPTED: "푸시 서버 접수", PARTIAL: "일부 접수", FAILED: "발송 실패", UNKNOWN: "결과 미확인" }[String(value)] || String(value || "-")),
   },
   {
     headerName: "내용",

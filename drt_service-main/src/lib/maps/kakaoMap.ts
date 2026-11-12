@@ -182,6 +182,7 @@ export class View {
 }
 export class Overlay {
   private native: any;
+  private observer?: ResizeObserver;
   private position?: number[];
   private owner?: Map;
   constructor(
@@ -211,6 +212,8 @@ export class Overlay {
     }
     if (!this.native) {
       const content = document.createElement("div");
+      // The overlay wrapper must not steal hover from the marker beneath it.
+      content.style.pointerEvents = "none";
       const offset = this.options.offset ?? [0, 0];
       content.style.transform = `translate(${offset[0]}px, ${offset[1]}px)`;
       content.appendChild(this.options.element);
@@ -220,11 +223,22 @@ export class Overlay {
         yAnchor: 1,
         zIndex: 1000,
       });
+      this.observer = new ResizeObserver(() => {
+        if (this.position && this.native?.getMap())
+          this.native.setPosition(latLng(map.sdk, this.position));
+      });
+      this.observer.observe(content);
     }
     this.native.setPosition(latLng(map.sdk, this.position));
     if (this.native.getMap() !== map.native) this.native.setMap(map.native);
+    // Kakao adds its own positioned wrapper, which can intercept the pointer
+    // even when our content has pointer-events:none.
+    const wrapper = this.options.element.parentElement?.parentElement;
+    if (wrapper) wrapper.style.pointerEvents = "none";
   }
   detach() {
+    this.observer?.disconnect();
+    this.observer = undefined;
     this.native?.setMap(null);
     this.owner = undefined;
     this.native = undefined;
@@ -236,6 +250,7 @@ type Rendered = {
   element?: HTMLElement;
   image?: HTMLImageElement;
   style?: Style;
+  coordinate?: number[];
   detach: () => void;
 };
 
@@ -301,9 +316,7 @@ export class Map {
             .forEach((feature) => this.render(feature, index)),
         );
         options.overlays?.forEach((overlay) => overlay.attach(this));
-        this.nativeOn("mousemove", (event: any) =>
-          this.emit(null, [event.latLng.getLng(), event.latLng.getLat()]),
-        );
+        this.surface.addEventListener("pointermove", this.pointerMove, true);
         this.surface.addEventListener("mouseleave", this.leave);
         if (options.controls?.fullScreen) this.addFullScreen();
         this.updateSize();
@@ -322,6 +335,22 @@ export class Map {
       });
   }
   private leave = () => this.emit(null, this.options.view.options.center);
+  private pointerMove = (event: globalThis.PointerEvent) => {
+    // SDK overlays can emit synthetic leave/enter while repositioning. Hit-test
+    // the actual marker bounds instead, in capture phase before SDK handlers.
+    const entries = [...this.rendered.entries()].reverse();
+    for (const [feature, item] of entries) {
+      if (!item.element || !item.native?.getMap()) continue;
+      const bounds = (item.image ?? item.element).getBoundingClientRect();
+      if (bounds.width > 0 && bounds.height > 0 &&
+          event.clientX >= bounds.left && event.clientX <= bounds.right &&
+          event.clientY >= bounds.top && event.clientY <= bounds.bottom) {
+        this.emit(feature, (feature.getGeometry() as Point).getCoordinates());
+        return;
+      }
+    }
+    this.emit(null, this.options.view.options.center);
+  };
   private nativeOn(name: string, fn: (...args: any[]) => void) {
     this.sdk.event.addListener(this.native, name, fn);
     this.nativeEvents.push({ name, fn });
@@ -439,16 +468,6 @@ export class Map {
     if (!item.element) {
       item.element = document.createElement("div");
       item.element.style.cssText = "position:relative;cursor:pointer;";
-      item.element.addEventListener("mouseenter", () =>
-        this.emit(feature, (feature.getGeometry() as Point).getCoordinates()),
-      );
-      item.element.addEventListener("mousemove", (event) => {
-        event.stopPropagation();
-        this.emit(feature, (feature.getGeometry() as Point).getCoordinates());
-      });
-      item.element.addEventListener("mouseleave", () =>
-        this.emit(null, (feature.getGeometry() as Point).getCoordinates()),
-      );
       item.native = new this.sdk.CustomOverlay({
         content: item.element,
         position: latLng(this.sdk, coordinate),
@@ -487,6 +506,11 @@ export class Map {
           img.style.height = `${height}px`;
           const anchor = currentImage.options.anchor ?? [0.5, 1];
           item.element!.style.transform = `translate(${(0.5 - anchor[0]) * width}px, ${(1 - anchor[1]) * height}px)`;
+          // Kakao computes the anchor from DOM dimensions. Recompute after
+          // the image loads instead of retaining the initial zero-size anchor.
+          const point = feature.getGeometry();
+          if (width > 0 && height > 0 && point instanceof Point)
+            item.native.setPosition(latLng(this.sdk, point.getCoordinates()));
         };
         img.onload = size;
         if (!reuseImage) {
@@ -504,13 +528,17 @@ export class Map {
     }
     if (image instanceof Icon && item.image)
       item.image.style.transform = `rotate(${image.options.rotation ?? 0}rad)`;
-    item.native.setPosition(latLng(this.sdk, coordinate));
+    if (!item.coordinate || coordinate[0] !== item.coordinate[0] || coordinate[1] !== item.coordinate[1]) {
+      item.native.setPosition(latLng(this.sdk, coordinate));
+      item.coordinate = coordinate.slice();
+    }
     if (item.native.getMap() !== this.native) item.native.setMap(this.native);
   }
   setTarget(_target: undefined) {
     void _target;
     if (this.disposed) return;
     this.disposed = true;
+    this.surface.removeEventListener("pointermove", this.pointerMove, true);
     this.observer.disconnect();
     this.surface.removeEventListener("mouseleave", this.leave);
     this.nativeEvents.forEach(({ name, fn }) =>

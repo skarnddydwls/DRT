@@ -47,6 +47,7 @@ export default function NotificationHistoryPage() {
 
   const handleSearch = (newFilters: NotificationFilters) => {
     setFilters(newFilters);
+    void fetchData(newFilters);
   };
 
   const rowData = useMemo(() => {

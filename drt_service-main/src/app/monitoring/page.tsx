@@ -12,7 +12,8 @@ import { Point } from "@/lib/maps/kakaoMap";
 import { LineString } from "@/lib/maps/kakaoMap";
 import { Style, Stroke, Icon } from "@/lib/maps/kakaoMap";
 import { Overlay } from "@/lib/maps/kakaoMap";
-import { getActiveRouteNodes, getVehicleMarkers, getBusArrivals } from "@/lib/api/monitoring";
+import { getActiveRouteNodes, getRouteNodes, getVehicleMarkers, getBusArrivals } from "@/lib/api/monitoring";
+import { getDispatchList } from "@/lib/api/dispatch";
 import type { ActiveRouteNode, VehicleMarker } from "@/types/monitoring";
 import { getStopList, type StopRow } from "@/lib/api/marker";
 import { Button } from "@/components/ui/button";
@@ -35,8 +36,16 @@ export default function MonitoringPage() {
   const stopsLoadedRef = useRef(false);
   const activeRouteSignatureRef = useRef("");
   const routeNamesRef = useRef<Record<string, string>>({});
+  const routeIdsRef = useRef<Record<string, string>>({});
   const gridRef = useRef(null);
   const [gridRows, setGridRows] = useState<Record<string, unknown>[]>([]);
+  const [routeOptions, setRouteOptions] = useState<{ key: string; routeId: string; vehicleId: string; name: string }[]>([]);
+  const [selectedRoute, setSelectedRoute] = useState("");
+  const selectedRouteRef = useRef("");
+  const routeRequestRef = useRef(0);
+  const routeInFlightRef = useRef<string | null>(null);
+  const focusRouteRef = useRef(false);
+  const [routeError, setRouteError] = useState("");
 
   // 모니터링 그리드 컬럼 정의 (2:1 우측 배치용)
   const monitoringColumnDefs: ColDef[] = useMemo(
@@ -69,17 +78,46 @@ export default function MonitoringPage() {
 
   // 최근 위치가 있는 차량의 현재 일배차 노선만 지도에 표시
   const loadActiveRouteNodes = useCallback(async () => {
+    const selection = selectedRouteRef.current;
+    if (routeInFlightRef.current === selection) return;
+    routeInFlightRef.current = selection;
+    const requestId = ++routeRequestRef.current;
     try {
-      const response = await getActiveRouteNodes();
-      const nodes = response.nodes || [];
-      routeNamesRef.current = Object.fromEntries(nodes.map(node => [node.vehicle_id, node.route_nm ?? node.route_id]));
+      let nodes: ActiveRouteNode[];
+      if (selection) {
+        const [routeId, vehicleId] = selection.split("|");
+        const date = new Intl.DateTimeFormat("sv-SE", { timeZone: "Asia/Seoul" }).format(new Date());
+        const [route, day] = await Promise.all([
+          getRouteNodes({ ROUTE_ID: routeId, DISPATCH_DT: date }),
+          getDispatchList({ DISPATCH_DT: date }),
+        ]);
+        const dispatch = day.dispatches.filter(row => row.route_id === routeId && String(row.vehicle_id ?? "") === vehicleId);
+        const byPoint = new globalThis.Map(dispatch.map(row => [`${row.point_id}:${row.dispatch_seq}`, row]));
+        nodes = route.nodes.map(node => ({
+          ...node, gps_x: Number(node.gps_x), gps_y: Number(node.gps_y),
+          vehicle_id: vehicleId, route_nm: dispatch[0]?.route_nm ?? routeId,
+          point_nm: node.point_nm ?? null,
+          ext_dispatch_div: byPoint.get(`${node.point_id}:${node.point_seq}`)?.ext_dispatch_div ?? null,
+        }));
+      } else {
+        const response = await getActiveRouteNodes();
+        nodes = response.nodes || [];
+      }
+      if (requestId !== routeRequestRef.current || selection !== selectedRouteRef.current) return;
+      nodes = nodes.filter(node => node.gps_x != null && node.gps_y != null)
+        .map(node => ({ ...node, gps_x: Number(node.gps_x), gps_y: Number(node.gps_y) }));
+      if (!selection) {
+        routeNamesRef.current = Object.fromEntries(nodes.map(node => [node.vehicle_id, node.route_nm ?? node.route_id]));
+        routeIdsRef.current = Object.fromEntries(nodes.map(node => [node.vehicle_id, node.route_id]));
+      }
+      setRouteError(selection && !nodes.length ? "선택한 노선에 등록된 지도 좌표가 없습니다." : "");
       const vectorSource = vectorSourceRef.current;
       if (!vectorSource) {
         console.warn("vectorSource is not ready");
         return;
       }
 
-      const signature = nodes.map((node) =>
+      const signature = selection + nodes.map((node) =>
         `${node.route_id}:${node.vehicle_id}:${node.point_id}:${node.point_seq}:${node.ext_dispatch_div ?? ""}:${node.gps_x}:${node.gps_y}`
       ).join("|");
       if (signature === activeRouteSignatureRef.current) return;
@@ -96,7 +134,7 @@ export default function MonitoringPage() {
       const routeFeatures: Feature[] = [];
       Object.values(routes).forEach((routeNodes) => {
         const sorted = [...routeNodes]
-          .filter((node) => Number.isFinite(node.gps_x) && Number.isFinite(node.gps_y))
+          .filter((node) => vehicleCoordinates(node) && (node.gps_x !== 0 || node.gps_y !== 0))
           .sort((a, b) => a.point_seq - b.point_seq);
 
         // 예약구간 코드는 정류장에만 있으므로, 정류장 사이의 경유 노드에도
@@ -123,7 +161,8 @@ export default function MonitoringPage() {
         for (let index = 0; index < sorted.length - 1; index += 1) {
           const start = sorted[index];
           const end = sorted[index + 1];
-          const reserved = reservedFromPreviousStop[index] || reservedUntilNextStop[index + 1];
+          const normalSection = start.route_id === "RT00000016" && start.point_seq >= 109 && end.point_seq <= 130;
+          const reserved = !normalSection && (reservedFromPreviousStop[index] || reservedUntilNextStop[index + 1]);
           const segment = new Feature({
             geometry: new LineString([
               fromLonLat([start.gps_x, start.gps_y]),
@@ -146,9 +185,43 @@ export default function MonitoringPage() {
       vectorSource.clear();
       vectorSource.addFeatures(routeFeatures);
       activeRouteSignatureRef.current = signature;
+      if (focusRouteRef.current && nodes.length) {
+        const first = nodes.find(node => vehicleCoordinates(node));
+        if (first) mapRef.current?.getView().animate({ center: fromLonLat([Number(first.gps_x), Number(first.gps_y)]), duration: 450 });
+        focusRouteRef.current = false;
+      }
     } catch (error) {
+      if (requestId !== routeRequestRef.current) return;
+      setRouteError("선택한 노선을 불러오지 못했습니다. 백엔드 연결을 확인해주세요.");
       console.error("Failed to load active route nodes:", error);
+    } finally {
+      if (requestId === routeRequestRef.current) routeInFlightRef.current = null;
     }
+  }, []);
+
+  const selectRoute = (key: string, focus = true) => {
+    selectedRouteRef.current = key;
+    setSelectedRoute(key);
+    activeRouteSignatureRef.current = "";
+    focusRouteRef.current = Boolean(key) && focus;
+    vectorSourceRef.current?.clear();
+    void loadActiveRouteNodes();
+  };
+
+  useEffect(() => {
+    let disposed = false;
+    const date = new Intl.DateTimeFormat("sv-SE", { timeZone: "Asia/Seoul" }).format(new Date());
+    getDispatchList({ DISPATCH_DT: date }).then(response => {
+      if (disposed) return;
+      const options = new globalThis.Map<string, { key: string; routeId: string; vehicleId: string; name: string }>();
+      response.dispatches.forEach(row => {
+        const vehicleId = String(row.vehicle_id ?? "");
+        const key = `${row.route_id}|${vehicleId}`;
+        options.set(key, { key, routeId: row.route_id, vehicleId, name: row.route_nm || row.route_id });
+      });
+      setRouteOptions([...options.values()].sort((a, b) => a.name.localeCompare(b.name, "ko", { numeric: true })));
+    }).catch(() => { if (!disposed) setRouteError("일배차 노선 목록을 불러오지 못했습니다."); });
+    return () => { disposed = true; };
   }, []);
 
   // 정류장 데이터 로드 및 지도에 표시 (한 번만 실행)
@@ -221,7 +294,7 @@ export default function MonitoringPage() {
         }
         return acc;
       }, {} as Record<string, VehicleMarker>);
-      setGridRows(Object.values(latestVehicles).map(vehicle => ({ ...vehicle, route_nm: routeNamesRef.current[vehicle.vehicle_id] ?? "-" })));
+      setGridRows(Object.values(latestVehicles).map(vehicle => ({ ...vehicle, route_nm: vehicle.route_nm ?? routeNamesRef.current[vehicle.vehicle_id] ?? "-", route_id: vehicle.route_id || routeIdsRef.current[vehicle.vehicle_id] || "" })));
 
       const existingFeatures = vehicleSource.getFeatures();
       const existingFeaturesById = Object.fromEntries(
@@ -491,6 +564,8 @@ export default function MonitoringPage() {
     });
 
     mapRef.current = map;
+    activeRouteSignatureRef.current = "";
+    stopsLoadedRef.current = false;
     vectorSourceRef.current = vectorSource;
     vehicleSourceRef.current = vehicleSource;
     stopSourceRef.current = stopSource;
@@ -507,12 +582,19 @@ export default function MonitoringPage() {
     }, 5000);
 
     return () => {
+      ++routeRequestRef.current;
+      routeInFlightRef.current = null;
       clearInterval(interval);
       vehicleSource.getFeatures().forEach((feature) => {
         const animationFrame = feature.get("animation_frame") as number | undefined;
         if (animationFrame != null) cancelAnimationFrame(animationFrame);
       });
       map.setTarget(undefined);
+      mapRef.current = null;
+      vectorSourceRef.current = null;
+      vehicleSourceRef.current = null;
+      stopSourceRef.current = null;
+      activeRouteSignatureRef.current = "";
       resizeObserver.disconnect();
       // tooltipElement가 body의 자식인지 확인 후 제거
       if (tooltipElement && tooltipElement.parentNode === document.body) {
@@ -540,6 +622,14 @@ export default function MonitoringPage() {
       </div>
 
       <div className="rounded-xl border bg-white p-6 shadow-sm">
+        <label className="mb-4 flex items-center gap-3 text-sm font-semibold">
+          노선 선택
+          <select className="min-w-64 rounded-lg border bg-white px-3 py-2" value={selectedRoute} onChange={event => selectRoute(event.target.value)}>
+            <option value="">운행 중인 전체 노선</option>
+            {routeOptions.map(route => <option key={route.key} value={route.key}>{route.name}</option>)}
+          </select>
+        </label>
+        {routeError && <p role="status" className="mb-3 text-sm text-rose-600">{routeError}</p>}
         {/* 지도(2) : 그리드(1) 2:1 레이아웃 */}
         <div
           className="grid grid-cols-[minmax(0,2fr)_minmax(360px,1fr)] gap-4"
@@ -600,7 +690,18 @@ export default function MonitoringPage() {
               gridOptions={{
                 onRowClicked: ({ data }) => {
                   if (!data) return;
+                  const vehicleId = String(data.vehicle_id ?? "");
+                  const routeId = String(data.route_id || routeIdsRef.current[vehicleId] || "");
                   const location = vehicleCoordinates(data);
+                  if (routeId) {
+                    const key = `${routeId}|${vehicleId}`;
+                    setRouteOptions(options => options.some(option => option.key === key) ? options : [
+                      ...options, { key, routeId, vehicleId, name: String(data.route_nm || routeId) },
+                    ]);
+                    selectRoute(key, !location);
+                  } else {
+                    setRouteError("해당 차량의 운행 노선 정보가 없습니다.");
+                  }
                   if (!location) return;
                   mapRef.current?.getView().animate({
                     center: fromLonLat(location),

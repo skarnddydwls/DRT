@@ -186,7 +186,8 @@ export default function OperLogPage() {
       for (let index = 0; index < nodes.length - 1; index += 1) {
         const start = nodes[index];
         const end = nodes[index + 1];
-        const reserved = reservedFromPreviousStop[index] || reservedUntilNextStop[index + 1];
+        const normalSection = row.route_id === "RT00000016" && start.pointSeq >= 109 && end.pointSeq <= 130;
+        const reserved = !normalSection && (reservedFromPreviousStop[index] || reservedUntilNextStop[index + 1]);
         const segment = new Feature({
           geometry: new LineString([
             fromLonLat([start.longitude, start.latitude]),

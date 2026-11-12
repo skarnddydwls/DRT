@@ -22,6 +22,8 @@ export interface RouteNodeResponse {
 }
 
 export interface VehicleMarker {
+  route_id?: string;
+  route_nm?: string | null;
   gps_x: number;
   gps_y: number;
   oper_dtm: number;
