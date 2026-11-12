@@ -68,9 +68,23 @@ class ScheduleTests(unittest.TestCase):
         self.assertEqual(len(self.journey.plan([],True)[0]),3)
 
     def test_actual_boarding_alighting_and_through_bookings_activate_group(self):
-        for first,last in [(1,2),(2,3),(1,3)]:
+        for first,last in [(1,2),(2,3)]:
             booking=[dict(route_id="R1",start_seq=first,end_seq=last)]
             self.assertEqual(len(self.journey.plan(booking,False)[0]),3)
+
+    def test_base_only_booking_does_not_activate_extension(self):
+        active, _, _ = self.journey.plan([dict(route_id='R1',start_seq=1,end_seq=3)],False)
+        self.assertEqual([s['dispatch_seq'] for s in active],[1,3])
+
+    def test_full_reservation_only_runs_between_reserved_endpoints(self):
+        stops = [dict(s,ext_dispatch_div='CD004') for s in self.stops]
+        journey = sim.Journey(stops,self.net,25)
+        active, _, _ = journey.plan([dict(route_id='R1',start_seq=2,end_seq=3)],False)
+        self.assertEqual([s['dispatch_seq'] for s in active],[2,3])
+
+    def test_arrival_sequence_uses_the_actual_segment_endpoint(self):
+        position, _ = self.journey.position(BASE+dt.timedelta(minutes=4),[],True)
+        self.assertEqual(self.journey.arrival_sequence(BASE+dt.timedelta(minutes=4),position[0],[],True),2)
 
     def test_different_route_does_not_activate(self):
         booking=[dict(route_id="OTHER",start_seq=1,end_seq=3)]
@@ -78,7 +92,7 @@ class ScheduleTests(unittest.TestCase):
 
     def test_before_departure_booking_changes_are_applied(self):
         self.journey.plan([],False,BASE-dt.timedelta(minutes=2))
-        active,_,_=self.journey.plan([dict(route_id="R1",start_seq=1,end_seq=3)],False,BASE-dt.timedelta(minutes=1))
+        active,_,_=self.journey.plan([dict(route_id="R1",start_seq=1,end_seq=2)],False,BASE-dt.timedelta(minutes=1))
         self.assertEqual(len(active),3)
 
     def test_committed_section_does_not_change_path_mid_move(self):

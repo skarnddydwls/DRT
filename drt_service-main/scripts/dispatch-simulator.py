@@ -1,6 +1,6 @@
 """Daily-dispatch simulator. Standard library only; PostgreSQL access via psql.
 
-Only DRT_OPER_LOG is written. Dispatches, bookings and driver state stay intact.
+Position logs include arrival sequences. Final-stop arrival completes the booking.
 """
 from __future__ import annotations
 
@@ -115,13 +115,13 @@ class Database:
         return self.rows(f"""
           SELECT l.route_id,l.start_seq,l.end_seq FROM drt.drt_vehicle_call_leg l
           JOIN drt.drt_vehicle_use_log u USING(call_dtm,device_id)
-          WHERE l.dispatch_dt={literal(day)}::date AND l.vehicle_id={literal(vehicle)} AND u.rsv_status='WAIT'
+          WHERE l.dispatch_dt={literal(day)}::date AND l.vehicle_id={literal(vehicle)} AND u.rsv_status IN ('WAIT','DONE')
           UNION ALL
           SELECT c.route_id,c.dispatch_seq,e.dispatch_seq
           FROM drt.drt_vehicle_call_log c JOIN drt.drt_vehicle_use_log u USING(call_dtm,device_id)
           JOIN drt.drt_dispatch_day e ON e.dispatch_dt=c.dispatch_dt AND e.route_id=c.route_id
             AND e.vehicle_id=c.vehicle_id AND e.point_id=c.end_point_id AND e.algh_dtm=c.schedule_algh_dtm
-          WHERE c.dispatch_dt={literal(day)}::date AND c.vehicle_id={literal(vehicle)} AND u.rsv_status='WAIT'
+          WHERE c.dispatch_dt={literal(day)}::date AND c.vehicle_id={literal(vehicle)} AND u.rsv_status IN ('WAIT','DONE')
             AND NOT EXISTS(SELECT 1 FROM drt.drt_vehicle_call_leg l WHERE l.call_dtm=c.call_dtm AND l.device_id=c.device_id)
         """)
 
@@ -134,12 +134,12 @@ class Database:
         if rows[0]["oper"] != "Y":
             raise ValueError("Vehicle is marked not operating (oper_yn=N); monitoring will hide it. Select an operating test vehicle.")
 
-    def publish(self, vehicle, route, day, point, heading, speed, rollback=False):
+    def publish(self, vehicle, route, day, point, heading, speed, arrival_seq=None, rollback=False):
         # Recheck the live driver guard in the same statement on every publication.
         sql = f"""INSERT INTO drt.drt_oper_log
-          (oper_dtm,vehicle_id,route_id,dispatch_dt,gps_x,gps_y,heading,speed)
+          (oper_dtm,vehicle_id,route_id,dispatch_dt,gps_x,gps_y,heading,speed,arrival_seq)
           SELECT CURRENT_TIMESTAMP,{literal(vehicle)},{literal(route)},{literal(day)}::date,
-            {point[0]:.7f},{point[1]:.7f},{heading:.2f},{speed:.3f}
+            {point[0]:.7f},{point[1]:.7f},{heading:.2f},{speed:.3f},{int(arrival_seq) if arrival_seq is not None else 'NULL'}
           WHERE NOT EXISTS(SELECT 1 FROM drt.driver_operation WHERE vehicle_id={literal(vehicle)} AND ended_at IS NULL)
           RETURNING gps_x,gps_y"""
         if rollback:
@@ -229,6 +229,10 @@ class Segment:
     points: list
     cruise_kph: float
 
+    def travel_seconds(self):
+        length = sum(distance(a, b) for a, b in zip(self.points, self.points[1:]))
+        return min(max(0, (self.end-self.start).total_seconds()), length / (self.cruise_kph / 3.6))
+
     def position(self, now):
         lengths = [0.0]
         for a, b in zip(self.points, self.points[1:]):
@@ -260,6 +264,7 @@ class Journey:
         self.start = parse_time(stops[0]["arrival"])
         self.end = parse_time(stops[-1]["arrival"])
         self.locked = {}
+        self.locked_ranges = {}
         self.committed_segments = {}
         for a, b in zip(stops, stops[1:]):
             if parse_time(a["arrival"]) > parse_time(b["arrival"]):
@@ -281,8 +286,11 @@ class Journey:
             first, last = group["first"], group["last"]
             identity = (group["code"], first)
             # A booking crossing any part of the group also requires that group.
-            booked = any(b["route_id"] == self.route and int(b["start_seq"]) <= int(self.stops[last]["dispatch_seq"])
-                         and int(b["end_seq"]) >= int(self.stops[first]["dispatch_seq"]) for b in bookings)
+            low, high = int(self.stops[first]['dispatch_seq']), int(self.stops[last]['dispatch_seq'])
+            relevant = [b for b in bookings if b['route_id'] == self.route and
+                        (int(b['start_seq']) <= high and int(b['end_seq']) >= low if group['code'] == 'CD004'
+                         else low <= int(b['start_seq']) <= high or low <= int(b['end_seq']) <= high)]
+            booked = bool(relevant)
             decision = self.locked.get(identity, force or booked)
             before = first-1
             while before >= 0 and str(self.stops[before].get("ext_dispatch_div") or "").strip():
@@ -293,6 +301,14 @@ class Journey:
             decisions.append((group["code"], first, decision))
             if not decision:
                 inactive.update(range(first, last+1))
+            elif group['code'] == 'CD004' and not force:
+                bounds = self.locked_ranges.get(identity)
+                if bounds is None and relevant:
+                    bounds = (min(int(b['start_seq']) for b in relevant), max(int(b['end_seq']) for b in relevant))
+                    if now is not None and now >= departure:
+                        self.locked_ranges[identity] = bounds
+                if bounds is not None:
+                    inactive.update(i for i in range(first,last+1) if not bounds[0] <= int(self.stops[i]['dispatch_seq']) <= bounds[1])
         active = [s for i, s in enumerate(self.stops) if i not in inactive]
         blocked = {key(coordinate(self.stops[i])) for i in inactive}
         segments = []
@@ -320,6 +336,19 @@ class Journey:
             if now <= segment.end:
                 return segment.position(now), decisions
         return (coordinate(active[-1]), 0.0, 0.0), decisions
+
+    def arrival_sequence(self, now, point, bookings, force):
+        active, segments, _ = self.plan(bookings, force, now)
+        if not active:
+            return None
+        if now < parse_time(active[0]['arrival']):
+            return int(active[0]['dispatch_seq']) if distance(point, coordinate(active[0])) <= 30 else None
+        for index, segment in enumerate(segments):
+            if now <= segment.end:
+                reached = (now-segment.start).total_seconds() >= segment.travel_seconds()
+                target = active[index+1] if reached else active[index]
+                return int(target['dispatch_seq']) if distance(point, coordinate(target)) <= 30 else None
+        return int(active[-1]['dispatch_seq']) if distance(point, coordinate(active[-1])) <= 30 else None
 
 
 def build_journeys(stops, network, cruise):
@@ -352,6 +381,7 @@ class VehicleSession:
         self.token = f"daily|{uuid.uuid4()}"
         self.refreshed, self.ticks, self.last_decisions = -math.inf, 0, None
         self.deadheads = {}
+        self.last_arrival = None
         previous_active = previous_journey = None
         for journey in self.journeys:
             network.validate_dispatch(journey)
@@ -399,6 +429,7 @@ class VehicleSession:
                     journey, position, decisions = candidate, candidate_position, candidate_decisions
                     break
         index = journeys.index(journey)
+        deadheading = False
         if now > journey.end and index+1 < len(journeys):
             following, next_active = None, []
             for candidate in journeys[index+1:]:
@@ -412,12 +443,18 @@ class VehicleSession:
                     path = self.network.shortest(key(position[0]), key(coordinate(next_active[0])), set())
                     self.deadheads[deadhead_key] = Segment(journey.end, following.start, path, self.args.cruise_kph)
                 position = self.deadheads[deadhead_key].position(now)
+                deadheading = True
         decision_key = (journey.route, decisions)
         if decision_key != self.last_decisions:
             print(f"[{self.vehicle}] Route {journey.name}: " + ", ".join(f"{c}@{i+1}={'ON' if on else 'OFF'}" for c,i,on in decisions), flush=True)
             self.last_decisions = decision_key
         if position is not None and self.owns_token():
-            self.db.publish(self.vehicle, journey.route, self.day, *position)
+            arrival = None if deadheading else journey.arrival_sequence(now, position[0], self.bookings, force)
+            identity = (journey.route, arrival)
+            self.db.publish(self.vehicle, journey.route, self.day, *position,
+                            arrival if arrival is not None and identity != self.last_arrival else None)
+            if arrival is not None:
+                self.last_arrival = identity
             self.ticks += 1
             point, _, speed = position
             print(f"[{now:%H:%M:%S}] {self.vehicle} / {journey.name} X={point[0]:.7f} Y={point[1]:.7f} {speed:.1f}km/h", flush=True)

@@ -3,6 +3,8 @@
  */
 
 export interface RouteNode {
+  ext_dispatch_div?: string | null;
+  path_segment?: number;
   point_type: "NODE" | "STN";
   point_id: string;
   route_id: string;
@@ -39,6 +41,7 @@ export interface VehicleMarkerResponse {
 }
 
 export interface ActiveRouteNode {
+  path_segment?: number;
   route_id: string;
   route_nm: string | null;
   vehicle_id: string;

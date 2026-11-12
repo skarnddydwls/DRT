@@ -6,7 +6,6 @@ import GridCsvButton from "@/components/GridCsvButton";
 import { FilterForm } from "@/components/ui/FilterForm";
 import { getOperLogList } from "@/lib/api/operLog";
 import { getRouteNodes } from "@/lib/api/monitoring";
-import { getDispatchList } from "@/lib/api/dispatch";
 import { operLogColumnDefs } from "@/features/operLog/columnDefs";
 import { defaultFilters, operLogFields } from "@/features/operLog/fieldconfig";
 import type { OperLogFilters, OperLogRow } from "@/types/operLog";
@@ -139,21 +138,11 @@ export default function OperLogPage() {
     const requestId = ++routeRequestRef.current;
     const dispatchDate = formatTimestamp(row.dispatch_dt || row.oper_dtm, "YYYY-MM-DD");
     try {
-      const [routeData, dispatchData] = await Promise.all([
-        getRouteNodes({ ROUTE_ID: row.route_id, DISPATCH_DT: dispatchDate }),
-        getDispatchList({ DISPATCH_DT: dispatchDate }),
-      ]);
+      const routeData = await getRouteNodes({
+        ROUTE_ID: row.route_id, DISPATCH_DT: dispatchDate, VEHICLE_ID: row.vehicle_id,
+        OPERATING_ONLY: true, OPER_DTM: row.oper_dtm,
+      });
       if (requestId !== routeRequestRef.current) return;
-
-      const dispatchByPoint = new globalThis.Map<string, string>();
-      (dispatchData.dispatches ?? [])
-        .filter((dispatch) => String(dispatch.route_id) === row.route_id)
-        .forEach((dispatch) => {
-          dispatchByPoint.set(
-            `${String(dispatch.point_id)}:${Number(dispatch.dispatch_seq)}`,
-            String(dispatch.ext_dispatch_div ?? ""),
-          );
-        });
 
       const nodes = (routeData.nodes ?? [])
         .map((node) => ({
@@ -164,7 +153,8 @@ export default function OperLogPage() {
           pointSeq: Number(node.point_seq),
           longitude: Number(node.gps_x),
           latitude: Number(node.gps_y),
-          reserveCode: dispatchByPoint.get(`${String(node.point_id)}:${Number(node.point_seq)}`) ?? "",
+          pathSegment: node.path_segment ?? 0,
+          reserveCode: node.ext_dispatch_div ?? "",
         }))
         .filter((node) => Number.isFinite(node.longitude) && Number.isFinite(node.latitude))
         .sort((a, b) => a.pointSeq - b.pointSeq);
@@ -186,6 +176,7 @@ export default function OperLogPage() {
       for (let index = 0; index < nodes.length - 1; index += 1) {
         const start = nodes[index];
         const end = nodes[index + 1];
+        if (start.pathSegment !== end.pathSegment) continue;
         const normalSection = row.route_id === "RT00000016" && start.pointSeq >= 109 && end.pointSeq <= 130;
         const reserved = !normalSection && (reservedFromPreviousStop[index] || reservedUntilNextStop[index + 1]);
         const segment = new Feature({

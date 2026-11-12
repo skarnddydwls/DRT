@@ -5,7 +5,8 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json().catch(() => ({}));
 
-    const response = await fetch(`${BACKEND_BASE_URL}/selectRouteNodeList.do`, {
+    const endpoint = body.OPERATING_ONLY === true ? "selectOperatingRouteNodeList.do" : "selectRouteNodeList.do";
+    const response = await fetch(`${BACKEND_BASE_URL}/${endpoint}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),

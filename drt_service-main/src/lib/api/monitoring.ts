@@ -14,7 +14,7 @@ import type {
  * @returns 노선 노드 목록 및 전체 개수
  */
 export async function getRouteNodes(
-  params: { ROUTE_ID?: string; DISPATCH_DT?: string } = {}
+  params: { ROUTE_ID?: string; DISPATCH_DT?: string; VEHICLE_ID?: string; OPERATING_ONLY?: boolean; OPER_DTM?: string | number } = {}
 ): Promise<RouteNodeResponse> {
   return post<RouteNodeResponse>("/api/route-nodes", params);
 }

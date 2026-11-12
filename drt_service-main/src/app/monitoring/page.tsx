@@ -88,16 +88,15 @@ export default function MonitoringPage() {
         const [routeId, vehicleId] = selection.split("|");
         const date = new Intl.DateTimeFormat("sv-SE", { timeZone: "Asia/Seoul" }).format(new Date());
         const [route, day] = await Promise.all([
-          getRouteNodes({ ROUTE_ID: routeId, DISPATCH_DT: date }),
+          getRouteNodes({ ROUTE_ID: routeId, DISPATCH_DT: date, VEHICLE_ID: vehicleId, OPERATING_ONLY: true }),
           getDispatchList({ DISPATCH_DT: date }),
         ]);
         const dispatch = day.dispatches.filter(row => row.route_id === routeId && String(row.vehicle_id ?? "") === vehicleId);
-        const byPoint = new globalThis.Map(dispatch.map(row => [`${row.point_id}:${row.dispatch_seq}`, row]));
         nodes = route.nodes.map(node => ({
           ...node, gps_x: Number(node.gps_x), gps_y: Number(node.gps_y),
           vehicle_id: vehicleId, route_nm: dispatch[0]?.route_nm ?? routeId,
           point_nm: node.point_nm ?? null,
-          ext_dispatch_div: byPoint.get(`${node.point_id}:${node.point_seq}`)?.ext_dispatch_div ?? null,
+          ext_dispatch_div: node.ext_dispatch_div ?? null,
         }));
       } else {
         const response = await getActiveRouteNodes();
@@ -118,7 +117,7 @@ export default function MonitoringPage() {
       }
 
       const signature = selection + nodes.map((node) =>
-        `${node.route_id}:${node.vehicle_id}:${node.point_id}:${node.point_seq}:${node.ext_dispatch_div ?? ""}:${node.gps_x}:${node.gps_y}`
+        `${node.route_id}:${node.vehicle_id}:${node.point_id}:${node.point_seq}:${node.path_segment ?? 0}:${node.ext_dispatch_div ?? ""}:${node.gps_x}:${node.gps_y}`
       ).join("|");
       if (signature === activeRouteSignatureRef.current) return;
 
@@ -161,6 +160,7 @@ export default function MonitoringPage() {
         for (let index = 0; index < sorted.length - 1; index += 1) {
           const start = sorted[index];
           const end = sorted[index + 1];
+          if ((start.path_segment ?? 0) !== (end.path_segment ?? 0)) continue;
           const normalSection = start.route_id === "RT00000016" && start.point_seq >= 109 && end.point_seq <= 130;
           const reserved = !normalSection && (reservedFromPreviousStop[index] || reservedUntilNextStop[index + 1]);
           const segment = new Feature({
