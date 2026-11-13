@@ -177,8 +177,8 @@ export default function OperLogPage() {
         const start = nodes[index];
         const end = nodes[index + 1];
         if (start.pathSegment !== end.pathSegment) continue;
-        const normalSection = row.route_id === "RT00000016" && start.pointSeq >= 109 && end.pointSeq <= 130;
-        const reserved = !normalSection && (reservedFromPreviousStop[index] || reservedUntilNextStop[index + 1]);
+        const extensionSection = row.route_id !== "RT00000016" || (start.pointSeq >= 131 && end.pointSeq <= 168);
+        const reserved = extensionSection && (reservedFromPreviousStop[index] || reservedUntilNextStop[index + 1]);
         const segment = new Feature({
           geometry: new LineString([
             fromLonLat([start.longitude, start.latitude]),

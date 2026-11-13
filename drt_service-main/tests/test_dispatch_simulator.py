@@ -86,6 +86,24 @@ class ScheduleTests(unittest.TestCase):
         position, _ = self.journey.position(BASE+dt.timedelta(minutes=4),[],True)
         self.assertEqual(self.journey.arrival_sequence(BASE+dt.timedelta(minutes=4),position[0],[],True),2)
 
+    def test_arrival_inside_30m_does_not_wait_for_calculated_travel_end(self):
+        _, segments, _ = self.journey.plan([],True)
+        segment = segments[0]
+        now = segment.start + dt.timedelta(seconds=segment.travel_seconds()*0.9)
+        point, _, speed = segment.position(now)
+        self.assertGreater(speed,0)
+        self.assertLess(sim.distance(point,B),30)
+        self.assertEqual(self.journey.arrival_sequence(now,point,[],True),2)
+
+    def test_arrival_outside_radius_and_later_repeated_stop_are_not_reported(self):
+        self.assertIsNone(self.journey.arrival_sequence(BASE+dt.timedelta(seconds=1),C,[],True))
+        repeated=[stop(1,A,0),stop(2,B,5),stop(3,A,10)]
+        journey=sim.Journey(repeated,network(repeated),25)
+        self.assertEqual(journey.arrival_sequence(BASE+dt.timedelta(seconds=1),A,[],True),1)
+
+    def test_unbooked_extension_is_not_an_arrival_target(self):
+        self.assertIsNone(self.journey.arrival_sequence(BASE+dt.timedelta(minutes=1),B,[],False))
+
     def test_different_route_does_not_activate(self):
         booking=[dict(route_id="OTHER",start_seq=1,end_seq=3)]
         self.assertEqual(len(self.journey.plan(booking,False)[0]),2)

@@ -345,9 +345,13 @@ class Journey:
             return int(active[0]['dispatch_seq']) if distance(point, coordinate(active[0])) <= 30 else None
         for index, segment in enumerate(segments):
             if now <= segment.end:
-                reached = (now-segment.start).total_seconds() >= segment.travel_seconds()
-                target = active[index+1] if reached else active[index]
-                return int(target['dispatch_seq']) if distance(point, coordinate(target)) <= 30 else None
+                # The timetable selects the current leg, not whether arrival is allowed.
+                # Check its next stop first: entering 30m is arrival even before travel ends.
+                # Never scan later stops: opposite-direction/repeated stops can share GPS.
+                for target in (active[index+1], active[index]):
+                    if distance(point, coordinate(target)) <= 30:
+                        return int(target['dispatch_seq'])
+                return None
         return int(active[-1]['dispatch_seq']) if distance(point, coordinate(active[-1])) <= 30 else None
 
 

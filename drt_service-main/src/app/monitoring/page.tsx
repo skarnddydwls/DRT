@@ -161,8 +161,8 @@ export default function MonitoringPage() {
           const start = sorted[index];
           const end = sorted[index + 1];
           if ((start.path_segment ?? 0) !== (end.path_segment ?? 0)) continue;
-          const normalSection = start.route_id === "RT00000016" && start.point_seq >= 109 && end.point_seq <= 130;
-          const reserved = !normalSection && (reservedFromPreviousStop[index] || reservedUntilNextStop[index + 1]);
+          const extensionSection = start.route_id !== "RT00000016" || (start.point_seq >= 131 && end.point_seq <= 168);
+          const reserved = extensionSection && (reservedFromPreviousStop[index] || reservedUntilNextStop[index + 1]);
           const segment = new Feature({
             geometry: new LineString([
               fromLonLat([start.gps_x, start.gps_y]),
