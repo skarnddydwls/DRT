@@ -34,7 +34,6 @@ export const menuGroups = [
       ["/notification-history", "알림전송 이력", "알림 전송 내역과 전송 시각을 조회합니다."],
       ["/replacement-vehicle-history", "대차이력", "차량 대차 처리 내역을 조회합니다."],
       ["/cancellation-history", "결항정보 이력", "여객선 결항 정보와 발생 이력을 확인합니다."],
-      ["/stats", "호출통계", "차트로 호출 현황과 통계를 확인합니다."],
     ],
   },
   {

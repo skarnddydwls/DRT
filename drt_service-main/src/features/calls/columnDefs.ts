@@ -1,6 +1,8 @@
 import { formatTimestamp } from "@/lib/utils";
+import type { ColDef } from "ag-grid-community";
+import type { CallRow } from "@/types/call";
 
-export const callColumnDefs = [
+export const callColumnDefs: ColDef<CallRow>[] = [
   {
     headerName: "번호",
     valueGetter: "node.rowIndex + 1",
@@ -24,6 +26,19 @@ export const callColumnDefs = [
     minWidth: 170,
   },
   {
+    headerName: "예약상태",
+    field: "rsv_status",
+    minWidth: 140,
+    valueFormatter: ({ value }) => ({ WAIT: "예약완료", DONE: "이용완료", CANCEL: "예약취소" } as Record<string, string>)[String(value)] ?? "상태 확인 필요",
+    cellStyle: ({ value }) => ({ color: value === "CANCEL" ? "#dc2626" : value === "WAIT" ? "#2563eb" : "#475569", fontWeight: 600 }),
+  },
+  {
+    headerName: "사용자 닉네임",
+    field: "nickname",
+    minWidth: 140,
+    valueFormatter: ({ value }) => String(value ?? "").trim() || "미등록",
+  },
+  {
     headerName: "디바이스ID",
     field: "device_id",
     minWidth: 150,
@@ -32,6 +47,16 @@ export const callColumnDefs = [
     headerName: "노선명",
     field: "route_nm",
     minWidth: 140,
+  },
+  {
+    headerName: "승차예정시각",
+    field: "schedule_ride_dtm",
+    minWidth: 170,
+  },
+  {
+    headerName: "하차예정시각",
+    field: "schedule_algh_dtm",
+    minWidth: 170,
   },
   {
     headerName: "승차정류장",
@@ -53,11 +78,6 @@ export const callColumnDefs = [
   //   field: "curren_reserved",
   //   minWidth: 140,
   // },
-  {
-    headerName: "결제수단",
-    field: "payment",
-    minWidth: 120,
-  },
   {
     headerName: "배차일자",
     field: "dispatch_dt",

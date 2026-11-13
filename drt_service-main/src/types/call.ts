@@ -3,6 +3,11 @@
  */
 
 export interface CallRow extends Record<string, unknown> {
+  rsv_status?: string | null;
+  cancel_reason?: string | null;
+  nickname?: string | null;
+  schedule_ride_dtm?: string | null;
+  schedule_algh_dtm?: string | null;
   dispatch_seq: number;
   route_id: string;
   route_nm: string;

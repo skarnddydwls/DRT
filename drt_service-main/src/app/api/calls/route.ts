@@ -24,8 +24,6 @@ export async function POST(request: NextRequest) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const data: any[] = await response.json();
 
-    console.log("Call log backend response:", JSON.stringify(data, null, 2));
-
     return NextResponse.json({ calls: data, total: data.length });
   } catch (error) {
     console.error("Call API error:", error);

@@ -5,7 +5,9 @@ import Grid from "@/components/Grid";
 import GridCsvButton from "@/components/GridCsvButton";
 import KakaoMap from "@/components/KakaoMap";
 import { FilterForm } from "@/components/ui/FilterForm";
-import { getCallList } from "@/lib/api/call";
+import { cancelCall, getCallList } from "@/lib/api/call";
+import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { callColumnDefs } from "@/features/calls/columnDefs";
 import { defaultFilters, callFields } from "@/features/calls/fieldconfig";
 import type { CallFilters, CallRow } from "@/types/call";
@@ -29,17 +31,30 @@ export default function CallsPage() {
   const [allRows, setAllRows] = useState<CallRow[]>([]);
   const [loading, setLoading] = useState(false);
   const [selectedCall, setSelectedCall] = useState<CallRow | null>(null);
+  const [cancelTarget, setCancelTarget] = useState<CallRow | null>(null);
+  const [cancelling, setCancelling] = useState(false);
+  const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
+  const [cancelError, setCancelError] = useState("");
+  const cancellingRef = useRef(false);
+  const listRequestRef = useRef(0);
 
   // API 호출로 데이터 가져오기
   const fetchCallList = useCallback(async (searchFilters: CallFilters) => {
+    const requestId = ++listRequestRef.current;
     setLoading(true);
+    setError("");
     try {
       const response = await getCallList(searchFilters);
+      if (requestId !== listRequestRef.current) return;
       setAllRows(response.calls ?? []);
+      setSelectedCall(current => current ? response.calls.find(row => row.device_id === current.device_id && row.call_dtm === current.call_dtm) ?? null : null);
     } catch (error) {
+      if (requestId !== listRequestRef.current) return;
+      setError("예약 내역을 불러오지 못했습니다. 다시 조회해주세요.");
       console.error("Failed to fetch call list:", error);
     } finally {
-      setLoading(false);
+      if (requestId === listRequestRef.current) setLoading(false);
     }
   }, []);
 
@@ -49,6 +64,31 @@ export default function CallsPage() {
 
   const handleSearch = (newFilters: CallFilters) => {
     setFilters(newFilters);
+    setSelectedCall(null);
+    setMessage("");
+    void fetchCallList(newFilters);
+  };
+
+  const handleCancel = async () => {
+    if (!cancelTarget || cancellingRef.current) return;
+    cancellingRef.current = true;
+    setCancelling(true);
+    setCancelError("");
+    try {
+      const result = await cancelCall(cancelTarget);
+      setMessage(result.alreadyCancelled ? "이미 취소된 예약입니다." : "예약을 취소했습니다.");
+      setAllRows(rows => rows.map(row => row.device_id === cancelTarget.device_id && row.call_dtm === cancelTarget.call_dtm
+        ? { ...row, rsv_status: "CANCEL", cancel_reason: result.alreadyCancelled ? row.cancel_reason : "ADMIN_CANCELLED" } : row));
+      setSelectedCall(null);
+      setCancelTarget(null);
+      await fetchCallList(filters);
+    } catch (error) {
+      setCancelError(error instanceof Error ? error.message : "예약취소에 실패했습니다.");
+      await fetchCallList(filters);
+    } finally {
+      cancellingRef.current = false;
+      setCancelling(false);
+    }
   };
 
   const rowData = useMemo(() => {
@@ -123,11 +163,19 @@ export default function CallsPage() {
       {/* 페이지 제목 */}
       <div className="mb-6">
         <h1 className="text-[28px] font-bold tracking-tight">호출기록 조회</h1>
-        <p className="mt-1 text-sm text-gray-500">호출 기록을 조회합니다.</p>
+        <p className="mt-1 text-sm text-gray-500">앱 예약 내역과 이용 상태를 조회합니다. 예약완료는 이용 전 예약이며, 선택 후 관리자 취소가 가능합니다.</p>
       </div>
 
       <div className="rounded-xl border bg-white p-6 shadow-sm">
-        <GridCsvButton gridRef={gridRef} fileName="호출기록" disabled={loading || rowData.length === 0} />
+        <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+          <GridCsvButton gridRef={gridRef} fileName="호출기록" disabled={loading || rowData.length === 0} />
+          <Button variant="destructive" disabled={loading || cancelling || selectedCall?.rsv_status !== "WAIT"}
+            onClick={() => { setCancelError(""); setMessage(""); setCancelTarget(selectedCall); }}>
+            선택 예약 취소
+          </Button>
+        </div>
+        {message && <p role="status" className="mb-3 text-sm text-green-700">{message}</p>}
+        {error && <p role="alert" className="mb-3 text-sm text-red-600">{error}</p>}
         <FilterForm<CallFilters>
           fields={callFields}
           defaultValues={defaultFilters}
@@ -187,6 +235,25 @@ export default function CallsPage() {
           </div>
         </div>
       </div>
+      <Dialog open={Boolean(cancelTarget)} onOpenChange={open => { if (!open && !cancelling) setCancelTarget(null); }}>
+        <DialogContent showCloseButton={!cancelling}>
+          <DialogHeader>
+            <DialogTitle>예약을 취소하시겠습니까?</DialogTitle>
+            <DialogDescription>취소하면 앱 예약 상태와 해당 예약의 승차 인원이 함께 반영됩니다. 환승 예약은 전체 구간이 취소됩니다.</DialogDescription>
+          </DialogHeader>
+          {cancelTarget && <div className="space-y-2 rounded-lg bg-slate-50 p-4 text-sm">
+            <p>{cancelTarget.route_nm} · {cancelTarget.rsv_num}명</p>
+            <p>{cancelTarget.start_point_nm} → {cancelTarget.end_point_nm}</p>
+            <p>승차예정: {cancelTarget.schedule_ride_dtm || "-"}</p>
+            <p>예약일시: {cancelTarget.call_dtm}</p>
+          </div>}
+          {cancelError && <p role="alert" className="text-sm text-red-600">{cancelError}</p>}
+          <DialogFooter>
+            <Button variant="outline" disabled={cancelling} onClick={() => setCancelTarget(null)}>닫기</Button>
+            <Button variant="destructive" disabled={cancelling} onClick={handleCancel}>{cancelling ? "취소 중..." : "예약취소 확인"}</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </section>
   );
 }
