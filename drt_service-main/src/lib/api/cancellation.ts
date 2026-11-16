@@ -31,6 +31,7 @@ export async function getCancellationHistoryList(
     cancel_dtm: String(item.cancel_dtm ?? item.operation_date ?? ""),
     plan_dtm: String(item.plan_dtm ?? item.scheduled_time ?? ""),
     ship_nm: String(item.ship_nm ?? ""),
+    route_nm: String(item.route_nm ?? ""),
     start_port_nm: String(item.start_port_nm ?? ""),
     end_port_nm: String(item.end_port_nm ?? ""),
     cancel_reason: String(item.cancel_reason ?? item.reason ?? ""),
