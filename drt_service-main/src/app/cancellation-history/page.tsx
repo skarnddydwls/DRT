@@ -61,7 +61,10 @@ export default function CancellationHistoryPage() {
       const matchDate = filters.cancellationDate
         ? String(row.cancel_dtm ?? "").startsWith(filters.cancellationDate)
         : true;
-      return matchDate;
+      const matchPlanned = filters.plannedDate
+        ? String(row.plan_dtm ?? "").startsWith(filters.plannedDate)
+        : true;
+      return matchDate && matchPlanned;
     });
   }, [allRows, filters]);
 
@@ -69,7 +72,6 @@ export default function CancellationHistoryPage() {
     <section>
       <div className="mb-6">
         <h1 className="text-[28px] font-bold tracking-tight">결항정보 이력</h1>
-        <p className="mt-1 text-sm text-gray-500">앱 여객선 시간표와 같은 항로·입도/출도 조건의 비운·통제 이력을 10분마다 수집합니다. 최초 확인시각은 실제 결항 발생시각과 다를 수 있으며, 과거 원본 보완 건은 사유에 보완 등록시각임을 표시합니다. 최신 1,000건까지 조회합니다.</p>
       </div>
 
       <div className="rounded-xl border bg-white p-6 shadow-sm">

@@ -3,7 +3,7 @@ export interface FieldOption {
   value: string | number;
 }
 
-export type FieldType = "text" | "date" | "time" | "select" | "combobox";
+export type FieldType = "text" | "date" | "time" | "datetime-local" | "select" | "combobox";
 
 export interface FieldConfig {
   name: string;

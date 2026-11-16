@@ -1,5 +1,6 @@
 export interface CancellationFilters {
     cancellationDate?: string;
+    plannedDate?: string;
     shipNm?: string;
     routeNm?: string;
 }
