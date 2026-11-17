@@ -23,6 +23,8 @@ if not exist ".next-production\BUILD_ID" (
 )
 if not defined CENTER_HOST set "CENTER_HOST=0.0.0.0"
 if not defined PORT set "PORT=3000"
+if not defined BACKEND_API_BASE_URL set "BACKEND_API_BASE_URL=http://127.0.0.1:8386/drt"
+if not defined CENTER_ALLOWED_ORIGINS set "CENTER_ALLOWED_ORIGINS=http://1.241.174.98:3000,http://192.168.111.8:3000"
 echo DRT Center - bind address: "%CENTER_HOST%:%PORT%"
 if /I "%~1"=="--check" (
   echo Configuration checks passed. The center was NOT started.

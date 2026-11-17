@@ -168,7 +168,7 @@ export default function StatsPage() {
                     노선별 전체 호출 건수
                   </h3>
                   <div className="flex-1 min-h-0">
-                    <ResponsiveContainer width="100%" height="100%">
+                    <ResponsiveContainer width="100%" height="100%" minWidth={0} initialDimension={{ width: 400, height: 240 }}>
                       <BarChart
                         data={chartData}
                         margin={{ top: 10, right: 10, left: -10, bottom: 40 }}>
@@ -212,7 +212,7 @@ export default function StatsPage() {
                     결제 수단별 호출 비교
                   </h3>
                   <div className="flex-1 min-h-0">
-                    <ResponsiveContainer width="100%" height="100%">
+                    <ResponsiveContainer width="100%" height="100%" minWidth={0} initialDimension={{ width: 400, height: 240 }}>
                       <BarChart
                         data={chartData}
                         margin={{ top: 10, right: 10, left: -10, bottom: 40 }}>
@@ -265,7 +265,7 @@ export default function StatsPage() {
                   전체 결제 수단 비율
                 </h3>
                 <div className="flex-1 min-h-0">
-                  <ResponsiveContainer width="100%" height="100%">
+                  <ResponsiveContainer width="100%" height="100%" minWidth={0} initialDimension={{ width: 400, height: 240 }}>
                     <PieChart>
                       <Pie
                         data={pieData}
