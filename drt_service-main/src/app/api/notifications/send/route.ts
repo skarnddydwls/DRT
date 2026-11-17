@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { BACKEND_BASE_URL } from "@/config/backend";
-import { allowTourismRequest as allowCenterRequest } from "@/features/tourism/requestOrigin";
+import { allowCenterRequest } from "@/features/tourism/requestOrigin";
 
 export async function POST(request: NextRequest) {
   try {
-    if (!allowCenterRequest(request.headers.get("origin"), request.headers.get("host") ?? request.nextUrl.host, request.nextUrl.protocol)) {
-      return NextResponse.json({ error: "로컬 센터에서만 알림을 발송할 수 있습니다." }, { status: 403 });
+    if (!allowCenterRequest(request.headers.get("origin"), request.headers.get("host") ?? request.nextUrl.host, request.nextUrl.protocol, process.env.CENTER_ALLOWED_ORIGINS)) {
+      return NextResponse.json({ error: "허용되지 않은 센터 주소입니다. CENTER_ALLOWED_ORIGINS 설정을 확인해주세요." }, { status: 403 });
     }
     const body = await request.json().catch(() => ({}));
 

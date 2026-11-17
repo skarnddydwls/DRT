@@ -57,10 +57,12 @@ export async function apiClient<T>(
     console.log("[apiClient] Response status:", response.status, response.statusText);
 
     if (!response.ok) {
+      const data = await response.json().catch(() => null);
+      const message = typeof data?.error === 'string' ? data.error : typeof data?.message === 'string' ? data.message : undefined;
       throw new ApiError(
         response.status,
         response.statusText,
-        `Failed to fetch ${endpoint}: ${response.statusText}`
+        message || `Failed to fetch ${endpoint}: ${response.statusText}`
       );
     }
 
