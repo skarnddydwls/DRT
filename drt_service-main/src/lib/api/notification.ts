@@ -28,9 +28,13 @@ export interface FerrySailing {
 }
 
 export async function getNotificationFerrySailings(sailingDate: string): Promise<FerrySailing[]> {
-  const data = await post<{ sailings: FerrySailing[] }>("/api/notifications/send", {
-    action: "listFerrySailings", sailingDate,
+  const response = await fetch("/api/notifications/send", {
+    method: "POST", headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ action: "listFerrySailings", sailingDate }),
   });
+  const data = await response.json().catch(() => null);
+  if (!response.ok) throw new Error(data?.error || "운항편을 조회하지 못했습니다.");
+  if (!Array.isArray(data?.sailings)) throw new Error("운항편 서버 응답을 확인할 수 없습니다.");
   return data.sailings;
 }
 
