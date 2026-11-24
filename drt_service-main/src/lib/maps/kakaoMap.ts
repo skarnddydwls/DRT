@@ -47,13 +47,13 @@ export class LineString extends Observable {
   }
 }
 export class Stroke {
-  constructor(public options: { color: string; width: number }) {}
+  constructor(public options: { color: string; width: number }) { }
 }
 export class Fill {
-  constructor(public options: { color: string }) {}
+  constructor(public options: { color: string }) { }
 }
 export class CircleStyle {
-  constructor(public options: { radius: number; fill: Fill; stroke: Stroke }) {}
+  constructor(public options: { radius: number; fill: Fill; stroke: Stroke }) { }
 }
 export class Icon extends Observable {
   constructor(
@@ -74,7 +74,7 @@ export class Icon extends Observable {
 export class Style {
   constructor(
     public options: { image?: Icon | CircleStyle; stroke?: Stroke },
-  ) {}
+  ) { }
 }
 export class Feature extends Observable {
   private props: Record<string, any>;
@@ -155,9 +155,9 @@ export class VectorSource {
   }
 }
 export class VectorLayer {
-  constructor(public options: { source: VectorSource }) {}
+  constructor(public options: { source: VectorSource }) { }
 }
-export class FullScreen {}
+export class FullScreen { }
 class Controls {
   fullScreen = false;
   extend(controls: unknown[]) {
@@ -173,7 +173,7 @@ export class View {
   owner?: Map;
   constructor(
     public options: { center: number[]; zoom: number; maxZoom?: number },
-  ) {}
+  ) { }
   animate(options: { center?: number[]; zoom?: number; duration?: number }) {
     if (options.center) this.options.center = options.center;
     if (options.zoom !== undefined) this.options.zoom = options.zoom;
@@ -191,7 +191,7 @@ export class Overlay {
       positioning?: string;
       offset?: number[];
     },
-  ) {}
+  ) { }
   getElement() {
     return this.options.element;
   }
@@ -305,11 +305,11 @@ export class Map {
           level: kakaoLevel(options.view.options.zoom),
           mapTypeId: sdk.MapTypeId.ROADMAP,
         });
-        this.native.addControl(new sdk.ZoomControl(), sdk.ControlPosition.LEFT);
         this.native.addControl(
-          new sdk.MapTypeControl(),
-          sdk.ControlPosition.BOTTOMLEFT,
+          new sdk.ZoomControl(),
+          sdk.ControlPosition.BOTTOMRIGHT,
         );
+        this.addMapTypeControl();
         this.layers.forEach((layer, index) =>
           layer.options.source
             .getFeatures()
@@ -343,8 +343,8 @@ export class Map {
       if (!item.element || !item.native?.getMap()) continue;
       const bounds = (item.image ?? item.element).getBoundingClientRect();
       if (bounds.width > 0 && bounds.height > 0 &&
-          event.clientX >= bounds.left && event.clientX <= bounds.right &&
-          event.clientY >= bounds.top && event.clientY <= bounds.bottom) {
+        event.clientX >= bounds.left && event.clientX <= bounds.right &&
+        event.clientY >= bounds.top && event.clientY <= bounds.bottom) {
         this.emit(feature, (feature.getGeometry() as Point).getCoordinates());
         return;
       }
@@ -355,12 +355,60 @@ export class Map {
     this.sdk.event.addListener(this.native, name, fn);
     this.nativeEvents.push({ name, fn });
   }
+  private addMapTypeControl() {
+    const wrap = document.createElement("div");
+    wrap.style.cssText =
+      "position:absolute;left:10px;top:10px;z-index:10;display:inline-flex;overflow:hidden;background:#ffffff;border:1px solid #d1d5db;border-radius:6px;box-shadow:0 1px 3px rgba(0,0,0,0.12);";
+
+    const roadmapBtn = document.createElement("button");
+    roadmapBtn.type = "button";
+    roadmapBtn.textContent = "지도";
+
+    const skyviewBtn = document.createElement("button");
+    skyviewBtn.type = "button";
+    skyviewBtn.textContent = "스카이뷰";
+
+    const applyButtonStyle = (btn: HTMLButtonElement, active: boolean, withDivider: boolean) => {
+      btn.style.cssText = [
+        "height:30px",
+        "padding:0 10px",
+        "font-size:12px",
+        "font-weight:500",
+        "border:none",
+        withDivider ? "border-right:1px solid #d1d5db" : "",
+        "cursor:pointer",
+        active ? "background:#2563eb;color:#ffffff" : "background:#ffffff;color:#374151",
+      ]
+        .filter(Boolean)
+        .join(";");
+    };
+
+    const setType = (mode: "roadmap" | "skyview") => {
+      if (!this.native || !this.sdk) return;
+      this.native.setMapTypeId(
+        mode === "roadmap"
+          ? this.sdk.MapTypeId.ROADMAP
+          : this.sdk.MapTypeId.HYBRID,
+      );
+      applyButtonStyle(roadmapBtn, mode === "roadmap", true);
+      applyButtonStyle(skyviewBtn, mode === "skyview", false);
+    };
+
+    roadmapBtn.onclick = () => setType("roadmap");
+    skyviewBtn.onclick = () => setType("skyview");
+    applyButtonStyle(roadmapBtn, true, true);
+    applyButtonStyle(skyviewBtn, false, false);
+
+    wrap.append(roadmapBtn, skyviewBtn);
+    this.container.appendChild(wrap);
+    this.extras.push(wrap);
+  }
   private addFullScreen() {
     const button = document.createElement("button");
     button.type = "button";
     button.textContent = "전체화면";
     button.style.cssText =
-      "position:absolute;left:8px;top:8px;z-index:10;background:white;border:1px solid #ccc;border-radius:4px;padding:6px;font-size:12px;";
+      "position:absolute;left:10px;top:48px;z-index:10;height:32px;padding:0 12px;background:#ffffff;color:#374151;border:1px solid #d1d5db;border-radius:6px;font-size:12px;font-weight:500;cursor:pointer;box-shadow:0 1px 3px rgba(0,0,0,0.12);";
     button.onclick = () => {
       if (document.fullscreenElement) void document.exitFullscreen();
       else void this.container.requestFullscreen().catch(() => undefined);

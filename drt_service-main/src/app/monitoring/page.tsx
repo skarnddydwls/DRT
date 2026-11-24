@@ -16,9 +16,21 @@ import { getActiveRouteNodes, getRouteNodes, getVehicleMarkers, getBusArrivals }
 import { getDispatchList } from "@/lib/api/dispatch";
 import type { ActiveRouteNode, VehicleMarker } from "@/types/monitoring";
 import { getStopList, type StopRow } from "@/lib/api/marker";
+import {
+  buildVehicleGridRows,
+  cancelVehicleAnimations,
+  mergeVehicleMarkers,
+  syncVehicleMarkerFeatures,
+  type VehicleUpdateMode,
+} from "@/features/monitoring/vehicleMarkers";
 import { Button } from "@/components/ui/button";
 import Grid from "@/components/Grid";
 import type { ColDef } from "ag-grid-community";
+import {
+  MONITORING_WS_URL,
+  MONITORING_VEHICLE_TOPIC,
+} from "@/config/monitoring";
+import { useVehicleLocationStomp, type StompConnectionStatus, } from "@/features/monitoring/useVehicleLocationStomp";
 
 const USIL_INTERSECTION_CENTER: [number, number] = [127.766968, 34.512524];
 const SINGI_PORT_CENTER: [number, number] = [127.74364092364029, 34.59929482516387];
@@ -26,6 +38,37 @@ const GEUMODO_OVERVIEW_ZOOM = 15.5;
 const FIXED_ROUTE_COLOR = "#667eea";
 const RESERVED_ROUTE_COLOR = "#ffd400";
 const VEHICLE_MOVE_DURATION_MS = 4500;
+// STOMP 연결 상태별 배지 라벨 및 스타일 매핑
+const STOMP_STATUS_META: Record<
+  StompConnectionStatus,
+  { label: string; badgeClass: string; dotClass: string }
+> = {
+  idle: {
+    label: "실시간 대기",
+    badgeClass: "bg-gray-100 text-gray-600 border-gray-200",
+    dotClass: "bg-gray-400",
+  },
+  connecting: {
+    label: "연결 중...",
+    badgeClass: "bg-amber-50 text-amber-700 border-amber-200",
+    dotClass: "bg-amber-500 animate-pulse",
+  },
+  connected: {
+    label: "실시간 연결됨",
+    badgeClass: "bg-emerald-50 text-emerald-700 border-emerald-200",
+    dotClass: "bg-emerald-500",
+  },
+  disconnected: {
+    label: "연결 끊김",
+    badgeClass: "bg-rose-50 text-rose-700 border-rose-200",
+    dotClass: "bg-rose-500",
+  },
+  error: {
+    label: "연결 오류",
+    badgeClass: "bg-rose-100 text-rose-800 border-rose-300",
+    dotClass: "bg-rose-600",
+  },
+};
 
 export default function MonitoringPage() {
   const mapRef = useRef<Map | null>(null);
@@ -37,6 +80,7 @@ export default function MonitoringPage() {
   const activeRouteSignatureRef = useRef("");
   const routeNamesRef = useRef<Record<string, string>>({});
   const routeIdsRef = useRef<Record<string, string>>({});
+  const latestVehiclesRef = useRef<Record<string, VehicleMarker>>({});
   const gridRef = useRef(null);
   const [gridRows, setGridRows] = useState<Record<string, unknown>[]>([]);
   const [routeOptions, setRouteOptions] = useState<{ key: string; routeId: string; vehicleId: string; name: string }[]>([]);
@@ -274,11 +318,12 @@ export default function MonitoringPage() {
     }
   }, []);
 
-  // 버스 마커 데이터 로드 및 지도에 표시
-  const loadVehicleMarkers = useCallback(async () => {
-    try {
-      const response = await getVehicleMarkers();
-      const vehicles = response.vehicles || [];
+  // 수신된 차량 위치 데이터를 지도와 그리드에 반영 (REST 스냅샷 / STOMP 델타 공용)
+  const applyVehicleMarkers = useCallback(
+    (
+      vehicles: VehicleMarker[],
+      options: { mode?: VehicleUpdateMode; moveDurationMs?: number } = {}
+    ) => {
       const vehicleSource = vehicleSourceRef.current;
       const map = mapRef.current;
       if (!vehicleSource || !map) {
@@ -286,101 +331,49 @@ export default function MonitoringPage() {
         return;
       }
 
-      // vehicle_id별로 그룹화하고 가장 최신값만 사용
-      const latestVehicles = vehicles.reduce((acc, vehicle) => {
-        const existing = acc[vehicle.vehicle_id];
-        if (!existing || vehicle.oper_dtm > existing.oper_dtm) {
-          acc[vehicle.vehicle_id] = vehicle;
-        }
-        return acc;
-      }, {} as Record<string, VehicleMarker>);
-      setGridRows(Object.values(latestVehicles).map(vehicle => ({ ...vehicle, route_nm: vehicle.route_nm ?? routeNamesRef.current[vehicle.vehicle_id] ?? "-", route_id: vehicle.route_id || routeIdsRef.current[vehicle.vehicle_id] || "" })));
+      const mode = options.mode ?? "snapshot";
+      const moveDurationMs = options.moveDurationMs ?? VEHICLE_MOVE_DURATION_MS;
+      const { nextVehicles, updatedVehicles } = mergeVehicleMarkers(
+        latestVehiclesRef.current,
+        vehicles,
+        mode
+      );
 
-      const existingFeatures = vehicleSource.getFeatures();
-      const existingFeaturesById = Object.fromEntries(
-        existingFeatures.map((feature) => [String(feature.get("vehicle_id")), feature])
-      ) as Record<string, Feature>;
-      const currentVehicleIds = new Set<string>();
+      latestVehiclesRef.current = nextVehicles;
+      setGridRows(
+        buildVehicleGridRows(
+          nextVehicles,
+          routeNamesRef.current,
+          routeIdsRef.current
+        )
+      );
 
-      // 기존 마커는 제거하지 않고 위치와 방향만 갱신
-      Object.values(latestVehicles).forEach((vehicle) => {
-        const location = vehicleCoordinates(vehicle);
-        if (!location) return;
-        currentVehicleIds.add(vehicle.vehicle_id);
-        const coord = fromLonLat(location);
-        const feature = existingFeaturesById[vehicle.vehicle_id] ?? new Feature();
-        const previousGeometry = feature.getGeometry();
-        const previousCoord = previousGeometry instanceof Point
-          ? previousGeometry.getCoordinates().slice()
-          : null;
-        const targetHeading = Number(vehicle.heading) || 0;
-        const previousHeadingValue = Number(feature.get("display_heading"));
-        const previousHeading = Number.isFinite(previousHeadingValue)
-          ? previousHeadingValue
-          : targetHeading;
-        // 359° → 1° 같은 경우 반대 방향으로 한 바퀴 돌지 않도록 최단 각도를 사용한다.
-        const headingDelta = ((targetHeading - previousHeading + 540) % 360) - 180;
-        const iconSrc =
-          vehicle.vehicle_id === "VH00000002" ? "/bus2.png" : "/bus.png";
-        const vehicleIcon = new Icon({
-          src: iconSrc,
-          scale: 0.3,
-          rotation: (previousHeading * Math.PI) / 180,
-          anchor: [0.5, 0.5],
-        });
-        feature.setStyle(new Style({ image: vehicleIcon }));
-        const previousAnimationFrame = feature.get("animation_frame") as number | undefined;
-        if (previousAnimationFrame != null) cancelAnimationFrame(previousAnimationFrame);
-
-        if (previousCoord) {
-          const geometry = previousGeometry as Point;
-          const startedAt = performance.now();
-          const animate = (now: number) => {
-            const progress = Math.min((now - startedAt) / VEHICLE_MOVE_DURATION_MS, 1);
-            const eased = progress * progress * (3 - 2 * progress);
-            geometry.setCoordinates([
-              previousCoord[0] + (coord[0] - previousCoord[0]) * eased,
-              previousCoord[1] + (coord[1] - previousCoord[1]) * eased,
-            ]);
-            const displayedHeading = (previousHeading + headingDelta * eased + 360) % 360;
-            vehicleIcon.setRotation((displayedHeading * Math.PI) / 180);
-            feature.set("display_heading", displayedHeading, true);
-            if (progress < 1) {
-              feature.set("animation_frame", requestAnimationFrame(animate), true);
-            } else {
-              feature.unset("animation_frame", true);
-            }
-          };
-          feature.set("animation_frame", requestAnimationFrame(animate), true);
-        } else {
-          feature.setGeometry(new Point(coord));
-          vehicleIcon.setRotation((targetHeading * Math.PI) / 180);
-          feature.set("display_heading", targetHeading, true);
-        }
-        feature.setProperties({
-          feature_kind: "vehicle",
-          vehicle_id: vehicle.vehicle_id,
-          vehicle_no: vehicle.vehicle_no,
-          oper_dtm: vehicle.oper_dtm,
-          heading: vehicle.heading,
-          speed: vehicle.speed,
-        });
-
-        if (!existingFeaturesById[vehicle.vehicle_id]) vehicleSource.addFeature(feature);
+      syncVehicleMarkerFeatures(vehicleSource, updatedVehicles, {
+        mode,
+        moveDurationMs,
       });
+    },
+    []
+  );
 
-      existingFeatures.forEach((feature) => {
-        const vehicleId = String(feature.get("vehicle_id"));
-        if (!currentVehicleIds.has(vehicleId)) {
-          const animationFrame = feature.get("animation_frame") as number | undefined;
-          if (animationFrame != null) cancelAnimationFrame(animationFrame);
-          vehicleSource.removeFeature(feature);
-        }
-      });
+  // 버스 마커 초기 스냅샷 조회 (추후 STOMP 연결/재연결 시 초기 동기화용으로 유지)
+  const loadVehicleMarkers = useCallback(async () => {
+    try {
+      const response = await getVehicleMarkers();
+      applyVehicleMarkers(response.vehicles || [], { mode: "snapshot" });
     } catch (error) {
       console.error("Failed to load vehicle markers:", error);
     }
-  }, []);
+  }, [applyVehicleMarkers]);
+
+  const { status: stompStatus } = useVehicleLocationStomp({
+    brokerURL: MONITORING_WS_URL,
+    topic: MONITORING_VEHICLE_TOPIC,
+    onVehicles: (vehicles) => applyVehicleMarkers(vehicles, { mode: "delta" }),
+    onConnected: () => {
+      void loadVehicleMarkers();
+    },
+  });
 
   // 지도 초기화 (벡터 레이어 포함)
   useEffect(() => {
@@ -499,14 +492,14 @@ export default function MonitoringPage() {
           ).padStart(2, "0")}:${String(date.getSeconds()).padStart(2, "0")}`;
 
           // m/s를 km/h로 변환 (1 m/s = 3.6 km/h)
-          const speedKmh = speed * 3.6;
+          const speedKmh = Number.isFinite(Number(speed)) ? Number(speed) * 3.6 : 0;
           tooltipElement.className = defaultTooltipClass;
           tooltipElement.innerHTML = `
-            <div class="font-semibold">${vehicleNo}</div>
-            <div>차량ID: ${vehicleId}</div>
-            <div>속도: ${speedKmh.toFixed(2)} km/h</div>
-            <div>방향: ${heading}°</div>
-            <div>시간: ${dateStr}</div>
+            <div class="font-semibold">${escapeHtml(vehicleNo)}</div>
+            <div>차량ID: ${escapeHtml(vehicleId)}</div>
+            <div>속도: ${escapeHtml(speedKmh.toFixed(2))} km/h</div>
+            <div>방향: ${escapeHtml(heading)}°</div>
+            <div>시간: ${escapeHtml(dateStr)}</div>
           `;
           tooltipElement.style.display = "block";
           overlay.setPosition(e.coordinate);
@@ -576,19 +569,12 @@ export default function MonitoringPage() {
     // 버스 데이터 초기 로드 및 주기적 업데이트
     loadActiveRouteNodes();
     loadVehicleMarkers();
-    const interval = setInterval(() => {
-      loadActiveRouteNodes();
-      loadVehicleMarkers();
-    }, 5000);
 
     return () => {
       ++routeRequestRef.current;
       routeInFlightRef.current = null;
-      clearInterval(interval);
-      vehicleSource.getFeatures().forEach((feature) => {
-        const animationFrame = feature.get("animation_frame") as number | undefined;
-        if (animationFrame != null) cancelAnimationFrame(animationFrame);
-      });
+      cancelVehicleAnimations(vehicleSource);
+      latestVehiclesRef.current = {};
       map.setTarget(undefined);
       mapRef.current = null;
       vectorSourceRef.current = null;
@@ -615,7 +601,18 @@ export default function MonitoringPage() {
   return (
     <section>
       <div className="mb-6">
-        <h1 className="text-[28px] font-bold tracking-tight">모니터링</h1>
+        <div className="flex items-center gap-3">
+          <h1 className="text-[28px] font-bold tracking-tight">모니터링</h1>
+          <span
+            role="status"
+            className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-xs font-medium ${STOMP_STATUS_META[stompStatus].badgeClass}`}
+          >
+            <span
+              className={`h-2 w-2 rounded-full ${STOMP_STATUS_META[stompStatus].dotClass}`}
+            />
+            {STOMP_STATUS_META[stompStatus].label}
+          </span>
+        </div>
         <p className="mt-1 text-sm text-gray-500">
           지도에서 버스 이동경로를 실시간으로 표출합니다.
         </p>
@@ -656,7 +653,7 @@ export default function MonitoringPage() {
                 </Button>
               </div>
               {/* 범례 */}
-              <div className="absolute bottom-4 right-4 bg-white rounded-lg shadow-lg p-4 z-10">
+              <div className="absolute bottom-9 left-2.5 bg-white rounded-lg shadow-lg p-4 z-10">
                 <div className="space-y-2">
                   <div className="flex items-center gap-2"><span className="h-1 w-8 rounded" style={{ backgroundColor: FIXED_ROUTE_COLOR }} /><span className="text-sm">고정구간</span></div>
                   <div className="flex items-center gap-2"><span className="h-1.5 w-8 rounded" style={{ backgroundColor: RESERVED_ROUTE_COLOR }} /><span className="text-sm">예약구간</span></div>
