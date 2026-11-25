@@ -20,6 +20,7 @@ import {
   buildVehicleGridRows,
   cancelVehicleAnimations,
   mergeVehicleMarkers,
+  removeVehicleMarker,
   syncVehicleMarkerFeatures,
   type VehicleUpdateMode,
 } from "@/features/monitoring/vehicleMarkers";
@@ -37,7 +38,7 @@ const SINGI_PORT_CENTER: [number, number] = [127.74364092364029, 34.599294825163
 const GEUMODO_OVERVIEW_ZOOM = 15.5;
 const FIXED_ROUTE_COLOR = "#667eea";
 const RESERVED_ROUTE_COLOR = "#ffd400";
-const VEHICLE_MOVE_DURATION_MS = 4500;
+const VEHICLE_MOVE_DURATION_MS = 950;
 // STOMP 연결 상태별 배지 라벨 및 스타일 매핑
 const STOMP_STATUS_META: Record<
   StompConnectionStatus,
@@ -90,6 +91,35 @@ export default function MonitoringPage() {
   const routeInFlightRef = useRef<string | null>(null);
   const focusRouteRef = useRef(false);
   const [routeError, setRouteError] = useState("");
+  const [operationNotices, setOperationNotices] = useState<
+    { id: string; type: "start" | "end"; vehicleNo: string; routeName: string }[]
+  >([]);
+  const noticeTimersRef = useRef<Set<ReturnType<typeof setTimeout>>>(new Set());
+
+  const pushOperationNotice = useCallback(
+    (type: "start" | "end", vehicle: VehicleMarker) => {
+      const id = `${type}-${vehicle.vehicle_id}-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
+      const vehicleNo = vehicle.vehicle_no || vehicle.vehicle_id;
+      const routeName =
+        vehicle.route_nm || routeNamesRef.current[vehicle.vehicle_id] || vehicle.route_id || "";
+      setOperationNotices((prev) => [...prev.slice(-3), { id, type, vehicleNo, routeName }]);
+
+      const timer = setTimeout(() => {
+        noticeTimersRef.current.delete(timer);
+        setOperationNotices((prev) => prev.filter((item) => item.id !== id));
+      }, 5000);
+      noticeTimersRef.current.add(timer);
+    },
+    []
+  );
+
+  useEffect(() => {
+    const timers = noticeTimersRef.current;
+    return () => {
+      timers.forEach((timer) => clearTimeout(timer));
+      timers.clear();
+    };
+  }, []);
 
   // 모니터링 그리드 컬럼 정의 (2:1 우측 배치용)
   const monitoringColumnDefs: ColDef[] = useMemo(
@@ -339,6 +369,14 @@ export default function MonitoringPage() {
         mode
       );
 
+      // STOMP(delta)로 신규 차량이 처음 등장하거나 노선이 바뀌면 활성 노선을 1회 재조회
+      const hasNewOrChangedRoute =
+        mode === "delta" &&
+        updatedVehicles.some((vehicle) => {
+          const prev = latestVehiclesRef.current[vehicle.vehicle_id];
+          return !prev || Boolean(vehicle.route_id && vehicle.route_id !== prev.route_id);
+        });
+
       latestVehiclesRef.current = nextVehicles;
       setGridRows(
         buildVehicleGridRows(
@@ -352,8 +390,12 @@ export default function MonitoringPage() {
         mode,
         moveDurationMs,
       });
+
+      if (hasNewOrChangedRoute) {
+        void loadActiveRouteNodes();
+      }
     },
-    []
+    [loadActiveRouteNodes]
   );
 
   // 버스 마커 초기 스냅샷 조회 (추후 STOMP 연결/재연결 시 초기 동기화용으로 유지)
@@ -366,14 +408,69 @@ export default function MonitoringPage() {
     }
   }, [applyVehicleMarkers]);
 
+  const handleStompVehicles = useCallback(
+    (vehicles: VehicleMarker[]) => {
+      const activeVehicles: VehicleMarker[] = [];
+      const endedVehicles: VehicleMarker[] = [];
+
+      vehicles.forEach((vehicle) => {
+        if (vehicle.eventType === "start") {
+          pushOperationNotice("start", vehicle);
+          activeVehicles.push(vehicle);
+        } else if (vehicle.eventType === "end") {
+          pushOperationNotice("end", vehicle);
+          endedVehicles.push(vehicle);
+        } else {
+          activeVehicles.push(vehicle);
+        }
+      });
+
+      if (activeVehicles.length > 0) {
+        applyVehicleMarkers(activeVehicles, { mode: "delta" });
+      }
+
+      if (endedVehicles.length > 0 && vehicleSourceRef.current) {
+        let nextVehicles = latestVehiclesRef.current;
+        endedVehicles.forEach((vehicle) => {
+          nextVehicles = removeVehicleMarker(
+            vehicleSourceRef.current!,
+            nextVehicles,
+            vehicle.vehicle_id
+          );
+        });
+        latestVehiclesRef.current = nextVehicles;
+        setGridRows(
+          buildVehicleGridRows(
+            nextVehicles,
+            routeNamesRef.current,
+            routeIdsRef.current
+          )
+        );
+      }
+    },
+    [applyVehicleMarkers, pushOperationNotice]
+  );
+
   const { status: stompStatus } = useVehicleLocationStomp({
     brokerURL: MONITORING_WS_URL,
     topic: MONITORING_VEHICLE_TOPIC,
-    onVehicles: (vehicles) => applyVehicleMarkers(vehicles, { mode: "delta" }),
+    onVehicles: handleStompVehicles,
     onConnected: () => {
       void loadVehicleMarkers();
     },
   });
+
+  const isStompConnected = stompStatus === "connected";
+
+  // STOMP 미연결 시에만 기존 5초 폴링으로 자동 폴백 (연결되면 자동 중지)
+  useEffect(() => {
+    if (isStompConnected) return;
+    const interval = setInterval(() => {
+      void loadActiveRouteNodes();
+      void loadVehicleMarkers();
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [isStompConnected, loadActiveRouteNodes, loadVehicleMarkers]);
 
   // 지도 초기화 (벡터 레이어 포함)
   useEffect(() => {
@@ -638,6 +735,39 @@ export default function MonitoringPage() {
               id="monitoring-map"
               className="relative overflow-hidden rounded-[24px] border border-gray-200 h-full w-full"
             >
+              {/* 운행 시작 / 종료 실시간 오버레이 */}
+              {operationNotices.length > 0 && (
+                <div
+                  role="status"
+                  aria-live="polite"
+                  className="pointer-events-none absolute left-1/2 top-4 z-20 flex -translate-x-1/2 flex-col items-center gap-2"
+                >
+                  {operationNotices.map((notice) => (
+                    <div
+                      key={notice.id}
+                      className={`flex items-center gap-2.5 rounded-xl border px-4 py-2.5 text-sm font-semibold shadow-lg backdrop-blur-sm ${
+                        notice.type === "start"
+                          ? "border-emerald-300 bg-emerald-50/95 text-emerald-800"
+                          : "border-rose-300 bg-rose-50/95 text-rose-800"
+                      }`}
+                    >
+                      <span
+                        className={`rounded-md px-2 py-0.5 text-xs font-bold text-white ${
+                          notice.type === "start" ? "bg-emerald-600" : "bg-rose-600"
+                        }`}
+                      >
+                        {notice.type === "start" ? "운행 시작" : "운행 종료"}
+                      </span>
+                      <span>{notice.vehicleNo}</span>
+                      {notice.routeName && (
+                        <span className="text-xs font-normal opacity-80">
+                          ({notice.routeName})
+                        </span>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              )}
               <div className="absolute right-4 top-4 z-10 flex gap-3">
                 <Button
                   variant="outline"

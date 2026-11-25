@@ -83,6 +83,26 @@ export function cancelVehicleAnimations(vehicleSource: VectorSource): void {
   });
 }
 
+// 운행 종료(end)된 차량의 마커·애니메이션·상태를 지도와 맵에서 제거
+export function removeVehicleMarker(
+  vehicleSource: VectorSource,
+  current: Record<string, VehicleMarker>,
+  vehicleId: string
+): Record<string, VehicleMarker> {
+  vehicleSource.getFeatures().forEach((feature) => {
+    if (String(feature.get("vehicle_id")) === vehicleId) {
+      const animationFrame = feature.get("animation_frame") as number | undefined;
+      if (animationFrame != null) cancelAnimationFrame(animationFrame);
+      vehicleSource.removeFeature(feature);
+    }
+  });
+
+  if (!(vehicleId in current)) return current;
+  const nextVehicles = { ...current };
+  delete nextVehicles[vehicleId];
+  return nextVehicles;
+}
+
 // 기존 마커 Icon 재사용 (이미지 src가 달라질 때만 새로 생성)
 function getOrCreateVehicleIcon(
   feature: Feature,

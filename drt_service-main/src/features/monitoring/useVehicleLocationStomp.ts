@@ -2,7 +2,15 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Client, type IMessage, type StompSubscription } from "@stomp/stompjs";
-import type { VehicleMarker } from "@/types/monitoring";
+import type { VehicleEventType, VehicleMarker } from "@/types/monitoring";
+
+// 서버에서 오는 eventType(start/end, 대소문자 무관) 정규화
+function normalizeEventType(raw: unknown): VehicleEventType | undefined {
+    if (typeof raw !== "string") return undefined;
+    const lower = raw.trim().toLowerCase();
+    if (lower === "start" || lower === "end") return lower;
+    return undefined;
+}
 
 export type StompConnectionStatus =
     | "idle" // 비활성 상태
@@ -67,9 +75,13 @@ export function useVehicleLocationStomp({
                     try {
                         const parsed: unknown = JSON.parse(message.body);
                         // TODO: 백엔드 스펙 확정 후 Zod 스키마 검증/정규화로 교체
-                        const vehicles = (
+                        const rawList = (
                             Array.isArray(parsed) ? parsed : [parsed]
-                        ) as VehicleMarker[];
+                        ) as Array<VehicleMarker & { event_type?: unknown }>;
+                        const vehicles: VehicleMarker[] = rawList.map((item) => ({
+                            ...item,
+                            eventType: normalizeEventType(item.eventType ?? item.event_type),
+                        }));
                         onVehiclesRef.current(vehicles);
                     } catch (error) {
                         console.error("[STOMP] Failed to parse vehicle message:", error);

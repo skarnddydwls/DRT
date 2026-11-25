@@ -399,7 +399,8 @@ export class Map {
     applyButtonStyle(roadmapBtn, true, true);
     applyButtonStyle(skyviewBtn, false, false);
 
-    wrap.append(roadmapBtn, skyviewBtn);
+    wrap.appendChild(roadmapBtn);
+    wrap.appendChild(skyviewBtn);
     this.container.appendChild(wrap);
     this.extras.push(wrap);
   }
@@ -519,8 +520,8 @@ export class Map {
       item.native = new this.sdk.CustomOverlay({
         content: item.element,
         position: latLng(this.sdk, coordinate),
-        xAnchor: 0.5,
-        yAnchor: 1,
+        xAnchor: 0,
+        yAnchor: 0,
         zIndex: 100 + layer,
       });
     }
@@ -553,9 +554,7 @@ export class Map {
           img.style.width = `${width}px`;
           img.style.height = `${height}px`;
           const anchor = currentImage.options.anchor ?? [0.5, 1];
-          item.element!.style.transform = `translate(${(0.5 - anchor[0]) * width}px, ${(1 - anchor[1]) * height}px)`;
-          // Kakao computes the anchor from DOM dimensions. Recompute after
-          // the image loads instead of retaining the initial zero-size anchor.
+          item.element!.style.transform = `translate(${-anchor[0] * 100}%, ${-anchor[1] * 100}%)`;
           const point = feature.getGeometry();
           if (width > 0 && height > 0 && point instanceof Point)
             item.native.setPosition(latLng(this.sdk, point.getCoordinates()));
@@ -571,7 +570,7 @@ export class Map {
         if (img.complete) size();
       } else if (image instanceof CircleStyle) {
         const { radius, fill, stroke } = image.options;
-        item.element.style.cssText += `width:${radius * 2}px;height:${radius * 2}px;border-radius:50%;background:${fill.options.color};border:${stroke.options.width}px solid ${stroke.options.color};transform:translateY(50%);`;
+        item.element.style.cssText += `width:${radius * 2}px;height:${radius * 2}px;border-radius:50%;background:${fill.options.color};border:${stroke.options.width}px solid ${stroke.options.color};transform:translate(-50%,-50%);`;
       }
     }
     if (image instanceof Icon && item.image)

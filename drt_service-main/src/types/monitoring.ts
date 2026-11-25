@@ -23,7 +23,10 @@ export interface RouteNodeResponse {
   total: number;
 }
 
+export type VehicleEventType = "start" | "end";
+
 export interface VehicleMarker {
+  eventType?: VehicleEventType;
   route_id?: string;
   route_nm?: string | null;
   gps_x: number;
