@@ -498,8 +498,8 @@ export default function MonitoringPage() {
             date.getMinutes()
           ).padStart(2, "0")}:${String(date.getSeconds()).padStart(2, "0")}`;
 
-          // m/s를 km/h로 변환 (1 m/s = 3.6 km/h)
-          const speedKmh = speed * 3.6;
+          // 백엔드가 km/h로 저장하므로 추가 단위 변환 없이 표시한다.
+          const speedKmh = Number(speed);
           tooltipElement.className = defaultTooltipClass;
           tooltipElement.innerHTML = `
             <div class="font-semibold">${vehicleNo}</div>

@@ -3,6 +3,8 @@
  */
 
 export interface CallRow extends Record<string, unknown> {
+  leg_count?: number;
+  journey_route_nm?: string | null;
   rsv_status?: string | null;
   cancel_reason?: string | null;
   nickname?: string | null;
@@ -44,4 +46,15 @@ export interface CallListParams {
   endPointNm?: string;
   page?: number;
   pageSize?: number;
+}
+
+export interface CallJourneyLeg {
+ leg_seq:number; route_id:string;route_nm:string;vehicle_id:string;vehicle_no:string;
+ start_point_id:string;start_point_nm:string;start_direction?:string|null;
+ end_point_id:string;end_point_nm:string;end_direction?:string|null;
+ dispatch_dt:string;schedule_ride_dtm:string;schedule_algh_dtm:string;
+}
+export interface CallJourneyResponse {
+ reservation:{device_id:string;call_dtm:string;rsv_num:number;rsv_status:string|null;nickname:string|null;arrival_completed_at:string|null};
+ legs:CallJourneyLeg[];
 }
