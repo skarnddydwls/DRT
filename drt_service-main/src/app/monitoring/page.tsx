@@ -643,8 +643,8 @@ export default function MonitoringPage() {
             date.getMinutes()
           ).padStart(2, "0")}:${String(date.getSeconds()).padStart(2, "0")}`;
 
-          // m/s를 km/h로 변환 (1 m/s = 3.6 km/h)
-          const speedKmh = Number.isFinite(Number(speed)) ? Number(speed) * 3.6 : 0;
+          // 백엔드가 km/h로 저장하므로 추가 단위 변환 없이 표시한다.
+          const speedKmh = Number(speed);
           tooltipElement.className = defaultTooltipClass;
           tooltipElement.innerHTML = `
             <div class="font-semibold">${escapeHtml(vehicleNo)}</div>
@@ -800,16 +800,14 @@ export default function MonitoringPage() {
                   {operationNotices.map((notice) => (
                     <div
                       key={notice.id}
-                      className={`flex items-center gap-2.5 rounded-xl border px-4 py-2.5 text-sm font-semibold shadow-lg backdrop-blur-sm ${
-                        notice.type === "start"
+                      className={`flex items-center gap-2.5 rounded-xl border px-4 py-2.5 text-sm font-semibold shadow-lg backdrop-blur-sm ${notice.type === "start"
                           ? "border-emerald-300 bg-emerald-50/95 text-emerald-800"
                           : "border-rose-300 bg-rose-50/95 text-rose-800"
-                      }`}
+                        }`}
                     >
                       <span
-                        className={`rounded-md px-2 py-0.5 text-xs font-bold text-white ${
-                          notice.type === "start" ? "bg-emerald-600" : "bg-rose-600"
-                        }`}
+                        className={`rounded-md px-2 py-0.5 text-xs font-bold text-white ${notice.type === "start" ? "bg-emerald-600" : "bg-rose-600"
+                          }`}
                       >
                         {notice.type === "start" ? "운행 시작" : "운행 종료"}
                       </span>

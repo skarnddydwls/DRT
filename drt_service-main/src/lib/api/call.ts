@@ -4,7 +4,7 @@
  */
 
 import { post } from "@/lib/api/client";
-import type { CallListParams, CallListResponse, CallRow } from "@/types/call";
+import type { CallListParams, CallListResponse, CallRow, CallJourneyResponse } from "@/types/call";
 
 /**
  * 호출기록 목록 조회 API
@@ -33,4 +33,9 @@ export async function cancelCall(row: CallRow): Promise<{ success: boolean; alre
  */
 export async function getCallById(id: string): Promise<CallRow> {
   return post<CallRow>(`/api/calls/${id}`, { call_id: id });
+}
+
+export async function getCallJourney(row:CallRow):Promise<CallJourneyResponse>{
+ const response=await fetch("/api/calls/journey",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({DEVICE_ID:row.device_id,CALL_DTM:row.call_dtm})});
+ const data=await response.json().catch(()=>null);if(!response.ok||!data?.reservation||!Array.isArray(data.legs))throw new Error(data?.error||"환승 내역을 확인하지 못했습니다.");return data;
 }

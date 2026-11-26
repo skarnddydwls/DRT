@@ -5,13 +5,13 @@ import Grid from "@/components/Grid";
 import GridCsvButton from "@/components/GridCsvButton";
 import KakaoMap from "@/components/KakaoMap";
 import { FilterForm } from "@/components/ui/FilterForm";
-import { cancelCall, getCallList } from "@/lib/api/call";
+import { cancelCall, getCallList, getCallJourney } from "@/lib/api/call";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { callColumnDefs } from "@/features/calls/columnDefs";
 import { defaultFilters, callFields } from "@/features/calls/fieldconfig";
-import type { CallFilters, CallRow } from "@/types/call";
-import type { RowClickedEvent } from "ag-grid-community";
+import type { CallFilters, CallRow, CallJourneyResponse } from "@/types/call";
+import type { RowClickedEvent, ColDef } from "ag-grid-community";
 import type { Map } from "@/lib/maps/kakaoMap";
 import { Feature } from "@/lib/maps/kakaoMap";
 import { Point } from "@/lib/maps/kakaoMap";
@@ -27,6 +27,11 @@ export default function CallsPage() {
   const mapRef = useRef<Map | null>(null);
   const markerSourceRef = useRef<VectorSource | null>(null);
 
+  const [journeyTarget,setJourneyTarget]=useState<CallRow|null>(null);
+  const [journey,setJourney]=useState<CallJourneyResponse|null>(null);
+  const [journeyLoading,setJourneyLoading]=useState(false);
+  const [journeyError,setJourneyError]=useState("");
+  const journeyRequest=useRef(0);
   const [filters, setFilters] = useState<CallFilters>(defaultFilters);
   const [allRows, setAllRows] = useState<CallRow[]>([]);
   const [loading, setLoading] = useState(false);
@@ -97,7 +102,7 @@ export default function CallsPage() {
         ? String(row.call_dtm ?? "").startsWith(filters.callDatetime)
         : true;
       const matchRoute = filters.routeNm
-        ? String(row.route_nm ?? "")
+        ? String(row.journey_route_nm || row.route_nm || "")
           .toLowerCase()
           .includes(filters.routeNm.trim().toLowerCase())
         : true;
@@ -115,7 +120,18 @@ export default function CallsPage() {
     });
   }, [allRows, filters]);
 
-  const columnDefs = useMemo(() => callColumnDefs, []);
+  const openJourney=useCallback(async(row:CallRow)=>{
+    const request=++journeyRequest.current;setJourneyTarget(row);setJourney(null);setJourneyError("");setJourneyLoading(true);
+    try{const data=await getCallJourney(row);if(request===journeyRequest.current)setJourney(data);}
+    catch(e){if(request===journeyRequest.current)setJourneyError(e instanceof Error?e.message:"환승 내역을 불러오지 못했습니다.");}
+    finally{if(request===journeyRequest.current)setJourneyLoading(false);}
+  },[]);
+  const columnDefs = useMemo<ColDef<CallRow>[]>(() => [
+    ...callColumnDefs.slice(0,3),
+    {headerName:"환승",field:"leg_count",minWidth:145,valueFormatter:p=>p.value==null||Number(p.value)===0?"-":Number(p.value)>1?`환승 ${Number(p.value)-1}회`:"직통",
+      cellRenderer:({data}:{data:CallRow})=>Number(data?.leg_count)>1?<button type="button" className="font-semibold text-blue-600 hover:underline" onClick={e=>{e.stopPropagation();void openJourney(data);}}>환승 상세</button>:data?.leg_count==null||Number(data.leg_count)===0?"-":"직통"},
+    ...callColumnDefs.slice(3),
+  ],[openJourney]);
 
   // 그리드에서 행 클릭 시 지도에 마커 표시 및 위치 이동
   const handleRowClicked = (event: RowClickedEvent<CallRow>) => {
@@ -169,10 +185,11 @@ export default function CallsPage() {
       <div className="rounded-xl border bg-white p-6 shadow-sm">
         <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
           <GridCsvButton gridRef={gridRef} fileName="호출기록" disabled={loading || rowData.length === 0} />
+          <div className="flex gap-2"><Button variant="outline" disabled={loading||!selectedCall||Number(selectedCall.leg_count)<=1||selectedCall.leg_count==null} onClick={()=>{if(selectedCall)void openJourney(selectedCall);}}>선택 환승 상세</Button>
           <Button variant="destructive" disabled={loading || cancelling || selectedCall?.rsv_status !== "WAIT"}
             onClick={() => { setCancelError(""); setMessage(""); setCancelTarget(selectedCall); }}>
             선택 예약 취소
-          </Button>
+          </Button></div>
         </div>
         {message && <p role="status" className="mb-3 text-sm text-green-700">{message}</p>}
         {error && <p role="alert" className="mb-3 text-sm text-red-600">{error}</p>}
@@ -235,6 +252,20 @@ export default function CallsPage() {
           </div>
         </div>
       </div>
+      <Dialog open={Boolean(journeyTarget)} onOpenChange={open=>{if(!open){++journeyRequest.current;setJourneyTarget(null);setJourneyLoading(false);}}}>
+       <DialogContent className="w-[calc(100vw-32px)] max-w-[900px] max-h-[90vh] overflow-y-auto">
+        <DialogHeader><DialogTitle>환승 경로 상세</DialogTitle><DialogDescription>예약 구간별 차량과 정류장, 환승 위치를 확인합니다. 표시 시각은 예약 기준 예정시각입니다.</DialogDescription></DialogHeader>
+        {journeyLoading?<div className="py-12 text-center text-sm text-gray-500">환승 내역을 불러오는 중...</div>:journeyError?<p role="alert" className="rounded-lg bg-red-50 p-4 text-sm text-red-600">{journeyError}</p>:journey&&<>
+         {journey.legs.length===0?<p className="py-6 text-center text-sm text-gray-500">저장된 구간 정보가 없습니다.</p>:<div className="space-y-3">{journey.legs.map((leg,index)=>{
+          const next=journey.legs[index+1];const minutes=next?Math.round((new Date(next.schedule_ride_dtm.replace(" ","T")).getTime()-new Date(leg.schedule_algh_dtm.replace(" ","T")).getTime())/60000):null;
+          return <div key={leg.leg_seq}><div className="rounded-xl border p-4"><div className="mb-3 flex flex-wrap items-center gap-2"><span className="rounded bg-slate-100 px-2 py-1 text-xs font-semibold">{index+1}구간</span><b className="text-sm">{leg.route_nm}</b><span className="text-sm text-gray-600">{leg.vehicle_no}</span></div><div className="grid gap-3 text-sm sm:grid-cols-2"><div><p className="text-xs text-gray-500">승차 정류장</p><p className="font-semibold">{leg.start_point_nm}{leg.start_direction?` · ${leg.start_direction}`:""}</p><p className="mt-1 text-gray-600">{leg.schedule_ride_dtm}</p></div><div><p className="text-xs text-gray-500">하차 정류장</p><p className="font-semibold">{leg.end_point_nm}{leg.end_direction?` · ${leg.end_direction}`:""}</p><p className="mt-1 text-gray-600">{leg.schedule_algh_dtm}</p></div></div></div>
+          {next&&<div className="my-3 rounded-xl border border-blue-200 bg-blue-50 p-4 text-sm"><p className="font-semibold text-blue-800">환승 {index+1} · {leg.route_nm} → {next.route_nm}</p><p className="mt-1 text-blue-900">{leg.vehicle_no} → {next.vehicle_no}</p><p className="mt-2">{leg.end_point_nm} 하차 → {next.start_point_nm} 승차</p><p className="mt-1 text-xs text-gray-600">{leg.schedule_algh_dtm} → {next.schedule_ride_dtm}{minutes!=null&&Number.isFinite(minutes)&&minutes>=0?` · 환승 간격 ${minutes}분`:""}</p></div>}
+          </div>;
+         })}</div>}
+        </>}
+        <DialogFooter className="mt-4"><Button onClick={()=>{++journeyRequest.current;setJourneyTarget(null);setJourneyLoading(false);}}>닫기</Button></DialogFooter>
+       </DialogContent>
+      </Dialog>
       <Dialog open={Boolean(cancelTarget)} onOpenChange={open => { if (!open && !cancelling) setCancelTarget(null); }}>
         <DialogContent showCloseButton={!cancelling}>
           <DialogHeader>

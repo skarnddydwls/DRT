@@ -46,6 +46,7 @@ export const callColumnDefs: ColDef<CallRow>[] = [
   {
     headerName: "노선명",
     field: "route_nm",
+    valueGetter: ({ data }) => data?.journey_route_nm || data?.route_nm || "-",
     minWidth: 140,
   },
   {
