@@ -252,6 +252,7 @@ type Rendered = {
   style?: Style;
   coordinate?: number[];
   detach: () => void;
+  badge?: HTMLDivElement;
 };
 
 export class Map {
@@ -509,6 +510,7 @@ export class Map {
       }
       return;
     }
+
     const coordinate = geometry.getCoordinates();
     if (!validCoordinate(coordinate)) {
       item.native?.setMap(null);
@@ -537,6 +539,7 @@ export class Map {
         item.element.replaceChildren();
         item.image = undefined;
         item.element.style.cssText = "position:relative;cursor:pointer;";
+        item.badge = undefined;
       }
       item.style = style;
       if (image instanceof Icon) {
@@ -575,6 +578,31 @@ export class Map {
     }
     if (image instanceof Icon && item.image)
       item.image.style.transform = `rotate(${image.options.rotation ?? 0}rad)`;
+    const statusBadge = feature.get("status_badge");
+    if (typeof statusBadge === "string" && statusBadge.length > 0) {
+      const badgeVariant =
+        feature.get("status_badge_variant") === "end" ? "end" : "start";
+      if (!item.badge) {
+        const badge = document.createElement("div");
+        badge.style.cssText =
+          "position:absolute;bottom:100%;left:50%;transform:translate(-50%,-6px);padding:2px 8px;border-radius:9999px;color:#ffffff;font-size:11px;font-weight:700;line-height:1.4;white-space:nowrap;box-shadow:0 2px 6px rgba(0,0,0,0.22);border:1px solid transparent;pointer-events:none;";
+        item.element.appendChild(badge);
+        item.badge = badge;
+      }
+      if (item.badge.dataset.variant !== badgeVariant) {
+        item.badge.dataset.variant = badgeVariant;
+        item.badge.style.background =
+          badgeVariant === "end" ? "#e11d48" : "#059669";
+        item.badge.style.borderColor =
+          badgeVariant === "end" ? "#fda4af" : "#6ee7b7";
+      }
+      if (item.badge.textContent !== statusBadge) {
+        item.badge.textContent = statusBadge;
+      }
+    } else if (item.badge) {
+      item.badge.remove();
+      item.badge = undefined;
+    }
     if (!item.coordinate || coordinate[0] !== item.coordinate[0] || coordinate[1] !== item.coordinate[1]) {
       item.native.setPosition(latLng(this.sdk, coordinate));
       item.coordinate = coordinate.slice();

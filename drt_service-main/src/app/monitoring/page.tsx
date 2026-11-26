@@ -17,10 +17,18 @@ import { getDispatchList } from "@/lib/api/dispatch";
 import type { ActiveRouteNode, VehicleMarker } from "@/types/monitoring";
 import { getStopList, type StopRow } from "@/lib/api/marker";
 import {
+  OPERATION_NOTICE_DURATION_MS,
+  VEHICLE_END_REMOVAL_DELAY_MS,
   buildVehicleGridRows,
   cancelVehicleAnimations,
+  clearVehicleEnded,
+  clearVehicleStatusBadge,
+  filterEndedSnapshotVehicles,
+  markVehicleEnded,
   mergeVehicleMarkers,
   removeVehicleMarker,
+  setVehicleStatusBadge,
+  stopVehicleAnimation,
   syncVehicleMarkerFeatures,
   type VehicleUpdateMode,
 } from "@/features/monitoring/vehicleMarkers";
@@ -104,10 +112,58 @@ export default function MonitoringPage() {
         vehicle.route_nm || routeNamesRef.current[vehicle.vehicle_id] || vehicle.route_id || "";
       setOperationNotices((prev) => [...prev.slice(-3), { id, type, vehicleNo, routeName }]);
 
+      if (type === "start" && vehicleSourceRef.current) {
+        setVehicleStatusBadge(
+          vehicleSourceRef.current,
+          vehicle.vehicle_id,
+          "운행 시작",
+          id,
+          "start"
+        );
+      } else if (type === "end" && vehicleSourceRef.current) {
+        stopVehicleAnimation(vehicleSourceRef.current, vehicle.vehicle_id);
+        setVehicleStatusBadge(
+          vehicleSourceRef.current,
+          vehicle.vehicle_id,
+          "운행 종료",
+          id,
+          "end"
+        );
+
+        const removeTimer = setTimeout(() => {
+          noticeTimersRef.current.delete(removeTimer);
+          if (!vehicleSourceRef.current) return;
+          const nextVehicles = removeVehicleMarker(
+            vehicleSourceRef.current,
+            latestVehiclesRef.current,
+            vehicle.vehicle_id,
+            id
+          );
+          if (nextVehicles !== latestVehiclesRef.current) {
+            latestVehiclesRef.current = nextVehicles;
+            setGridRows(
+              buildVehicleGridRows(
+                nextVehicles,
+                routeNamesRef.current,
+                routeIdsRef.current
+              )
+            );
+          }
+        }, VEHICLE_END_REMOVAL_DELAY_MS);
+        noticeTimersRef.current.add(removeTimer);
+      }
+
       const timer = setTimeout(() => {
         noticeTimersRef.current.delete(timer);
         setOperationNotices((prev) => prev.filter((item) => item.id !== id));
-      }, 5000);
+        if (type === "start" && vehicleSourceRef.current) {
+          clearVehicleStatusBadge(
+            vehicleSourceRef.current,
+            vehicle.vehicle_id,
+            id
+          );
+        }
+      }, OPERATION_NOTICE_DURATION_MS);
       noticeTimersRef.current.add(timer);
     },
     []
@@ -402,7 +458,8 @@ export default function MonitoringPage() {
   const loadVehicleMarkers = useCallback(async () => {
     try {
       const response = await getVehicleMarkers();
-      applyVehicleMarkers(response.vehicles || [], { mode: "snapshot" });
+      const activeSnapshot = filterEndedSnapshotVehicles(response.vehicles || []);
+      applyVehicleMarkers(activeSnapshot, { mode: "snapshot" });
     } catch (error) {
       console.error("Failed to load vehicle markers:", error);
     }
@@ -411,14 +468,21 @@ export default function MonitoringPage() {
   const handleStompVehicles = useCallback(
     (vehicles: VehicleMarker[]) => {
       const activeVehicles: VehicleMarker[] = [];
+      const startedVehicles: VehicleMarker[] = [];
       const endedVehicles: VehicleMarker[] = [];
 
       vehicles.forEach((vehicle) => {
         if (vehicle.eventType === "start") {
-          pushOperationNotice("start", vehicle);
+          clearVehicleEnded(vehicle.vehicle_id);
+          startedVehicles.push(vehicle);
           activeVehicles.push(vehicle);
         } else if (vehicle.eventType === "end") {
-          pushOperationNotice("end", vehicle);
+          const lastKnownOperDtm =
+            latestVehiclesRef.current[vehicle.vehicle_id]?.oper_dtm ?? 0;
+          markVehicleEnded(
+            vehicle.vehicle_id,
+            Math.max(Number(vehicle.oper_dtm) || 0, Number(lastKnownOperDtm) || 0)
+          );
           endedVehicles.push(vehicle);
         } else {
           activeVehicles.push(vehicle);
@@ -429,24 +493,15 @@ export default function MonitoringPage() {
         applyVehicleMarkers(activeVehicles, { mode: "delta" });
       }
 
-      if (endedVehicles.length > 0 && vehicleSourceRef.current) {
-        let nextVehicles = latestVehiclesRef.current;
-        endedVehicles.forEach((vehicle) => {
-          nextVehicles = removeVehicleMarker(
-            vehicleSourceRef.current!,
-            nextVehicles,
-            vehicle.vehicle_id
-          );
-        });
-        latestVehiclesRef.current = nextVehicles;
-        setGridRows(
-          buildVehicleGridRows(
-            nextVehicles,
-            routeNamesRef.current,
-            routeIdsRef.current
-          )
-        );
-      }
+      // 신규 차량 Feature가 먼저 생성된 뒤 상단 알림과 버스 위 "운행 시작" 배지를 동시에 표시
+      startedVehicles.forEach((vehicle) => {
+        pushOperationNotice("start", vehicle);
+      });
+
+      // 운행 종료 시 마커 위 빨간 "운행 종료" 배지를 띄우고 3초 뒤 지도·그리드에서 제거
+      endedVehicles.forEach((vehicle) => {
+        pushOperationNotice("end", vehicle);
+      });
     },
     [applyVehicleMarkers, pushOperationNotice]
   );
